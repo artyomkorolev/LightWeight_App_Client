@@ -13,6 +13,34 @@
         android:theme="@style/Theme.LightWeight"
         tools:targetApi="31">
         <activity
+            android:name=".AddPhotoProgressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GalleryActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".CheckTrainingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddTrainingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityPhysical"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckEatingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEatingActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -5,17 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:background="@color/white">
-<TextView
-    android:id="@+id/tvDate"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="15 февраля"
-    android:textSize="22dp"
-    android:gravity="center_horizontal"
-    android:padding="13dp"
-    />
+    tools:context=".MainActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="15 февраля"
+        android:textSize="22dp"
+        android:gravity="center_horizontal"
+        android:padding="13dp"
+        />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -24,35 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="22dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            >
-            <TextView
-                android:id="@+id/curCal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1000"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/"/>
-            <TextView
-                android:id="@+id/totalCal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2300"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" ккал"/>
 
-
-        </LinearLayout>
         <ImageView
-            android:id="@+id/addEating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_add_24"
@@ -61,16 +32,15 @@
             />
     </FrameLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFoodList"
+        android:id="@+id/rvPhysicalList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/food_item"
+        tools:listitem="@layout/phisical_item"
         android:layout_marginBottom="10dp"
         android:layout_weight="1"
         android:layout_marginTop="43dp"
         android:layout_marginHorizontal="12dp"
         android:background="@color/white"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
     <View
@@ -86,7 +56,6 @@
             android:id="@+id/buttonFood"
             style="@style/NavigationButtomButton"
 
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,13 +63,7 @@
             app:layout_constraintEnd_toStartOf="@id/buttonFK"
             android:text="Еда"
             app:icon="@drawable/baseline_fastfood_24"
-
-            app:iconTint="@color/green62"
-            android:textStyle="bold"
-            android:textColor="@color/green62"
-
-            tools:ignore="TextSizeCheck"
-            />
+            tools:ignore="TextSizeCheck" />
 
 
         <Button
@@ -113,9 +76,7 @@
             app:layout_constraintEnd_toStartOf="@id/buttonGallery"
             app:layout_constraintTop_toTopOf="@id/buttonFood"
 
-
             android:text="Активность"
-            android:singleLine="true"
             app:icon="@drawable/baseline_fitness_center_24"
             tools:ignore="TextSizeCheck" />
 

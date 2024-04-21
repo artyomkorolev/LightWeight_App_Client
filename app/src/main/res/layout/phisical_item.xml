@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FizItemStyle"
+    android:background="@drawable/shapebutton_phiz"
+    android:layout_width="match_parent"
+    android:layout_height="121dp"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_margin="4dp">
+    <FrameLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <TextView
+
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13:25"/>
+        <TextView
+
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Тренировка"
+            android:layout_gravity="bottom"
+            />
+
+
+    </FrameLayout>
+    <FrameLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end">
+        <FrameLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginEnd="30dp">
+
+
+            <TextView
+
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Время(мин)"
+                android:layout_gravity="bottom"/>
+
+
+        </FrameLayout>
+        <FrameLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="end"
+            >
+
+
+            <TextView
+
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="45"
+                android:layout_gravity="bottom"/>
+
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+
+
+
+
+</FrameLayout>

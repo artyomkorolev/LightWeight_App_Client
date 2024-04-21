@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/shape_position_physical_item"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Бег"
+        android:textColor="@color/white"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="12dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="КМ"
+        android:textColor="@color/white"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginStart="250dp"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/input_edit_text_field"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck">
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_done_24"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="10dp"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_clear_24"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        />
+</FrameLayout>

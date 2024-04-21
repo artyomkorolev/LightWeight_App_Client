@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/shape_position_item_food"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+    <TextView
+        android:layout_marginStart="8dp"
+        android:id="@+id/nameItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Огурец"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/textkbju"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | кбжу"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fooditemcal"
+        />
+    <TextView
+        android:id="@+id/fooditemcal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="77"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/slesh1"
+        />
+    <TextView
+        android:id="@+id/slesh1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fooditemproteins"
+        />
+    <TextView
+    android:id="@+id/fooditemproteins"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="17"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/slesh2"
+    />
+    <TextView
+    android:id="@+id/slesh2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="/"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fooditemfats"
+    />
+    <TextView
+    android:id="@+id/fooditemfats"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="2"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/slesh3"
+    />
+    <TextView
+    android:id="@+id/slesh3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="/"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/fooditemcarbs"
+    />
+    <TextView
+    android:id="@+id/fooditemcarbs"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="0,09"
+    android:layout_marginEnd="20dp"
+    app:layout_constraintEnd_toStartOf="@id/saveGramm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+    />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/saveGramm"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/input_edit_text_field"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:layout_constraintEnd_toStartOf="@id/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    </com.google.android.material.textfield.TextInputEditText>
+
+    <ImageView
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_done_24"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        />
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_clear_24"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="10dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
