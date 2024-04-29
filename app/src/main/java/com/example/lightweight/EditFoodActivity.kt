@@ -9,20 +9,19 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class AddEatingActivity : AppCompatActivity() {
+class EditFoodActivity : AppCompatActivity() {
+    private lateinit var backButton: Button
 
-    private lateinit var backButton:Button
-    private lateinit var editTextSetTime: EditText
     private lateinit var addFoodItemButton: ImageView
-    private lateinit var rvlistFoodItems:RecyclerView
-    private lateinit var etSearchFood:EditText
-    private lateinit var saveEatingButton:Button
+    private lateinit var rvlistFoodItems: RecyclerView
+    private lateinit var etSearchFood: EditText
+    private lateinit var saveEatingButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_eating)
+        setContentView(R.layout.activity_edit_food)
 
         backButton =findViewById(R.id.backbutton)
-        editTextSetTime = findViewById(R.id.etTime)
+
         addFoodItemButton = findViewById(R.id.addFoodItem)
         rvlistFoodItems = findViewById(R.id.rvFoodItemList)
         etSearchFood = findViewById(R.id.imputEditText)
@@ -30,17 +29,17 @@ class AddEatingActivity : AppCompatActivity() {
 
 
         addFoodItemButton.setOnClickListener{
-            val addIntent = Intent(this,AddFoodItemActivity::class.java)
+            val addIntent = Intent(this,EditAddFoodItemActivity::class.java)
             startActivity(addIntent)
         }
 
         saveEatingButton.setOnClickListener {
-            val backIntent=Intent(this, MainActivity::class.java)
+            val backIntent= Intent(this,ManagementActivity::class.java)
             startActivity(backIntent)
-            Toast.makeText(applicationContext,"Вы сохранили прием пищи",Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext,"Вы сохранили список своих продуктов", Toast.LENGTH_SHORT).show()
         }
         backButton.setOnClickListener{
-            val backIntent=Intent(this, MainActivity::class.java)
+            val backIntent= Intent(this, ManagementActivity::class.java)
             startActivity(backIntent)
 
         }
@@ -56,11 +55,10 @@ class AddEatingActivity : AppCompatActivity() {
             ),
             object :FoodItemAdapter.FoodItemActionListener{
                 override fun OnClickItem(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext,"Вы нажали на продукт", Toast.LENGTH_SHORT).show()
                 }
             }
         )
 
         rvlistFoodItems.adapter = foodItemAdapter
-    }
-}
+}}

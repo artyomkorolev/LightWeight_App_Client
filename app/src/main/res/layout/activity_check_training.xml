@@ -76,21 +76,13 @@
         android:id="@+id/textFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Выберите упражнения"
+        android:text="Упражнения"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/textDuration"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_add_24"
 
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintTop_toTopOf="@id/textFood"
-
-        />
     <EditText
         android:id="@+id/imputEditText"
         style="@style/SearchEditText"
@@ -131,6 +123,7 @@
         app:layout_constraintTop_toBottomOf="@id/bottomGuideline"
         android:background="@color/gray"/>
     <Button
+        android:id="@+id/buttonDelete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"

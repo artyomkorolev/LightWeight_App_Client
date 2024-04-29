@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/BackButtonStyle"
-        android:text="Тренировка"
+        android:text="Управление"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22dp"
@@ -38,62 +38,57 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp"/>
 
+
+
     <TextView
-        android:id="@+id/nameFood"
+        android:id="@+id/textFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Название"
+        android:text="Продукты"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
-        android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
-
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:hint="Название"
-        app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
-
-
-
-
-    <TextView
-        android:id="@+id/measure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Единица измерения"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/textBarrier"
+    <ImageView
+        android:id="@+id/addFoodItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="measure"
-        app:barrierDirection="end"
-        />
+        android:src="@drawable/baseline_add_24"
 
-    <EditText
-        android:id="@+id/etMeasure"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:hint="ед. изм."
-        app:layout_constraintBaseline_toBaselineOf="@id/measure"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/textBarrier"
-        app:layout_constraintTop_toBottomOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
-
-
-
+        app:layout_constraintTop_toTopOf="@id/textFood"
+        app:layout_constraintBottom_toBottomOf="@id/textFood"
+        />
+    <EditText
+        android:id="@+id/imputEditText"
+        style="@style/SearchEditText"
+        android:layout_weight="1"
+        android:background="@drawable/shape"
+        android:drawableLeft="@drawable/search_icon"
+        android:hint="поиск"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        tools:ignore="TouchTargetSizeCheck"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
+        app:layout_constraintTop_toBottomOf="@id/textFood"
+        android:layout_marginTop="30dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFoodItemList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
+        app:layout_constraintTop_toBottomOf="@id/imputEditText"
+        app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
+        android:layout_marginTop="16dp"
+        tools:listitem="@layout/food_position_item"
+        android:layout_marginBottom="12dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomGuideline"
         android:layout_width="wrap_content"

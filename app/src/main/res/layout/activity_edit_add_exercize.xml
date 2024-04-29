@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/BackButtonStyle"
-        android:text="Тренировка"
+        android:text="Список Упражнений"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22dp"
