@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import org.w3c.dom.Text
 
 class PersonalAccountActivity : AppCompatActivity() {
     private lateinit var buttonFk: Button
@@ -46,14 +45,14 @@ class PersonalAccountActivity : AppCompatActivity() {
             startActivity(managementIntent)
         }
         statFK.setOnClickListener {
-//            val statIntent = Intent(this, StatFKActivity::class.java)
-//            startActivity(statIntent)
-            Toast.makeText(applicationContext,"Пока не готово", Toast.LENGTH_SHORT).show()
+            val statIntent = Intent(this, StatFKActivity::class.java)
+            startActivity(statIntent)
+
         }
         statFood.setOnClickListener {
-//            val statIntent = Intent(this, StatFoodActivity::class.java)
-//            startActivity(statIntent)
-            Toast.makeText(applicationContext,"Пока не готово", Toast.LENGTH_SHORT).show()
+           val statIntent = Intent(this, StatFoodActivity::class.java)
+           startActivity(statIntent)
+
         }
     }
 }

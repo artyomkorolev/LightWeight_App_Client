@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonLK: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_LightWeight)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         rvFoodList = findViewById(R.id.rvFoodList)
