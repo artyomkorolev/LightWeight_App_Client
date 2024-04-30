@@ -64,7 +64,7 @@
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Граммовки не 100 грамм"
+        android:text="Граммовки на 100 грамм"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
@@ -97,6 +97,16 @@
         android:text="Углеводы"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/fats"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        />
+    <TextView
+        android:id="@+id/kals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ккал"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/carbs"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
@@ -139,6 +149,17 @@
         android:layout_marginStart="150dp"
         android:hint="Углеводы"
         app:layout_constraintBaseline_toBaselineOf="@id/carbs"
+        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
+        app:layout_constraintStart_toEndOf="@id/textBarrier"
+        app:layout_constraintTop_toBottomOf="@id/fats"
+        tools:ignore="TouchTargetSizeCheck" />
+    <EditText
+        android:id="@+id/etCals"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:hint="Ккалории"
+        app:layout_constraintBaseline_toBaselineOf="@id/kals"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
