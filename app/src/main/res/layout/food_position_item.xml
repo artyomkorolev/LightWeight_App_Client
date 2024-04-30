@@ -103,7 +103,7 @@
         android:layout_width="70dp"
         android:layout_height="20dp"
 
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/input_edit_text_field"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
         app:layout_constraintEnd_toStartOf="@id/save"

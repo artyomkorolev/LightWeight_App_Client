@@ -9,12 +9,13 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_image_gallery"
+
 
 
 
         />
     <TextView
+        android:id="@+id/imageDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="1 Декабря 2022"
@@ -26,6 +27,7 @@
         android:layout_marginTop="14dp"
         />
     <TextView
+        android:id="@+id/imageWeight"
         android:text="90 кг"
         android:textSize="22dp"
         android:gravity="center"
@@ -37,6 +39,7 @@
         android:layout_marginBottom="14dp"
         />
     <ImageView
+        android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/image"

@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
     <TextView
+        android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="15 февраля"
@@ -24,6 +25,7 @@
         android:paddingTop="22dp">
 
         <ImageView
+            android:id="@+id/addTraining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_add_24"
@@ -41,6 +43,7 @@
         android:layout_marginTop="43dp"
         android:layout_marginHorizontal="12dp"
         android:background="@color/white"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
     <View
@@ -75,10 +78,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/buttonGallery"
             app:layout_constraintTop_toTopOf="@id/buttonFood"
-
+            android:singleLine="true"
             android:text="Активность"
+            android:paddingEnd="14dp"
             app:icon="@drawable/baseline_fitness_center_24"
-            tools:ignore="TextSizeCheck" />
+            tools:ignore="TextSizeCheck"
+            app:iconTint="@color/blue62"
+            android:textColor="@color/blue62"
+            android:textStyle="bold"/>
 
 
         <Button

@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonLK: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_LightWeight)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         rvFoodList = findViewById(R.id.rvFoodList)
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(galIntent)
         }
         buttonLK.setOnClickListener{
-            Toast.makeText(applicationContext,"Личного кабинета пока что нет",Toast.LENGTH_SHORT).show()
+            val galIntent = Intent(this, PersonalAccountActivity::class.java)
+            startActivity(galIntent)
         }
         addEatingButton.setOnClickListener{
             val addIntent = Intent(this, AddEatingActivity::class.java)

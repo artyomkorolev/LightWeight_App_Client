@@ -7,6 +7,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical">
     <TextView
+        android:id="@+id/exercizeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Бег"
@@ -16,6 +17,7 @@
         />
 
     <TextView
+        android:id="@+id/exercizeMeasure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="КМ"

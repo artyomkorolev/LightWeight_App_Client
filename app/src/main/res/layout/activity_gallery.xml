@@ -7,6 +7,7 @@
     tools:context=".GalleryActivity"
     android:background="@color/white">
     <TextView
+
         android:id="@+id/profileName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -50,6 +51,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPhotos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="18dp"
@@ -58,8 +60,9 @@
         app:layout_constraintEnd_toStartOf="@id/roghtGuideline"
         app:layout_constraintBottom_toTopOf="@id/bottomBar"
         android:layout_marginBottom="63dp"
-        app:reverseLayout="true"
-        tools:listitem="@layout/gallery_item"/>
+        android:orientation="horizontal"
+        tools:listitem="@layout/gallery_item"
+        />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -92,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/buttonGallery"
             app:layout_constraintTop_toTopOf="@id/buttonFood"
-
+            android:singleLine="true"
             android:text="Активность"
             app:icon="@drawable/baseline_fitness_center_24"
             tools:ignore="TextSizeCheck" />
@@ -107,7 +110,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/buttonLK"
             android:text="Галерея"
-
+            app:iconTint="@color/yellow"
+            android:textColor="@color/yellow"
+            android:textStyle="bold"
             app:icon="@drawable/baseline_insert_photo_24"
             tools:ignore="TextSizeCheck" />
 

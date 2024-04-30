@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,12 +15,38 @@
         android:theme="@style/Theme.LightWeight"
         tools:targetApi="31">
         <activity
+            android:name=".PhysicalGraphActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditAddExercizeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditAddFoodItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditExercizeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StatFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StatFKActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManagementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddPhotoProgressActivity"
             android:exported="false" />
         <activity
             android:name=".GalleryActivity"
             android:exported="false" />
-
         <activity
             android:name=".CheckTrainingActivity"
             android:exported="false" />
@@ -41,6 +69,7 @@
             android:name=".AddEatingActivity"
             android:exported="false" />
         <activity
+            android:theme="@style/Theme.LightWeight.Launcher"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

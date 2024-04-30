@@ -6,24 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".AddEatingActivity"
     android:background="@color/white">
-    <Button
-        android:id="@+id/backbutton"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/profileName"
+        android:layout_width="0dp"
         android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        style="@style/BackButtonStyle"
-        android:text="Прием пищи"
+        android:gravity="center"
+        android:text="Имя пользователя"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22dp"
-        android:gravity="bottom"
+
         />
     <View
         android:id="@+id/grayline"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        app:layout_constraintTop_toBottomOf="@id/backbutton"
+        app:layout_constraintTop_toBottomOf="@id/profileName"
         android:background="@color/gray"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftGuideline"
@@ -42,17 +43,17 @@
         android:id="@+id/nameFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Название"
+        android:text="Логин"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
         android:textSize="16dp"/>
 
-    <EditText
+    <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
-        android:hint="Название"
+        android:text="Почта пользователя"
         app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/nameFood"
@@ -60,89 +61,72 @@
 
 
 
+
     <TextView
-        android:id="@+id/header_title"
+        android:id="@+id/statFK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Граммовки не 100 грамм"
+        android:text="Статистика тренировок"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
+
     <TextView
-        android:id="@+id/proteins"
+        android:id="@+id/statFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Белки"
+        android:text="Статистика Питания"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/header_title"
+        app:layout_constraintTop_toBottomOf="@id/statFK"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
     <TextView
-        android:id="@+id/fats"
+        android:id="@+id/management"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Жиры"
+        android:text="Управление"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/proteins"
+        app:layout_constraintTop_toBottomOf="@id/statFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
     <TextView
-        android:id="@+id/carbs"
+        android:id="@+id/profileHeight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Углеводы"
+        android:text="Рост"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/fats"
+        app:layout_constraintTop_toBottomOf="@id/management"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
+    <TextView
+        android:id="@+id/profileWidth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Вес"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/profileHeight"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        />
+
+
+
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="proteins,fats,carbs"
+        app:constraint_referenced_ids="statFood,statFK"
         app:barrierDirection="end"
         />
 
-    <EditText
-        android:id="@+id/etProteins"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:hint="Белки"
-        app:layout_constraintBaseline_toBaselineOf="@id/proteins"
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/textBarrier"
-        app:layout_constraintTop_toBottomOf="@id/header_title"
-        tools:ignore="TouchTargetSizeCheck" />
 
-    <EditText
-        android:id="@+id/etFats"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:hint="Жиры"
-        app:layout_constraintBaseline_toBaselineOf="@id/fats"
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/textBarrier"
-        app:layout_constraintTop_toBottomOf="@id/proteins"
-        tools:ignore="TouchTargetSizeCheck" />
 
-    <EditText
-        android:id="@+id/etCarbs"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:hint="Углеводы"
-        app:layout_constraintBaseline_toBaselineOf="@id/carbs"
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/textBarrier"
-        app:layout_constraintTop_toBottomOf="@id/fats"
-        tools:ignore="TouchTargetSizeCheck" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -157,19 +141,80 @@
         android:layout_height="1dp"
         app:layout_constraintTop_toBottomOf="@id/bottomGuideline"
         android:background="@color/gray"/>
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintTop_toBottomOf="@id/bottomGuideline"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginHorizontal="68dp"
-        style="@style/addEatingBigButton"
-        android:backgroundTint="@color/green62"
-        android:text="Сохранить"
-        />
+        >
+
+        <Button
+            android:id="@+id/buttonFood"
+            style="@style/NavigationButtomButton"
+
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonFK"
+            android:text="Еда"
+            app:icon="@drawable/baseline_fastfood_24"
+
+
+
+            tools:ignore="TextSizeCheck"
+            />
+
+
+        <Button
+            android:id="@+id/buttonFK"
+            style="@style/NavigationButtomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/buttonFood"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonGallery"
+            app:layout_constraintTop_toTopOf="@id/buttonFood"
+
+
+            android:text="Активность"
+            android:singleLine="true"
+            app:icon="@drawable/baseline_fitness_center_24"
+            tools:ignore="TextSizeCheck" />
+
+
+        <Button
+            android:id="@+id/buttonGallery"
+            style="@style/NavigationButtomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/buttonFK"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/buttonLK"
+            android:text="Галерея"
+
+            app:icon="@drawable/baseline_insert_photo_24"
+            tools:ignore="TextSizeCheck" />
+
+
+        <Button
+            android:id="@+id/buttonLK"
+            style="@style/NavigationButtomButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/buttonGallery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Профиль"
+            app:icon="@drawable/baseline_person_24"
+            tools:ignore="TextSizeCheck"
+            app:iconTint="@color/red62"
+            android:textStyle="bold"
+            android:textColor="@color/red62"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
