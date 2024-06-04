@@ -1,9 +1,11 @@
 package com.example.lightweight
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 
@@ -53,6 +55,61 @@ class PersonalAccountActivity : AppCompatActivity() {
            val statIntent = Intent(this, StatFoodActivity::class.java)
            startActivity(statIntent)
 
+        }
+
+        profileHeight = findViewById(R.id.profileHeightEdit)
+        profileWidth  = findViewById(R.id.profileWidthEdit)
+
+
+        profileHeight.setOnClickListener {
+            val numberPicker = NumberPicker(this).apply {
+                minValue = 100// Минимальное значение
+                maxValue = 260 // Максимальное значение
+                value = 180 // Значение по умолчанию
+            }
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Укажите ваш рост")
+            builder.setMessage("В СМ:")
+
+            builder.setPositiveButton("OK") { dialog, _ ->
+                val duration = numberPicker.value // Получаем выбранное значение
+                profileHeight.text = "$duration см"
+
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.setView(numberPicker)
+            builder.show()
+        }
+
+        profileWidth.setOnClickListener {
+            val numberPicker = NumberPicker(this).apply {
+                minValue = 40// Минимальное значение
+                maxValue = 200 // Максимальное значение
+                value = 60 // Значение по умолчанию
+            }
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Сколько вы весите")
+            builder.setMessage("В КГ:")
+
+            builder.setPositiveButton("OK") { dialog, _ ->
+                val duration = numberPicker.value // Получаем выбранное значение
+                profileWidth.text = "$duration кг"
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.setView(numberPicker)
+            builder.show()
         }
     }
 }

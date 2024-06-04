@@ -1,20 +1,26 @@
 package com.example.lightweight
 
+import android.app.AlertDialog
+import android.app.TimePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.NumberPicker
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import java.time.Duration
+import java.util.Locale
 
 class AddTrainingActivity : AppCompatActivity() {
     private lateinit var backButton: Button
     private lateinit var rvExercizeList:RecyclerView
-    private lateinit var etTime:EditText
-    private lateinit var etDuration: EditText
+    private lateinit var etTime:TextView
+    private lateinit var etDuration: TextView
     private lateinit var saveButton: Button
     private lateinit var addExercizeButton: ImageView
     private lateinit var etSearchExercize: EditText
@@ -60,6 +66,57 @@ class AddTrainingActivity : AppCompatActivity() {
             }
         )
         rvExercizeList.adapter=exercizeAdapter
+        val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
+        etTime.text =formatDate.format(Calendar.getInstance().time)
+        etTime.setOnClickListener {
+            val getDate = Calendar.getInstance()
+            val timePicker = TimePickerDialog(
+                this, // Убедитесь, что используете правильный контекст
+                { _, hourOfDay, minute ->
+                    val selectedDate = Calendar.getInstance()
+                    selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    selectedDate.set(Calendar.MINUTE, minute)
+                    val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
+                    val formattedTime = formatDate.format(selectedDate.time)
+                    etTime.text = formattedTime // Устанавливаем выбранное время в EditText
+                },
+                getDate.get(Calendar.HOUR_OF_DAY), // Используйте HOUR_OF_DAY для 24-часового формата
+                getDate.get(Calendar.MINUTE),
+                true // Установите 'true' для 24-часового формата времени
+            )
+            timePicker.show()
+        }
+
+        val formatter = NumberPicker.Formatter { value ->
+            val temp = value * 5
+            "" + temp
+        }
+
+
+        etDuration.setOnClickListener {
+            val numberPicker = NumberPicker(this).apply {
+                minValue = 1 // Минимальное значение
+                maxValue = 120 // Максимальное значение
+                value = 6 // Значение по умолчанию
+            }
+            numberPicker.setFormatter(formatter)
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Выберите длительность тренировки")
+            builder.setMessage("Длительность в минутах:")
+
+            builder.setPositiveButton("OK") { dialog, _ ->
+                val duration = numberPicker.value*5 // Получаем выбранное значение
+                etDuration.text = duration.toString()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.setView(numberPicker)
+            builder.show()
+        }
 
     }
 }
