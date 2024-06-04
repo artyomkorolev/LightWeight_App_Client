@@ -101,6 +101,7 @@
         app:layout_constraintTop_toBottomOf="@id/textFood"
         android:layout_marginTop="30dp"/>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExercizeListCheck"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
@@ -109,7 +110,8 @@
         app:layout_constraintBottom_toTopOf="@id/bottomGuideline"
         android:layout_marginTop="16dp"
         tools:listitem="@layout/physical_position_item"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomGuideline"
         android:layout_width="wrap_content"

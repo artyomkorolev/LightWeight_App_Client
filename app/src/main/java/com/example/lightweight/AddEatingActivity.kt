@@ -1,22 +1,29 @@
 package com.example.lightweight
 
+import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Locale
 
 class AddEatingActivity : AppCompatActivity() {
 
     private lateinit var backButton:Button
-    private lateinit var editTextSetTime: EditText
+    private lateinit var editTextSetTime: TextView
     private lateinit var addFoodItemButton: ImageView
     private lateinit var rvlistFoodItems:RecyclerView
     private lateinit var etSearchFood:EditText
     private lateinit var saveEatingButton:Button
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_eating)
@@ -62,5 +69,26 @@ class AddEatingActivity : AppCompatActivity() {
         )
 
         rvlistFoodItems.adapter = foodItemAdapter
+
+        val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
+        editTextSetTime.text =formatDate.format(Calendar.getInstance().time)
+            editTextSetTime.setOnClickListener {
+            val getDate = Calendar.getInstance()
+            val timePicker = TimePickerDialog(
+                this, // Убедитесь, что используете правильный контекст
+                { _, hourOfDay, minute ->
+                    val selectedDate = Calendar.getInstance()
+                    selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    selectedDate.set(Calendar.MINUTE, minute)
+                    val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
+                    val formattedTime = formatDate.format(selectedDate.time)
+                    editTextSetTime.text = formattedTime // Устанавливаем выбранное время в EditText
+                },
+                getDate.get(Calendar.HOUR_OF_DAY), // Используйте HOUR_OF_DAY для 24-часового формата
+                getDate.get(Calendar.MINUTE),
+                true // Установите 'true' для 24-часового формата времени
+            )
+            timePicker.show()
+        }
     }
 }

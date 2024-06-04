@@ -1,14 +1,19 @@
 package com.example.lightweight
 
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var rvFoodList: RecyclerView
@@ -75,5 +80,37 @@ class MainActivity : AppCompatActivity() {
         rvFoodList.adapter = eatingAdapter
         eatingAdapter.updateCalories()
 
+
+
+
+        //Data picker
+    val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
+
+    tvDate.text = dateFormat.format(Calendar.getInstance().time)
+    tvDate.setOnClickListener {
+        val getDate =Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, monthOfYear, dayOfMonth ->
+
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(Calendar.YEAR, year)
+                selectedDate.set(Calendar.MONTH, monthOfYear)
+                selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
+                val formattedDate = dateFormat.format(selectedDate.time)
+
+                val tvDate = findViewById<TextView>(R.id.tvDate)
+                tvDate.text = formattedDate // Устанавливаем отформатированную дату в TextView
+
+            },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
+        )
+
+        datePicker.show()
     }
+
+    }
+
+
 }

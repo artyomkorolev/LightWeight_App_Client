@@ -104,6 +104,19 @@
         android:layout_marginTop="42dp"
         />
     <TextView
+        android:id="@+id/profileHeightEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Укажите рост"
+
+        app:layout_constraintStart_toStartOf="@id/textBarrier"
+        app:layout_constraintTop_toBottomOf="@id/management"
+        app:layout_constraintEnd_toStartOf="@id/roghtGuideline"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:gravity="end"
+        />
+    <TextView
         android:id="@+id/profileWidth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,6 +125,19 @@
         app:layout_constraintTop_toBottomOf="@id/profileHeight"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        />
+    <TextView
+        android:id="@+id/profileWidthEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Укажите вес"
+
+        app:layout_constraintStart_toStartOf="@id/textBarrier"
+        app:layout_constraintTop_toBottomOf="@id/profileHeight"
+        app:layout_constraintEnd_toStartOf="@id/roghtGuideline"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:gravity="end"
         />
 
 
