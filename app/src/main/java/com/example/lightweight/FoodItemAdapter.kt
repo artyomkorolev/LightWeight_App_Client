@@ -4,9 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class FoodItemAdapter(private val fooditems: List<FoodItem>,private val foodItemActionListener: FoodItemActionListener):RecyclerView.Adapter<FoodItemViewHolder>() {
+class FoodItemAdapter(private var fooditems: List<FoodItem>,private val foodItemActionListener: FoodItemActionListener,
+                      private val onItemClickListener: OnItemClickListener,
+                      private val hideElements: Boolean = false):RecyclerView.Adapter<FoodItemViewHolder>() {
+    private var originalItems: List<FoodItem> = fooditems
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.food_position_item,parent,false)
+
         return FoodItemViewHolder(view)
     }
 
@@ -14,15 +19,41 @@ class FoodItemAdapter(private val fooditems: List<FoodItem>,private val foodItem
         return fooditems.size
     }
 
+
     override fun onBindViewHolder(holder: FoodItemViewHolder, position: Int) {
-       holder.bind(fooditems[position])
+        val foodItem = fooditems[position]
+        holder.bind(
+            foodItem,
+            { onItemClickListener.onSaveClick(foodItem) },
+            { onItemClickListener.onDeleteClick(foodItem) },
+            { item, newGramm -> onItemClickListener.onGrammChange(item, newGramm) },
+            hideElements
+        )
         holder.itemView.setOnClickListener{
             foodItemActionListener.OnClickItem(fooditems[position])
         }
+
+    }
+    fun updateItems(newItems: List<FoodItem>) {
+        fooditems = newItems
+        notifyDataSetChanged()
+    }
+
+    fun filterItems(text: String) {
+        if (text.isEmpty()) {
+            fooditems = originalItems
+        } else {
+            fooditems = originalItems.filter { it.name.contains(text, ignoreCase = true) }
+        }
+        notifyDataSetChanged()
     }
 
     interface FoodItemActionListener{
-        fun OnClickItem(foodItem: FoodItem)
+        fun OnClickItem(foodItem: FoodItem)    }
+    interface OnItemClickListener {
+        fun onSaveClick(foodItem: FoodItem)
+        fun onDeleteClick(foodItem: FoodItem)
+        fun onGrammChange(foodItem: FoodItem, newGramm: String)
     }
 
 

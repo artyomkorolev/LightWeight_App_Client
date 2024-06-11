@@ -7,6 +7,8 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,6 +25,7 @@ class AddEatingActivity : AppCompatActivity() {
     private lateinit var rvlistFoodItems:RecyclerView
     private lateinit var etSearchFood:EditText
     private lateinit var saveEatingButton:Button
+    private  var searchText: String? = null
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +35,7 @@ class AddEatingActivity : AppCompatActivity() {
         editTextSetTime = findViewById(R.id.etTime)
         addFoodItemButton = findViewById(R.id.addFoodItem)
         rvlistFoodItems = findViewById(R.id.rvFoodItemList)
-        etSearchFood = findViewById(R.id.imputEditText)
+
         saveEatingButton = findViewById(R.id.saveButton)
 
 
@@ -65,6 +68,19 @@ class AddEatingActivity : AppCompatActivity() {
                 override fun OnClickItem(foodItem: FoodItem) {
                     Toast.makeText(applicationContext,"Вы нажали на продукт",Toast.LENGTH_SHORT).show()
                 }
+            },
+            object :FoodItemAdapter.OnItemClickListener{
+                override fun onSaveClick(foodItem: FoodItem) {
+                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onDeleteClick(foodItem: FoodItem) {
+                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+                }
+                override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
+                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+                }
+
             }
         )
 
@@ -90,5 +106,27 @@ class AddEatingActivity : AppCompatActivity() {
             )
             timePicker.show()
         }
+
+        etSearchFood = findViewById(R.id.imputEditText)
+        val textWatcher = object :TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                        searchText ->
+                    foodItemAdapter.filterItems(searchText.toString())
+                }
+            }
+
+        }
+
+        etSearchFood.addTextChangedListener(textWatcher)
+
     }
 }

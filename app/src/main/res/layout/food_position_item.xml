@@ -103,10 +103,11 @@
         android:layout_width="70dp"
         android:layout_height="20dp"
 
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="50dp"
         android:background="@drawable/input_edit_text_field"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
-        app:layout_constraintEnd_toStartOf="@id/save"
+        app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         >
@@ -124,6 +125,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
 
+
         />
     <ImageView
         android:id="@+id/delete"
@@ -136,5 +138,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

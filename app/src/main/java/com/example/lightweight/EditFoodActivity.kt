@@ -57,6 +57,21 @@ class EditFoodActivity : AppCompatActivity() {
                 override fun OnClickItem(foodItem: FoodItem) {
                     Toast.makeText(applicationContext,"Вы нажали на продукт", Toast.LENGTH_SHORT).show()
                 }
+            },
+            object :FoodItemAdapter.OnItemClickListener{
+                override fun onSaveClick(foodItem: FoodItem) {
+                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+
+                }
+
+                override fun onDeleteClick(foodItem: FoodItem) {
+                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
+                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+                }
+
             }
         )
 
