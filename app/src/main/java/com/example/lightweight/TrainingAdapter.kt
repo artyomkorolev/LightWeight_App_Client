@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class TrainingAdapter(private val trainigns: List<Training>, private val trainingActionListener:TrainingActionListener):RecyclerView.Adapter<TrainingViewHolder>() {
+class TrainingAdapter(private val trainigns: List<Training>, private val trainingActionListener:TrainingActionListener,
+
+):RecyclerView.Adapter<TrainingViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.phisical_item,parent,false)
         return TrainingViewHolder(view)
@@ -23,4 +25,5 @@ class TrainingAdapter(private val trainigns: List<Training>, private val trainin
     interface TrainingActionListener{
         fun OnClickItem(training: Training)
     }
+
 }

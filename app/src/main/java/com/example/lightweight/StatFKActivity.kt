@@ -47,6 +47,19 @@ class StatFKActivity : AppCompatActivity() {
                     val graphIntent = Intent(this@StatFKActivity,PhysicalGraphActivity::class.java)
                     startActivity(graphIntent)
                 }
+            }, object :ExercizeAdapter.OnItemClickListener{
+                override fun onSaveClick(exercize: Exercize) {
+                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onDeleteClick(exercize: Exercize) {
+                    Toast.makeText(applicationContext,"Удалить",Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onGrammChange(exercize: Exercize, newCount: String) {
+                    Toast.makeText(applicationContext,"Изменить",Toast.LENGTH_SHORT).show()
+                }
+
             }
         )
         rvExercizeList.adapter=exercizeAdapter
