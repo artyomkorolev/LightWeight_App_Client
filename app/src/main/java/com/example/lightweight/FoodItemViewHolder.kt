@@ -32,16 +32,21 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
             save.visibility = View.GONE
             delete.visibility = View.GONE
             saveGramm.visibility = View.GONE
+        }else {
+            save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
+            delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
         }
         save.setOnClickListener {
             onSaveClick(item)
             save.visibility = View.GONE
+            item.isSaved = true
             delete.visibility = View.VISIBLE
         }
 
         delete.setOnClickListener {
             onDeleteClick(item)
             delete.visibility = View.GONE
+            item.isSaved = false
             save.visibility = View.VISIBLE
         }
 

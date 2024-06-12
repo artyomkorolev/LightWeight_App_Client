@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.E
 
-class ExercizeAdapter(private val exercizes:List<Exercize>, private val exercizeActionListener:ExercizeActionListener,
+class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercizeActionListener:ExercizeActionListener,
                       private val onItemClickListener: OnItemClickListener,private val hideElements: Boolean = false
 ):RecyclerView.Adapter<ExercizeViewHolder>() {
+    private var originalItems: List<Exercize> = exercizes
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercizeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.physical_position_item,parent,false)
         return ExercizeViewHolder(view)
@@ -22,13 +23,33 @@ class ExercizeAdapter(private val exercizes:List<Exercize>, private val exercize
         val exercizeItem = exercizes[position]
         holder.bind(
             exercizeItem,
-            { onItemClickListener.onSaveClick(exercizeItem) },
-            { onItemClickListener.onDeleteClick(exercizeItem) },
+            { onItemClickListener.onSaveClick(exercizeItem)
+                exercizeItem.isSaved = true
+                sortItems()
+                notifyDataSetChanged()
+            },
+            { onItemClickListener.onDeleteClick(exercizeItem)
+                exercizeItem.isSaved = false
+                sortItems()
+                notifyDataSetChanged()
+            },
             { item, newCount -> onItemClickListener.onGrammChange(item, newCount) }, hideElements
         )
         holder.itemView.setOnClickListener{
             exercizeActionListener.OnClickItem(exercizes[position])
         }
+    }
+    private fun sortItems() {
+        exercizes = exercizes.sortedByDescending { it.isSaved }
+    }
+    fun filterItems(text: String) {
+        if (text.isEmpty()) {
+            exercizes = originalItems
+        } else {
+            exercizes = originalItems.filter { it.name.contains(text, ignoreCase = true) }
+        }
+        sortItems()
+        notifyDataSetChanged()
     }
     interface ExercizeActionListener{
         fun OnClickItem(exercize: Exercize)

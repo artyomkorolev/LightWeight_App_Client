@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 Eating("10:00","400","10","50","0"),
                 Eating("13:00","300","43","24","40"),
                 Eating("16:00","250","12","87","0"),
+                Eating("16:00","250","12","87","0"),
                 Eating("20:00","100","0","32","15")
             ),
             object : EatingAdapter.EatingActionListener{
