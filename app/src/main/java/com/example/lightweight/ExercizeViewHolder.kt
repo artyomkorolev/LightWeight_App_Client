@@ -27,6 +27,9 @@ class ExercizeViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
             savefit.visibility = View.GONE
             deletefit.visibility = View.GONE
             editCount.visibility = View.GONE
+        }else {
+            savefit.visibility = if (item.isSaved) View.GONE else View.VISIBLE
+            deletefit.visibility = if (item.isSaved) View.VISIBLE else View.GONE
         }
         savefit.setOnClickListener {
             onSaveClick(item)

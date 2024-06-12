@@ -128,7 +128,8 @@
         android:layout_marginTop="16dp"
         tools:listitem="@layout/physical_position_item"
         android:layout_marginBottom="12dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottomGuideline"
         android:layout_width="wrap_content"

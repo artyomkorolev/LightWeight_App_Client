@@ -3,7 +3,10 @@ package com.example.lightweight
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
@@ -11,6 +14,8 @@ class CheckEatingActivity : AppCompatActivity() {
     private lateinit var backbutton:Button
     private lateinit var deleteButton:Button
     private lateinit var rvlistFoodItems: RecyclerView
+    private lateinit var etSearchFood: EditText
+    private var searchText: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_eating)
@@ -59,6 +64,27 @@ class CheckEatingActivity : AppCompatActivity() {
         )
 
         rvlistFoodItems.adapter = foodItemAdapter
+
+        etSearchFood = findViewById(R.id.imputEditText)
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                        searchText ->
+                    foodItemAdapter.filterItems(searchText.toString())
+                }
+            }
+
+        }
+
+        etSearchFood.addTextChangedListener(textWatcher)
 
     }
 }

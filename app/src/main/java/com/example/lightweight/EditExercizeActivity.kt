@@ -3,6 +3,8 @@ package com.example.lightweight
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -70,6 +72,26 @@ class EditExercizeActivity : AppCompatActivity() {
             }
         )
         rvExercizeList.adapter=exercizeAdapter
+
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                        searchText ->
+                    exercizeAdapter.filterItems(searchText.toString())
+                }
+            }
+
+        }
+
+        etSearchExercize.addTextChangedListener(textWatcher)
 
     }
 }

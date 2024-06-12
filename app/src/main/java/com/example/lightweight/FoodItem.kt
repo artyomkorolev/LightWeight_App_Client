@@ -7,7 +7,8 @@ data class FoodItem(
      val calories:String,
      val proteins:String,
      val fats:String,
-     val Carbs:String
+     val Carbs:String,
+     var isSaved: Boolean = false
 
 ):Serializable {
 }
