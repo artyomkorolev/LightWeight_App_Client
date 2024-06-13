@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -13,65 +16,70 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.LightWeight"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PhysicalGraphActivity"
+            android:name=".AuthReg.LoginActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ManagementActivities.GraphActivities.PhysicalGraphActivity"
             android:exported="false" />
         <activity
-            android:name=".EditAddExercizeActivity"
+            android:name=".ManagementActivities.EditAddExercizeActivity"
             android:exported="false" />
         <activity
-            android:name=".EditAddFoodItemActivity"
+            android:name=".ManagementActivities.EditAddFoodItemActivity"
             android:exported="false" />
         <activity
-            android:name=".EditExercizeActivity"
+            android:name=".ManagementActivities.EditExercizeActivity"
             android:exported="false" />
         <activity
-            android:name=".EditFoodActivity"
+            android:name=".ManagementActivities.EditFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".StatFoodActivity"
+            android:name=".ManagementActivities.GraphActivities.StatFoodActivity"
             android:exported="false" />
         <activity
-            android:name=".StatFKActivity"
+            android:name=".ManagementActivities.GraphActivities.StatFKActivity"
             android:exported="false" />
         <activity
-            android:name=".ManagementActivity"
+            android:name=".ManagementActivities.ManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".PersonalAccountActivity"
+            android:name=".ManagementActivities.PersonalAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".AddPhotoProgressActivity"
+            android:name=".GalleryActivities.AddPhotoProgressActivity"
             android:exported="false" />
         <activity
-            android:name=".GalleryActivity"
+            android:name=".GalleryActivities.GalleryActivity"
             android:exported="false" />
         <activity
-            android:name=".CheckTrainingActivity"
+            android:name=".PhysicalActivities.CheckTrainingActivity"
             android:exported="false" />
         <activity
-            android:name=".AddExerciseActivity"
+            android:name=".PhysicalActivities.AddExerciseActivity"
             android:exported="false" />
         <activity
-            android:name=".AddTrainingActivity"
+            android:name=".PhysicalActivities.AddTrainingActivity"
             android:exported="false" />
         <activity
-            android:name=".ActivityPhysical"
+            android:name=".PhysicalActivities.ActivityPhysical"
             android:exported="false" />
         <activity
-            android:name=".AddFoodItemActivity"
+            android:name=".EatingActivities.AddFoodItemActivity"
             android:exported="false" />
         <activity
-            android:name=".CheckEatingActivity"
+            android:name=".EatingActivities.CheckEatingActivity"
             android:exported="false" />
         <activity
-            android:name=".AddEatingActivity"
+            android:name=".EatingActivities.AddEatingActivity"
             android:exported="false" />
         <activity
-            android:theme="@style/Theme.LightWeight.Launcher"
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".EatingActivities.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.LightWeight.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

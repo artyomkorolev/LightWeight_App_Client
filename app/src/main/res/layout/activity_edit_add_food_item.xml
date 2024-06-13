@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEatingActivity"
+    tools:context=".EatingActivities.AddEatingActivity"
     android:background="@color/white">
     <Button
         android:id="@+id/backbutton"
@@ -49,6 +49,7 @@
         android:textSize="16dp"/>
 
     <EditText
+        android:id="@+id/etnamefood"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
@@ -64,7 +65,7 @@
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Граммовки не 100 грамм"
+        android:text="Граммовки на 100 грамм"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
@@ -97,6 +98,16 @@
         android:text="Углеводы"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/fats"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        />
+    <TextView
+        android:id="@+id/cals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Калории"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/carbs"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
         />
@@ -142,6 +153,17 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
+        tools:ignore="TouchTargetSizeCheck" />
+    <EditText
+        android:id="@+id/etCals"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="150dp"
+        android:hint="Калории"
+        app:layout_constraintBaseline_toBaselineOf="@id/cals"
+        app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
+        app:layout_constraintStart_toEndOf="@id/textBarrier"
+        app:layout_constraintTop_toBottomOf="@id/carbs"
         tools:ignore="TouchTargetSizeCheck" />
 
 
