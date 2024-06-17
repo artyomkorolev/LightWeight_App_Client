@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddEatingActivity"
+    tools:context=".EatingActivities.AddEatingActivity"
     android:background="@color/white">
     <TextView
         android:id="@+id/profileName"
@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:text="Имя пользователя"
+        android:text="Профиль"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22dp"
@@ -50,6 +50,7 @@
         android:textSize="16dp"/>
 
     <TextView
+        android:id="@+id/tvLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
