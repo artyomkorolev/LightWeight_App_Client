@@ -13,7 +13,7 @@ class EatingAdapter(private val eatings: List<Eating>, private  val eatingAction
     private var totalCalories:Int = 0
 
     private fun updateTotalCalories(){
-        totalCalories = eatings.sumBy { it.calories.toInt() }
+//        totalCalories = eatings.sumBy { it.calories.toInt() }
     }
 
     fun updateCalories() {

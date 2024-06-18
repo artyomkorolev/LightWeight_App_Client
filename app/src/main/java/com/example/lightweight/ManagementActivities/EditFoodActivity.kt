@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.FoodItemAdapter
 import com.example.lightweight.Models.FoodItem
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.FoodItemViewHolder
 import com.example.lightweight.retrofit.FoodItemApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -100,7 +101,7 @@ class EditFoodActivity : AppCompatActivity() {
                 }
             },
             object : FoodItemAdapter.OnItemClickListener{
-                override fun onSaveClick(foodItem: FoodItem) {
+                override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
                     Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
 
                 }

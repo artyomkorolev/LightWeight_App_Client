@@ -1,34 +1,27 @@
 package com.example.lightweight.GalleryActivities
 
-import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.example.lightweight.Models.Photo
 import com.example.lightweight.R
 import com.example.lightweight.retrofit.GalleryApi
-import com.example.lightweight.retrofit.UploadResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.threeten.bp.LocalDate
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.format.DateTimeFormatter
+import okhttp3.ResponseBody
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,28 +38,30 @@ class AddPhotoProgressActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var setMass:TextView
     private lateinit var setDate:TextView
-    private var selectedImageUri: Uri? = null
+    var picturePath: String? = null
 
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            selectImageFromGallery()
-        } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null) {
+            val selectedImage = data.data
+            val filePathColumn = MediaStore.Images.Media.DATA
+            val cursor = contentResolver.query(selectedImage!!, arrayOf(filePathColumn), null, null, null)
+            cursor!!.moveToFirst()
+            val columnIndex = cursor.getColumnIndex(filePathColumn)
+            picturePath = cursor.getString(columnIndex)
+            cursor.close()
+            image.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+            image.visibility = View.VISIBLE
         }
     }
-    val retrofit = Retrofit.Builder()
-        .baseUrl("http://212.113.121.36:8080")
-        .addConverterFactory(GsonConverterFactory.create()).build()
-    val photoApiService = retrofit.create(GalleryApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo_progress)
         image = findViewById(R.id.addedImage)
-        Glide.with(applicationContext).load(R.drawable.fat).into(image)
+
         image.visibility = View.GONE
 
         backbutton=findViewById(R.id.backbutton)
@@ -80,8 +75,10 @@ class AddPhotoProgressActivity : AppCompatActivity() {
 
         addPhoto = findViewById(R.id.addphoto)
         addPhoto.setOnClickListener {
-            checkPermissionAndSelectImage()
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 1)
         }
+
 
         setDate = findViewById(R.id.etProteins)
         setMass = findViewById(R.id.setMass)
@@ -136,85 +133,58 @@ class AddPhotoProgressActivity : AppCompatActivity() {
             builder.show()
         }
 
+
+
         saveButton.setOnClickListener {
-            if (selectedImageUri != null) {
-                uploadImage(selectedImageUri!!)
-                val saveIntent = Intent(this, GalleryActivity::class.java)
-                startActivity(saveIntent)
-            } else {
-                Toast.makeText(applicationContext, "No image selected", Toast.LENGTH_SHORT).show()
-            }
-//
-        }
-    }
-    private fun checkPermissionAndSelectImage() {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                selectImageFromGallery()
-            }
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> {
-                Toast.makeText(this, "Permission required to access gallery", Toast.LENGTH_SHORT).show()
-                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-            else -> {
-                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
-    }
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            selectedImageUri = it
-            image.setImageURI(it)
-        }
-    }
-    private fun selectImageFromGallery() {
-        getContent.launch("image/*")
-        image.visibility = View.VISIBLE
-    }
+            if (picturePath != null) {
+                val file = File(picturePath)
+                val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
+                val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
-    private fun uploadImage(uri: Uri) {
-        Log.d("UploadImage", "Starting upload process for URI: $uri")
-        val inputStream = contentResolver.openInputStream(uri)
-        inputStream?.use { input ->
-            val requestBody = RequestBody.create("image/*".toMediaTypeOrNull(), input.readBytes())
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+                val dateTime = dateFormat.format(Calendar.getInstance().time)
+                val weightString = setMass.text.toString()
+                val weight = weightString.replace("кг", "").trim().toInt()
 
-            val weightText = setMass.text.toString().replace(" кг", "")
-            val weight = weightText.toIntOrNull() ?: 0
+                val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis" // Replace with your actual auth token
 
-            val body = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
-            val weightRequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), weight.toString())
+                val retrofit = Retrofit.Builder()
+                    .baseUrl("http://212.113.121.36:8080") // Replace with your actual base URL
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
-            val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"))
-            val dateTimeText = setDate.text.toString()
-            val date = dateFormat.parse(dateTimeText)
+                val service = retrofit.create(GalleryApi::class.java)
 
-            val call = photoApiService.addPhoto(
-                "Bearer your_token_here", // Replace with actual token
-                body,
-                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date),
-                weight
-            )
+                val call = service.addPhoto(authToken, dateTime, weight, body)
 
-            call.enqueue(object : Callback<Photo> {
-                override fun onResponse(call: Call<Photo>, response: Response<Photo>) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(applicationContext, "Upload successful", Toast.LENGTH_SHORT).show()
-                        val saveIntent = Intent(applicationContext, GalleryActivity::class.java)
-                        startActivity(saveIntent)
-                    } else {
-                        Toast.makeText(applicationContext, "Upload failed: ${response.code()}", Toast.LENGTH_SHORT).show()
+                call.enqueue(object : Callback<ResponseBody> {
+                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                        if (response.isSuccessful) {
+                            val backIntent = Intent(this@AddPhotoProgressActivity, GalleryActivity::class.java)
+                            backIntent.putExtra("refresh", true)
+                            startActivity(backIntent)
+                            Toast.makeText(this@AddPhotoProgressActivity, "Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+                        } else {
+
+                            Toast.makeText(this@AddPhotoProgressActivity, "Error uploading photo ${response.code()}", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<Photo>, t: Throwable) {
-                    Log.e("UploadImage", "Upload failed: ${t.message}", t)
-                    Toast.makeText(applicationContext, "Upload failed: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        // Handle failure
+                        Toast.makeText(this@AddPhotoProgressActivity, "Failed to upload photo", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            } else {
+                Toast.makeText(this@AddPhotoProgressActivity, "Please select an image first", Toast.LENGTH_SHORT).show()
+            }
+
 
 
         }
-    }}
+    }
+
+
+
+
+}

@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonFk: Button
     private lateinit var buttonGallery:Button
     private lateinit var buttonLK: Button
+    private var eatings = ArrayList<Eating>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_LightWeight)
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         buttonFk=findViewById(R.id.buttonFK)
         buttonGallery = findViewById(R.id.buttonGallery)
         buttonLK = findViewById(R.id.buttonLK)
-
+        val selectedDate = Calendar.getInstance()
 
 
 
@@ -60,18 +61,12 @@ class MainActivity : AppCompatActivity() {
         }
         addEatingButton.setOnClickListener{
             val addIntent = Intent(this, AddEatingActivity::class.java)
+            addIntent.putExtra("selectedDate", selectedDate.timeInMillis)
             startActivity(addIntent)
         }
 
         val eatingAdapter = EatingAdapter(
-            listOf(
-                Eating("8:00","500","30","40","50"),
-                Eating("10:00","400","10","50","0"),
-                Eating("13:00","300","43","24","40"),
-                Eating("16:00","250","12","87","0"),
-                Eating("16:00","250","12","87","0"),
-                Eating("20:00","100","0","32","15")
-            ),
+           eatings,
             object : EatingAdapter.EatingActionListener{
                 override fun OnClickItem(eating: Eating) {
                     val checkIntent = Intent(this@MainActivity, CheckEatingActivity::class.java)
@@ -97,7 +92,7 @@ class MainActivity : AppCompatActivity() {
             this,
             { _, year, monthOfYear, dayOfMonth ->
 
-                val selectedDate = Calendar.getInstance()
+
                 selectedDate.set(Calendar.YEAR, year)
                 selectedDate.set(Calendar.MONTH, monthOfYear)
                 selectedDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)

@@ -1,11 +1,12 @@
 package com.example.lightweight.Models
 
-import retrofit2.http.Url
+import android.graphics.Bitmap
 
 data class Photo(
-    val image: String,
+    val id: String,
+    val image: Bitmap,
     val dateTime:String,
-    val weight: Int,
+    val weight: String,
 //    val file: Multipart
 ) {
 }
