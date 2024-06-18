@@ -37,6 +37,7 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         }else {
             save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
             delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
+            saveGramm.isEnabled = !item.isSaved
         }
         save.setOnClickListener {
             onSaveClick(item)
@@ -59,5 +60,10 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         }
 
     }
+    fun getGrammValue(): String {
+        return saveGramm.text.toString()
+    }
+
+
 
 }

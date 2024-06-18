@@ -19,4 +19,6 @@ interface FoodItemApi {
     @DELETE("/product/{id}")
     fun deleteOwnProduckt(@Header("Authorization") authToken: String,@Path("id") productId: String): Call<Void>
 
+    @GET("/product")
+    fun getAllProducts(@Header("Authorization") authToken: String): Call<List<FoodItem>>
 }

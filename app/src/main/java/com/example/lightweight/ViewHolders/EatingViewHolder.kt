@@ -15,11 +15,11 @@ class EatingViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     private val curbs:TextView = itemView.findViewById(R.id.foodcurbs)
 
     fun bind(item: Eating){
-        time.text = item.time
-        calories.text = item.calories
-        proteins.text = item.proteins
-        fats.text = item.fats
-        curbs.text = item.curbs
+        time.text = item.dateTime
+//        calories.text = item.calories
+//        proteins.text = item.proteins
+//        fats.text = item.fats
+//        curbs.text = item.curbs
     }
 
 }

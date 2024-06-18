@@ -27,7 +27,7 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
         val foodItem = fooditems[position]
         holder.bind(
             foodItem,
-            { onItemClickListener.onSaveClick(foodItem)
+            { onItemClickListener.onSaveClick(foodItem,holder)
                 foodItem.isSaved = true
             sortItems()
             notifyDataSetChanged()
@@ -40,6 +40,7 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
             { item, newGramm -> onItemClickListener.onGrammChange(item, newGramm) },
             hideElements
         )
+
         holder.itemView.setOnClickListener{
             foodItemActionListener.OnClickItem(fooditems[position])
         }
@@ -66,7 +67,7 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
     interface FoodItemActionListener{
         fun OnClickItem(foodItem: FoodItem)    }
     interface OnItemClickListener {
-        fun onSaveClick(foodItem: FoodItem)
+        fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder)
         fun onDeleteClick(foodItem: FoodItem)
         fun onGrammChange(foodItem: FoodItem, newGramm: String)
     }
