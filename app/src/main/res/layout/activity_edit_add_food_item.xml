@@ -46,7 +46,9 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
     <EditText
         android:id="@+id/etnamefood"
@@ -57,7 +59,9 @@
         app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
 
 
@@ -70,6 +74,8 @@
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/proteins"
@@ -80,6 +86,8 @@
         app:layout_constraintTop_toBottomOf="@id/header_title"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/fats"
@@ -90,6 +98,8 @@
         app:layout_constraintTop_toBottomOf="@id/proteins"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/carbs"
@@ -100,6 +110,8 @@
         app:layout_constraintTop_toBottomOf="@id/fats"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/cals"
@@ -110,6 +122,8 @@
         app:layout_constraintTop_toBottomOf="@id/carbs"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textBarrier"
@@ -129,7 +143,9 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/header_title"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -141,7 +157,9 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/proteins"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -153,7 +171,9 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"
@@ -164,7 +184,9 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/carbs"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
 
     <androidx.constraintlayout.widget.Guideline

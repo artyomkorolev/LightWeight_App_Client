@@ -46,7 +46,8 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
 
 
     <TextView
@@ -58,7 +59,9 @@
         app:layout_constraintBaseline_toBaselineOf="@id/textTime"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintTop_toTopOf="@id/textTime"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
     <TextView
         android:id="@+id/textFood"
@@ -69,6 +72,7 @@
         app:layout_constraintTop_toBottomOf="@id/textTime"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <ImageView
         android:id="@+id/addFoodItem"

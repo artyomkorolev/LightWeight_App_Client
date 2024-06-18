@@ -89,7 +89,7 @@ class AddEatingActivity : AppCompatActivity() {
 
 
             val callEating= addEatingApiService.addEating("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",
-                Eating(formattedDate,products)
+                Eating("1",formattedDate,products)
             )
 
             callEating.enqueue(object : Callback<Void>{

@@ -18,6 +18,8 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    android:textColor="@color/black"
+    android:textColorHint="@color/gray"
     />
     <View
         android:id="@+id/line1"
@@ -48,23 +50,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1000"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"/>
             <TextView
                 android:id="@+id/totalCal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2300"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" ккал"
-                android:textSize="18dp"/>
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"/>
 
 
         </LinearLayout>
