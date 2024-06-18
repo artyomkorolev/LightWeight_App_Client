@@ -49,6 +49,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">16dp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:backgroundTint">@color/blue62</item>
     </style>
 
 </resources>

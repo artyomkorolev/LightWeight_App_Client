@@ -46,18 +46,22 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/etName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="50dp"
         android:hint="Название"
         app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
+        app:layout_constraintStart_toEndOf="@id/textBarrier"
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        />
 
 
 
@@ -71,6 +75,7 @@
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
 
     <androidx.constraintlayout.widget.Barrier
@@ -85,13 +90,15 @@
         android:id="@+id/etMeasure"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
+        android:layout_marginStart="50dp"
         android:hint="ед. изм."
         app:layout_constraintBaseline_toBaselineOf="@id/measure"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
 
 

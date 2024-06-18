@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/shape_position_item_food"
     android:orientation="horizontal"
+
     >
     <TextView
         android:layout_marginStart="8dp"
@@ -16,7 +17,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/textkbju"
@@ -25,7 +26,7 @@
         android:text="КБЖУ"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="8dp"
-
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameItem"
         />
@@ -38,6 +39,7 @@
         android:layout_marginTop="10dp"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
         android:layout_marginStart="30dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/slesh1"
@@ -46,6 +48,7 @@
         android:text="/"
         app:layout_constraintStart_toEndOf="@id/fooditemcal"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
 
         />
     <TextView
@@ -55,6 +58,7 @@
     android:text="17"
         app:layout_constraintStart_toEndOf="@id/slesh1"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
     <TextView
     android:id="@+id/slesh2"
@@ -63,6 +67,7 @@
     android:text="/"
         app:layout_constraintStart_toEndOf="@id/fooditemproteins"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
     <TextView
     android:id="@+id/fooditemfats"
@@ -71,13 +76,15 @@
     android:text="2"
         app:layout_constraintStart_toEndOf="@id/slesh2"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
+
     />
     <TextView
     android:id="@+id/slesh3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="/"
-
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/fooditemfats"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
     />
@@ -89,22 +96,39 @@
     android:layout_marginEnd="100dp"
         app:layout_constraintStart_toEndOf="@id/slesh3"
         app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/saveGramm"
         android:layout_width="0dp"
         android:layout_height="30dp"
-
+        android:textColorHint="@color/gray"
         android:hint="Введите количество грамм"
         android:background="@drawable/input_edit_text_field"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/black"
+
         >
 
     </com.google.android.material.textfield.TextInputEditText>
+    <TextView
+        android:id="@+id/gramms"
+        android:text="100 г"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+
+        />
 
     <ImageView
         android:id="@+id/save"

@@ -46,7 +46,8 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/etTime"
@@ -57,7 +58,9 @@
         app:layout_constraintBaseline_toBaselineOf="@id/textTime"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintTop_toTopOf="@id/textTime"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
     <TextView
         android:id="@+id/textDuration"
         android:layout_width="wrap_content"
@@ -65,7 +68,7 @@
         android:text="Продолжительность(мин)"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/textTime"
-
+        android:textColor="@color/black"
         android:layout_marginTop="42dp"
         android:textSize="16dp"/>
 
@@ -78,7 +81,9 @@
         app:layout_constraintBaseline_toBaselineOf="@id/textDuration"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintTop_toTopOf="@id/textDuration"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
     <TextView
         android:id="@+id/textFood"
@@ -89,6 +94,7 @@
         app:layout_constraintTop_toBottomOf="@id/textDuration"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <ImageView
         android:id="@+id/addExercize"

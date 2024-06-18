@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".PhysicalActivities.ActivityPhysical">
+    tools:context=".PhysicalActivities.ActivityPhysical"
+    android:background="@color/white">
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="15 февраля"
         android:textSize="22dp"
+        android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:padding="13dp"
         app:layout_constraintStart_toStartOf="parent"
