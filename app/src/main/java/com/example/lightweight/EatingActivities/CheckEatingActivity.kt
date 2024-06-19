@@ -31,6 +31,7 @@ class CheckEatingActivity : AppCompatActivity() {
     private lateinit var rvlistFoodItems: RecyclerView
     private lateinit var etSearchFood: EditText
     private var searchText: String? = null
+    private lateinit var authtoken:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +53,12 @@ class CheckEatingActivity : AppCompatActivity() {
                 .baseUrl("http://212.113.121.36:8080")
                 .addConverterFactory(GsonConverterFactory.create()).build()
             val getFoodItemsService = retrofit.create(EatingApi::class.java)
-            val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
-            val call = getFoodItemsService.deleteEatingbyId(authToken,idEating)
 
 
+            val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+            authtoken = sharedPreferences.getString("authToken", "") ?: ""
+            authtoken = "Bearer $authtoken"
+            val call = getFoodItemsService.deleteEatingbyId(authtoken,idEating)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {

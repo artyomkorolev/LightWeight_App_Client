@@ -24,9 +24,13 @@ class EditAddExercizeActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var name:EditText
     private lateinit var unit:EditText
+    private lateinit var authtoken:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_add_exercize)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
         val retrofit = Retrofit.Builder()
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
@@ -50,7 +54,7 @@ class EditAddExercizeActivity : AppCompatActivity() {
 
             )
 
-            val call  = addOwnExerciseService.addOwnExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",exercizeItem)
+            val call  = addOwnExerciseService.addOwnExercise( authtoken,exercizeItem)
             call.enqueue(object : Callback<Exercize> {
                 override fun onResponse(
                     call: Call<Exercize>,

@@ -54,9 +54,13 @@ class AddTrainingActivity : AppCompatActivity() {
     private var endTime: String = ""
     private val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
     private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+    private lateinit var authtoken:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_training)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         backButton = findViewById(R.id.backbutton)
         rvExercizeList = findViewById(R.id.rvExercizeList)
@@ -189,7 +193,7 @@ class AddTrainingActivity : AppCompatActivity() {
             builder.show()
         }
         saveButton.setOnClickListener {
-            val callTraining = addTrainingApiService.addTraining("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",
+            val callTraining = addTrainingApiService.addTraining(authtoken,
                 Training(startTime,endTime,exercizes)
             )
             callTraining.enqueue(object : Callback<Void>{
@@ -241,7 +245,7 @@ class AddTrainingActivity : AppCompatActivity() {
        etSearchExercize.addTextChangedListener(textWatcher)
 
 
-        val call  = getExercisesService.getAllExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        val call  = getExercisesService.getAllExercise( authtoken)
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 

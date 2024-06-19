@@ -44,12 +44,16 @@ class AddEatingActivity : AppCompatActivity() {
     private  var searchText: String? = null
     private var products1 = ArrayList<FoodItem>()
     private var products = mutableMapOf<UUID, Double>()
+    private lateinit var authtoken: String
 
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_eating)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://212.113.121.36:8080")
@@ -92,7 +96,7 @@ class AddEatingActivity : AppCompatActivity() {
             }
 
 
-            val callEating= addEatingApiService.addEating("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",
+            val callEating= addEatingApiService.addEating(authtoken,
                 Eating("1",formattedDate,products)
             )
 
@@ -198,7 +202,7 @@ class AddEatingActivity : AppCompatActivity() {
 
         etSearchFood.addTextChangedListener(textWatcher)
 
-        val call  = getFoodItemsService.getAllProducts( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        val call  = getFoodItemsService.getAllProducts( authtoken)
         call.enqueue(object : Callback<List<FoodItem>> {
             override fun onResponse(
 

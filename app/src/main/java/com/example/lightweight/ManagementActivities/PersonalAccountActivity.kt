@@ -5,10 +5,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
+import com.example.lightweight.AuthReg.LoginActivity
 import com.example.lightweight.EatingActivities.MainActivity
 import com.example.lightweight.GalleryActivities.GalleryActivity
 import com.example.lightweight.PhysicalActivities.ActivityPhysical
@@ -35,23 +37,44 @@ class PersonalAccountActivity : AppCompatActivity() {
     private lateinit var statFood:TextView
     private lateinit var tvLogin:TextView
     private var loginP= ""
-    private var passwordP = ""
+    private lateinit var buttonAuth:TextView
+    private lateinit var authtoken:String
+    private lateinit var buttonExit:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_account)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+
         profileHeight = findViewById(R.id.profileHeightEdit)
         profileWidth  = findViewById(R.id.profileWidthEdit)
         buttonFk=findViewById(R.id.buttonFK)
         buttonGallery = findViewById(R.id.buttonGallery)
         buttonFood = findViewById(R.id.buttonFood)
         tvLogin = findViewById(R.id.tvLogin)
+        buttonAuth =findViewById(R.id.authActivity)
+        buttonExit=findViewById(R.id.exitAuth)
+
+        if (!authtoken.isNullOrEmpty()){
+            buttonAuth.visibility = View.GONE
+            buttonExit.visibility = View.VISIBLE
+        }
+        authtoken = "Bearer $authtoken"
+
+        buttonExit.setOnClickListener {
+            clearAuthToken()
+            val managementIntent = Intent(this, LoginActivity::class.java)
+            startActivity(managementIntent)
+        }
+
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val userApiService = retrofit.create(PersonalAccApi::class.java)
 
-        val call = userApiService.getUserInfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        val call = userApiService.getUserInfo(authtoken)
         call.enqueue(object :Callback<User>{
             override fun onResponse(
                 call: Call<User>,
@@ -89,6 +112,10 @@ class PersonalAccountActivity : AppCompatActivity() {
         }
         buttonFood.setOnClickListener{
             val galIntent = Intent(this, MainActivity::class.java)
+            startActivity(galIntent)
+        }
+        buttonAuth.setOnClickListener{
+            val galIntent = Intent(this,LoginActivity::class.java)
             startActivity(galIntent)
         }
 
@@ -176,7 +203,7 @@ class PersonalAccountActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val userApiService = retrofit.create(PersonalAccApi::class.java)
 
-        val call = userApiService.postUpdateinfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis", user)
+        val call = userApiService.postUpdateinfo(authtoken, user)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
@@ -194,5 +221,13 @@ class PersonalAccountActivity : AppCompatActivity() {
             }
         })
     }
+    private fun clearAuthToken() {
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("authToken")
+        editor.apply()
+        buttonAuth.visibility = View.VISIBLE
+        buttonExit.visibility = View.GONE
 
+    }
 }
