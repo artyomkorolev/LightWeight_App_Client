@@ -40,7 +40,7 @@ class EditExercizeActivity : AppCompatActivity() {
         val idsToDelete = selectedItems.map { it.id }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val exerciseApi = retrofit.create(ExerciseApi::class.java)
@@ -91,7 +91,7 @@ class EditExercizeActivity : AppCompatActivity() {
         }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnExercisesService = retrofit.create(ExerciseApi::class.java)
 

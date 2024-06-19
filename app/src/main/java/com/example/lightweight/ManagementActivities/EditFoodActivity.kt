@@ -38,7 +38,7 @@ class EditFoodActivity : AppCompatActivity() {
         val idsToDelete = selectedItems.map { it.id }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val foodItemApi = retrofit.create(FoodItemApi::class.java)
@@ -91,7 +91,7 @@ class EditFoodActivity : AppCompatActivity() {
 
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnFoodItemsService = retrofit.create(FoodItemApi::class.java)
 

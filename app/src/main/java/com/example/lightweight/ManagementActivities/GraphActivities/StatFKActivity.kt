@@ -35,7 +35,7 @@ class StatFKActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stat_fk)
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getExercisesService = retrofit.create(ExerciseApi::class.java)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)

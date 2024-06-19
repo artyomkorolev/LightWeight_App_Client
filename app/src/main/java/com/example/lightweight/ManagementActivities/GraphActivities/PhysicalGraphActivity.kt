@@ -43,7 +43,7 @@ class PhysicalGraphActivity : AppCompatActivity() {
         nameExer =findViewById(R.id.nameFood)
         nameExer.text = "Статистика по упражнению\n ${nameExercize}"
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(PersonalAccApi::class.java)
         val call = getFoodItemsService.getStatExerciseById(authtoken,idExercize)

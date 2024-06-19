@@ -49,7 +49,7 @@ class RegistrationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please enter both a login and a password", Toast.LENGTH_SHORT).show()
             } else {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl("http://212.113.121.36:8080")
+                    .baseUrl("https://light-weight.site:8080")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val authApi = retrofit.create(PersonalAccApi::class.java)
