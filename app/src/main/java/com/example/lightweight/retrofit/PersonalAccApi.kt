@@ -12,7 +12,7 @@ interface PersonalAccApi {
     @GET("/user/info")
     fun getUserInfo(@Header("Authorization") authToken: String): Call<User>
 
-    @PUT("/user/update")
+    @PUT("/user/updateData")
     fun postUpdateinfo(@Header("Authorization") authToken: String,@Body user: User): Call<Void>
 
 }

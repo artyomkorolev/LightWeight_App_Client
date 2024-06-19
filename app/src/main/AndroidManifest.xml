@@ -63,7 +63,8 @@
             android:exported="false" />
         <activity
             android:name=".PhysicalActivities.AddTrainingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".PhysicalActivities.ActivityPhysical"
             android:exported="false" />

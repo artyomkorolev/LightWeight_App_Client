@@ -79,7 +79,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
             startActivityForResult(intent, 1)
         }
 
-
+        var selectedDate1: String = ""
         setDate = findViewById(R.id.etProteins)
         setMass = findViewById(R.id.setMass)
         val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"),)
@@ -102,6 +102,8 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                     setDate = findViewById(R.id.etProteins)
                     setDate.text = formattedDate // Устанавливаем отформатированную дату в TextView
 
+                    val dateFormatForRequest = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+                    selectedDate1 = dateFormatForRequest.format(selectedDate.time)
                 },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
             )
 
@@ -142,7 +144,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                 val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
-                val dateTime = dateFormat.format(Calendar.getInstance().time)
+
                 val weightString = setMass.text.toString()
                 val weight = weightString.replace("кг", "").trim().toInt()
 
@@ -155,7 +157,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
 
                 val service = retrofit.create(GalleryApi::class.java)
 
-                val call = service.addPhoto(authToken, dateTime, weight, body)
+                val call = service.addPhoto(authToken, selectedDate1, weight, body)
 
                 call.enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -163,7 +165,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                             val backIntent = Intent(this@AddPhotoProgressActivity, GalleryActivity::class.java)
                             backIntent.putExtra("refresh", true)
                             startActivity(backIntent)
-                            Toast.makeText(this@AddPhotoProgressActivity, "Photo uploaded successfully", Toast.LENGTH_SHORT).show()
+
                         } else {
 
                             Toast.makeText(this@AddPhotoProgressActivity, "Error uploading photo ${response.code()}", Toast.LENGTH_SHORT).show()

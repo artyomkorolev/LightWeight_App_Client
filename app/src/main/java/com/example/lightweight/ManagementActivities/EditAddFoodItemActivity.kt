@@ -61,18 +61,19 @@ class EditAddFoodItemActivity : AppCompatActivity() {
                 calories = foodCalories,
                 protein = foodProteins.toDouble(),
                 fats = foodFats.toDouble(),
-                carbohydrates = foodCarbs.toDouble()
+                carbohydrates = foodCarbs.toDouble(),
+                count = ""
             )
 
 
 
-            val call  = getOwnFoodItemsService.addOwnProduct( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA",foodItem)
+            val call  = getOwnFoodItemsService.addOwnProduct( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",foodItem)
             call.enqueue(object : Callback<FoodItem>{
                 override fun onResponse(
                     call: Call<FoodItem>,
                     response: Response<FoodItem>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(applicationContext, "Продукт сохранен", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -88,7 +89,7 @@ class EditAddFoodItemActivity : AppCompatActivity() {
             })
             val backIntent= Intent(this, EditFoodActivity::class.java)
             startActivity(backIntent)
-            Toast.makeText(applicationContext,"Вы сохранили продукт", Toast.LENGTH_SHORT).show()
+
         }
         backButton.setOnClickListener {
             val backIntent= Intent(this, EditFoodActivity::class.java)

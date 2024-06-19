@@ -13,10 +13,12 @@ import com.example.lightweight.Adapters.ExercizeAdapter
 import com.example.lightweight.ManagementActivities.PersonalAccountActivity
 import com.example.lightweight.Models.Exercize
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.ExercizeViewHolder
 
 class StatFKActivity : AppCompatActivity() {
     private lateinit var backButton: Button
     private lateinit var rvExercizeList: RecyclerView
+    private var exercizes = ArrayList<Exercize>()
 
 
 
@@ -42,24 +44,14 @@ class StatFKActivity : AppCompatActivity() {
 
 
         val exercizeAdapter = ExercizeAdapter(
-            listOf(
-                Exercize("1","Бег","км"),
-                Exercize("1","Плавание","км"),
-                Exercize("1","Гири","км"),
-                Exercize("1","Ходьба","км"),
-                Exercize("1","Штанга","км"),
-                Exercize("1","Сон","км")
-
-
-
-            ),
+            exercizes,
             object : ExercizeAdapter.ExercizeActionListener{
                 override fun OnClickItem(exercize: Exercize) {
                     val graphIntent = Intent(this@StatFKActivity, PhysicalGraphActivity::class.java)
                     startActivity(graphIntent)
                 }
             }, object : ExercizeAdapter.OnItemClickListener{
-                override fun onSaveClick(exercize: Exercize) {
+                override fun onSaveClick(exercize: Exercize,holder: ExercizeViewHolder) {
                     Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
                 }
 

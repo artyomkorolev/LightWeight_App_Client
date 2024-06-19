@@ -50,6 +50,7 @@
         android:textColor="@color/black"/>
 
     <EditText
+        android:id="@+id/etnamefood"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
@@ -136,7 +137,8 @@
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/header_title"
         tools:ignore="TouchTargetSizeCheck"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -149,7 +151,8 @@
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/proteins"
         tools:ignore="TouchTargetSizeCheck"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -162,7 +165,8 @@
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
         tools:ignore="TouchTargetSizeCheck"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"
@@ -174,7 +178,8 @@
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
         tools:ignore="TouchTargetSizeCheck"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -182,7 +187,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="56dp"/>
+        app:layout_constraintGuide_end="56dp"
+        />
     <View
         android:id="@+id/grayline2"
         android:layout_width="match_parent"

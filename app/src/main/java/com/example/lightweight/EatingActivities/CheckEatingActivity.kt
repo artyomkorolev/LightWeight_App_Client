@@ -71,27 +71,27 @@ class CheckEatingActivity : AppCompatActivity() {
             })
             val saveIntent = Intent(this, MainActivity::class.java)
             startActivity(saveIntent)
-            Toast.makeText(applicationContext,"Прием пищи удален", Toast.LENGTH_SHORT).show()
+
         }
 
         val foodItemAdapter = ProductsAdapter(
             products,
             object : ProductsAdapter.ProductsActionListener{
                 override fun OnClickItem(foodItem: Products) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт",Toast.LENGTH_SHORT).show()
+
                 }
             },
             object : ProductsAdapter.OnItemClickListener{
                 override fun onSaveClick(foodItem: Products,holder: ProductsViewHolder) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onDeleteClick(foodItem: Products) {
-                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onGrammChange( newGramm: String) {
-                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+
                 }
 
             },hideElements = true

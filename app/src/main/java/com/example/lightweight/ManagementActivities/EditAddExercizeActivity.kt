@@ -45,17 +45,19 @@ class EditAddExercizeActivity : AppCompatActivity() {
             val exercizeItem = Exercize(
                 id = UUID.randomUUID().toString(),
                 name = exercizeName,
-                unit = exercizeUnit
+                unit = exercizeUnit,
+                count = ""
+
             )
 
-            val call  = addOwnExerciseService.addOwnExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA",exercizeItem)
+            val call  = addOwnExerciseService.addOwnExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",exercizeItem)
             call.enqueue(object : Callback<Exercize> {
                 override fun onResponse(
                     call: Call<Exercize>,
                     response: Response<Exercize>
                 ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(applicationContext, "Продукт сохранен", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }

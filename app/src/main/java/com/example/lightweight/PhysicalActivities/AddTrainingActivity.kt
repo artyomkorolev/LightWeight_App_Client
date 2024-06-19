@@ -2,12 +2,16 @@ package com.example.lightweight.PhysicalActivities
 
 import android.app.AlertDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import android.icu.util.TimeZone
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,8 +22,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.ExercizeAdapter
 import com.example.lightweight.Models.Exercize
+import com.example.lightweight.Models.FoodItem
+import com.example.lightweight.Models.Training
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.ExercizeViewHolder
+import com.example.lightweight.retrofit.EatingApi
+import com.example.lightweight.retrofit.ExerciseApi
+import com.example.lightweight.retrofit.FoodItemApi
+import com.example.lightweight.retrofit.WorkoutApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
+import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class AddTrainingActivity : AppCompatActivity() {
     private lateinit var backButton: Button
@@ -29,6 +48,12 @@ class AddTrainingActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var addExercizeButton: ImageView
     private lateinit var etSearchExercize: EditText
+    private var exercises = ArrayList<Exercize>()
+    private var exercizes =  mutableMapOf<UUID, Double>()
+    private var startTime: String = ""
+    private var endTime: String = ""
+    private val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
+    private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_training)
@@ -41,6 +66,23 @@ class AddTrainingActivity : AppCompatActivity() {
         addExercizeButton = findViewById(R.id.addExercize)
         etSearchExercize = findViewById(R.id.imputEditText)
 
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://212.113.121.36:8080")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val getExercisesService = retrofit.create(ExerciseApi::class.java)
+        val addTrainingApiService = retrofit.create(WorkoutApi::class.java)
+
+        val selectedDateMillis = intent.getLongExtra("selectedDate1", 0)
+
+        val selectedDate = Calendar.getInstance()
+        selectedDate.timeInMillis = selectedDateMillis
+        startTime = isoFormat.format(selectedDate.time)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val formattedDate = dateFormat.format(selectedDate.time)
+
+        Log.d("SELECTEDDATA", formattedDate)
+
         addExercizeButton.setOnClickListener {
             val exercizeIntent = Intent(this, AddExerciseActivity::class.java)
             startActivity(exercizeIntent)
@@ -51,38 +93,31 @@ class AddTrainingActivity : AppCompatActivity() {
             val backIntent=Intent(this, ActivityPhysical::class.java)
             startActivity(backIntent)
         }
-        saveButton.setOnClickListener {
-            val backIntent=Intent(this, ActivityPhysical::class.java)
-            startActivity(backIntent)
-            Toast.makeText(applicationContext,"Тренировка добавлена", Toast.LENGTH_SHORT).show()
-        }
+
 
         val exercizeAdapter = ExercizeAdapter(
-            listOf(
-                Exercize("1","Бег","КМ"),
-                Exercize("1","Подтягивания","шт"),
-                Exercize("1","Жим лежа","шт")
-
-            ),
+           exercises,
             object : ExercizeAdapter.ExercizeActionListener{
                 override fun OnClickItem(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Вы нажали на упражнение",Toast.LENGTH_SHORT).show()
+
                 }
             }, object : ExercizeAdapter.OnItemClickListener{
-                override fun onSaveClick(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                override fun onSaveClick(exercize: Exercize,holder: ExercizeViewHolder) {
+                        val countValue = holder.getGrammValue()
+                    exercizes[UUID.fromString(exercize.id)] = countValue.toDouble()
                 }
 
                 override fun onDeleteClick(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Удалить",Toast.LENGTH_SHORT).show()
+                    exercizes.remove(UUID.fromString(exercize.id))
                 }
 
                 override fun onGrammChange(exercize: Exercize, newCount: String) {
-                    Toast.makeText(applicationContext,"Изменить",Toast.LENGTH_SHORT).show()
+
                 }
 
             }
         )
+
         rvExercizeList.adapter=exercizeAdapter
         val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
         etTime.text =formatDate.format(Calendar.getInstance().time)
@@ -91,12 +126,14 @@ class AddTrainingActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, // Убедитесь, что используете правильный контекст
                 { _, hourOfDay, minute ->
-                    val selectedDate = Calendar.getInstance()
+
                     selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     selectedDate.set(Calendar.MINUTE, minute)
                     val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
                     val formattedTime = formatDate.format(selectedDate.time)
                     etTime.text = formattedTime // Устанавливаем выбранное время в EditText
+                    startTime = isoFormat.format(selectedDate.time)
+
                 },
                 getDate.get(Calendar.HOUR_OF_DAY), // Используйте HOUR_OF_DAY для 24-часового формата
                 getDate.get(Calendar.MINUTE),
@@ -125,8 +162,24 @@ class AddTrainingActivity : AppCompatActivity() {
             builder.setPositiveButton("OK") { dialog, _ ->
                 val duration = numberPicker.value*5 // Получаем выбранное значение
                 etDuration.text = duration.toString()
+                if (startTime.isNotBlank()) {
+
+                        // Создаем Calendar и устанавливаем время начала
+                        val endTimeCalendar = Calendar.getInstance()
+                        endTimeCalendar.time = isoFormat.parse(startTime) ?: Date()
+
+                        // Добавляем к времени начала продолжительность тренировки в минутах
+                        endTimeCalendar.add(Calendar.MINUTE, duration)
+
+                        // Форматируем endTime в ISO формате
+                        val formattedEndTime = isoFormat.format(endTimeCalendar.time)
+
+                        // Выводим endTime в лог и на экран
+                        endTime = formattedEndTime
+                        Log.d("Artiiii", endTime)
+                    Log.d("Training", "Start Time: $startTime, End Time: $endTime")
                 dialog.dismiss()
-            }
+            }}
 
             builder.setNegativeButton("Отмена") { dialog, _ ->
                 dialog.dismiss()
@@ -134,6 +187,36 @@ class AddTrainingActivity : AppCompatActivity() {
 
             builder.setView(numberPicker)
             builder.show()
+        }
+        saveButton.setOnClickListener {
+            val callTraining = addTrainingApiService.addTraining("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis",
+                Training(startTime,endTime,exercizes)
+            )
+            callTraining.enqueue(object : Callback<Void>{
+                override fun onResponse(
+                    p0: Call<Void>,
+                    p1: Response<Void>) {
+                    if (p1.isSuccessful) {
+
+                    } else {
+                        Toast.makeText(applicationContext, "Ошибка: ${p1.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(p0: Call<Void>, p1: Throwable) {
+                    Log.e("NetworkError", "Failed to execute request", p1)
+                    Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
+
+
+
+
+            val backIntent=Intent(this, ActivityPhysical::class.java)
+            startActivity(backIntent)
+
         }
 
 
@@ -157,5 +240,29 @@ class AddTrainingActivity : AppCompatActivity() {
 
        etSearchExercize.addTextChangedListener(textWatcher)
 
-    }
-}
+
+        val call  = getExercisesService.getAllExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        call.enqueue(object : Callback<List<Exercize>> {
+            override fun onResponse(
+
+                call: Call<List<Exercize>>,
+                response: Response<List<Exercize>>
+            ) {
+                val point = 0
+                if(response.code() ==200){
+                    exercises.clear()
+                    if (response.body()?.isNotEmpty() == true){
+                        exercises.addAll(response.body()!!)
+                        exercizeAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+            override fun onFailure(p0: Call<List<Exercize>>, p1: Throwable) {
+                Log.e("NetworkError", "Failed to execute request", p1)
+                Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+    }}
