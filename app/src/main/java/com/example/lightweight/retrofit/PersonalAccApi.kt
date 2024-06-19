@@ -20,5 +20,7 @@ interface PersonalAccApi {
 
     @POST("/user/authenticate")
     fun authenticate(@Body user: UserAuth):Call<AuthResponse>
+    @POST("/user/register")
+    fun register(@Body user: UserAuth):Call<AuthResponse>
 
 }
