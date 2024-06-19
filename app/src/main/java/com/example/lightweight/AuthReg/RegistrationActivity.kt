@@ -17,35 +17,29 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class LoginActivity : AppCompatActivity() {
-    private lateinit var fieldLogin:EditText
-    private lateinit var fieldPassword:EditText
-    private lateinit var apply:TextView
-    private lateinit var viewModel:LoginViewModel
-    private lateinit var authtoken:String
-    private lateinit var welcome:TextView
-    private lateinit var buttonReg:TextView
-    private lateinit var visiter:TextView
+class RegistrationActivity : AppCompatActivity() {
+    private lateinit var fieldLogin: EditText
+    private lateinit var fieldPassword: EditText
+    private lateinit var apply: TextView
+    private lateinit var buttonLogin:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_registration)
+
         fieldLogin = findViewById(R.id.login)
         fieldPassword = findViewById(R.id.password)
         apply = findViewById(R.id.apply)
-        welcome =findViewById(R.id.welcome)
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        buttonReg =findViewById(R.id.registration)
-        visiter =findViewById(R.id.visiter)
 
-        buttonReg.setOnClickListener {
-            val intent = Intent(this@LoginActivity,RegistrationActivity::class.java)
+
+        buttonLogin =findViewById(R.id.registration)
+
+
+        buttonLogin.setOnClickListener {
+            val intent = Intent(this@RegistrationActivity,LoginActivity::class.java)
             startActivity(intent)
         }
-        visiter.setOnClickListener {
-            val intent = Intent(this@LoginActivity,MainActivity::class.java)
-            startActivity(intent)
-        }
-        
+
         apply.setOnClickListener {
             val login = fieldLogin.text.toString()
             val password = fieldPassword.text.toString()
@@ -60,19 +54,13 @@ class LoginActivity : AppCompatActivity() {
                     .build()
                 val authApi = retrofit.create(PersonalAccApi::class.java)
 
-                val call =authApi.authenticate(UserAuth(login,password))
-                call.enqueue(object :Callback<AuthResponse>{
+                val call =authApi.register(UserAuth(login,password))
+                call.enqueue(object : Callback<AuthResponse> {
                     override fun onResponse(p0: Call<AuthResponse>, response: Response<AuthResponse>) {
                         if (response.isSuccessful) {
                             val authResponse = response.body()
                             if (authResponse != null) {
-                                val authtoken = authResponse.access_token
-                                val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
-                                val editor = sharedPreferences.edit()
-                                editor.putString("authToken", authtoken)
-                                editor.apply()
-
-                                val intent = Intent(this@LoginActivity,MainActivity::class.java)
+                                val intent = Intent(this@RegistrationActivity,LoginActivity::class.java)
                                 startActivity(intent)
 
                             } else {
@@ -91,8 +79,6 @@ class LoginActivity : AppCompatActivity() {
                 })
             }
         }
-
-
 
     }
 }
