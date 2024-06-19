@@ -1,6 +1,9 @@
 package com.example.lightweight.retrofit
 
+import com.example.lightweight.AuthReg.AuthResponse
 import com.example.lightweight.Models.User
+import com.example.lightweight.AuthReg.UserAuth
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,5 +17,8 @@ interface PersonalAccApi {
 
     @PUT("/user/updateData")
     fun postUpdateinfo(@Header("Authorization") authToken: String,@Body user: User): Call<Void>
+
+    @POST("/user/authenticate")
+    fun authenticate(@Body user: UserAuth):Call<AuthResponse>
 
 }

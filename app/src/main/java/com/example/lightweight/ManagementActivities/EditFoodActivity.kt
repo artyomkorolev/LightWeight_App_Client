@@ -30,6 +30,7 @@ class EditFoodActivity : AppCompatActivity() {
     private lateinit var etSearchFood: EditText
     private lateinit var saveEatingButton: Button
     private val foodItems = ArrayList<FoodItem>()
+    private lateinit var authtoken:String
 
 
     private fun deleteSelectedItems() {
@@ -43,7 +44,7 @@ class EditFoodActivity : AppCompatActivity() {
         val foodItemApi = retrofit.create(FoodItemApi::class.java)
 
         for (id in idsToDelete) {
-            val call = foodItemApi.deleteOwnProduckt("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis", id)
+            val call = foodItemApi.deleteOwnProduckt(authtoken, id)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {
@@ -67,7 +68,9 @@ class EditFoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_food)
-
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
         backButton =findViewById(R.id.backbutton)
 
         addFoodItemButton = findViewById(R.id.addFoodItem)
@@ -119,7 +122,7 @@ class EditFoodActivity : AppCompatActivity() {
 
         rvlistFoodItems.adapter = foodItemAdapter
 
-        val call  = getOwnFoodItemsService.getOwnProducts( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        val call  = getOwnFoodItemsService.getOwnProducts( authtoken)
         call.enqueue(object : Callback<List<FoodItem>>{
             override fun onResponse(
 

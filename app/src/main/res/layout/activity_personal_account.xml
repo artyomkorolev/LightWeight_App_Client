@@ -144,6 +144,34 @@
         android:textColorHint="@color/gray"
         />
     <TextView
+        android:id="@+id/authActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Войти"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/profileWidth"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:textColor="@color/green"
+        android:textColorHint="@color/gray"
+
+        />
+    <TextView
+        android:id="@+id/exitAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выйти"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/profileWidth"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:textColor="@color/red62"
+        android:textColorHint="@color/gray"
+        android:visibility="gone"
+        />
+
+
+    <TextView
         android:id="@+id/profileWidthEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

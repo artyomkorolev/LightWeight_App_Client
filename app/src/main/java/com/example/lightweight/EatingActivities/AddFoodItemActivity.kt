@@ -26,6 +26,7 @@ class AddFoodItemActivity : AppCompatActivity() {
     private lateinit var proteins: EditText
     private lateinit var fats: EditText
     private lateinit var carbs: EditText
+    private lateinit var authtoken: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_food_item)
@@ -36,6 +37,9 @@ class AddFoodItemActivity : AppCompatActivity() {
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnFoodItemsService = retrofit.create(FoodItemApi::class.java)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         name = findViewById(R.id.etnamefood)
         calories = findViewById(R.id.etCals)
@@ -61,8 +65,8 @@ class AddFoodItemActivity : AppCompatActivity() {
             )
 
 
-            val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
-            val call  = getOwnFoodItemsService.addOwnProduct( authToken,foodItem)
+
+            val call  = getOwnFoodItemsService.addOwnProduct( authtoken,foodItem)
             call.enqueue(object : Callback<FoodItem> {
                 override fun onResponse(
                     call: Call<FoodItem>,

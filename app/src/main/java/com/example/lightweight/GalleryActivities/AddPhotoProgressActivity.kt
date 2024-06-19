@@ -39,6 +39,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
     private lateinit var setMass:TextView
     private lateinit var setDate:TextView
     var picturePath: String? = null
+    private lateinit var authtoken:String
 
 
 
@@ -61,6 +62,9 @@ class AddPhotoProgressActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_photo_progress)
         image = findViewById(R.id.addedImage)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         image.visibility = View.GONE
 
@@ -78,8 +82,10 @@ class AddPhotoProgressActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(intent, 1)
         }
+        val selectedDate = Calendar.getInstance()
 
-        var selectedDate1: String = ""
+        val dateFormatForRequest = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
+        var selectedDate1 = dateFormatForRequest.format(selectedDate.time)
         setDate = findViewById(R.id.etProteins)
         setMass = findViewById(R.id.setMass)
         val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("ru"),)
@@ -148,7 +154,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                 val weightString = setMass.text.toString()
                 val weight = weightString.replace("кг", "").trim().toInt()
 
-                val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis" // Replace with your actual auth token
+
 
                 val retrofit = Retrofit.Builder()
                     .baseUrl("http://212.113.121.36:8080") // Replace with your actual base URL
@@ -157,7 +163,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
 
                 val service = retrofit.create(GalleryApi::class.java)
 
-                val call = service.addPhoto(authToken, selectedDate1, weight, body)
+                val call = service.addPhoto(authtoken, selectedDate1, weight, body)
 
                 call.enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

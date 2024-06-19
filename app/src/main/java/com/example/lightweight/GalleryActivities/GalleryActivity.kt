@@ -54,6 +54,7 @@ class GalleryActivity : AppCompatActivity() {
         }
 
     )
+    private lateinit var authtoken:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,9 @@ class GalleryActivity : AppCompatActivity() {
         buttonLK = findViewById(R.id.buttonLK)
         addPhoto = findViewById(R.id.addphoto)
         rvPhotos = findViewById(R.id.rvPhotos)
-
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         buttonFk.setOnClickListener{
             val fkIntent = Intent(this, ActivityPhysical::class.java)
@@ -99,14 +102,14 @@ class GalleryActivity : AppCompatActivity() {
 
         alertDialog.setPositiveButton("Да") { _, _ ->
             // Delete the photo here
-            val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
+
             val retrofit = Retrofit.Builder()
                 .baseUrl("http://212.113.121.36:8080")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             val service = retrofit.create(GalleryApi::class.java)
-            val call = service.deletePhotoById(authToken, photo.id)
+            val call = service.deletePhotoById(authtoken, photo.id)
 
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(
@@ -138,8 +141,6 @@ private fun loadPhotos() {
 
         val thread = Thread {
 
-            val authToken =
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis" // Replace with your actual auth token
 
             val retrofit = Retrofit.Builder()
                 .baseUrl("http://212.113.121.36:8080") // Replace with your actual base URL
@@ -148,7 +149,7 @@ private fun loadPhotos() {
 
             val service = retrofit.create(GalleryApi::class.java)
 
-            val call = service.getPhoto(authToken)
+            val call = service.getPhoto(authtoken)
 
             call.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
@@ -164,7 +165,7 @@ private fun loadPhotos() {
                             for (i in 0 until photosJson.length()) {
                                 val photoJson = photosJson.getJSONObject(i)
                                 val photoId = photoJson.getString("id")
-                                val call = service.getPhotoById(authToken, photoId)
+                                val call = service.getPhotoById(authtoken, photoId)
 
                                 call.enqueue(object : Callback<ResponseBody> {
                                     override fun onResponse(

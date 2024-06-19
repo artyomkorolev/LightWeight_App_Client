@@ -39,9 +39,14 @@ class ActivityPhysical : AppCompatActivity() {
     private lateinit var tvdate:TextView
     private lateinit var rvTrainingList:RecyclerView
     private var trainings = ArrayList<GetTraining>()
+    private lateinit var authtoken:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_physical)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
+
 
         val selectedDate = Calendar.getInstance()
         var savedDate = SimpleDateFormat("yyyy-MM-dd", Locale("ru")).format(selectedDate.time)
@@ -104,7 +109,7 @@ class ActivityPhysical : AppCompatActivity() {
 
                     val formatDate  =dateFormat1.format(selectedDate.time)
                     savedDate = formatDate
-                    getTrainings(trainingAdapter,savedDate)
+                    getTrainings(trainingAdapter,savedDate,authtoken)
                     // Устанавливаем отформатированную дату в TextView
 
                 },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
@@ -118,14 +123,14 @@ class ActivityPhysical : AppCompatActivity() {
             startActivity(addIntent)
         }
 
-        getTrainings(trainingAdapter,savedDate)
+        getTrainings(trainingAdapter,savedDate,authtoken)
     }
-    private fun getTrainings(trainingAdapter: TrainingAdapter,savedDate:String){
+    private fun getTrainings(trainingAdapter: TrainingAdapter,savedDate:String,authToken:String){
         val retrofit = Retrofit.Builder()
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(WorkoutApi::class.java)
-        val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
+
         val call = getFoodItemsService.getWorkoutByDate(authToken,savedDate)
         call.enqueue(object :Callback<List<GetTraining>>{
             override fun onResponse(

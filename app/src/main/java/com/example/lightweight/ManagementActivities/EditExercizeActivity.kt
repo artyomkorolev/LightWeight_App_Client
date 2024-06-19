@@ -34,6 +34,7 @@ class EditExercizeActivity : AppCompatActivity() {
     private lateinit var addExercizeButton: ImageView
     private lateinit var etSearchExercize: EditText
     private val exercises = ArrayList<Exercize>()
+    private lateinit var authtoken:String
     private fun deleteSelectedItems() {
         val selectedItems = exercises.filter { it.isSaved }
         val idsToDelete = selectedItems.map { it.id }
@@ -68,6 +69,9 @@ class EditExercizeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_exercize)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         backButton = findViewById(R.id.backbutton)
         rvExercizeList = findViewById(R.id.rvExercizeList)
@@ -118,7 +122,7 @@ class EditExercizeActivity : AppCompatActivity() {
         )
         rvExercizeList.adapter=exercizeAdapter
 
-        val call  =getOwnExercisesService.getOwnExercise ( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
+        val call  =getOwnExercisesService.getOwnExercise ( authtoken)
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 

@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonGallery:Button
     private lateinit var buttonLK: Button
     private var eatings = ArrayList<GetEating>()
-
+    private lateinit var authtoken: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +62,9 @@ class MainActivity : AppCompatActivity() {
         var savedDate = SimpleDateFormat("yyyy-MM-dd", Locale("ru")).format(selectedDate.time)
 
 
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         buttonFk.setOnClickListener{
             val fkIntent = Intent(this, ActivityPhysical::class.java)
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity() {
            startActivity(addIntent)
         }
 
-        getEatings(eatingAdapter,savedDate)
+        getEatings(eatingAdapter,savedDate,authtoken)
 
         //Data picker
     val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
@@ -125,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                 val dateFormat1 = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
                 val formatDate  =dateFormat1.format(selectedDate.time)
                  savedDate = formatDate
-                getEatings(eatingAdapter,savedDate)
+                getEatings(eatingAdapter,savedDate,authtoken)
 
             },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
         )
@@ -137,12 +140,12 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    private fun getEatings(eatingAdapter: EatingAdapter,savedDate:String){
+    private fun getEatings(eatingAdapter: EatingAdapter,savedDate:String,authToken:String){
         val retrofit = Retrofit.Builder()
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(EatingApi::class.java)
-        val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
+//        val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
         val call = getFoodItemsService.getEatingByDate(authToken,savedDate)
         call.enqueue(object : Callback<List<GetEating>> {
             override fun onResponse(

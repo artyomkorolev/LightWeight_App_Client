@@ -26,9 +26,14 @@ class CheckTrainingActivity : AppCompatActivity() {
     private lateinit var backbutton:Button
     private lateinit var deleteButton:Button
     private lateinit var rvExercizeList:RecyclerView
+    private lateinit var authtoken:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_training)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
+
         backbutton=findViewById(R.id.backbutton)
         backbutton.setOnClickListener {
             val backIntent = Intent(this, ActivityPhysical::class.java)
@@ -44,8 +49,8 @@ class CheckTrainingActivity : AppCompatActivity() {
                 .baseUrl("http://212.113.121.36:8080")
                 .addConverterFactory(GsonConverterFactory.create()).build()
             val getFoodItemsService = retrofit.create(WorkoutApi::class.java)
-            val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
-            val call = getFoodItemsService.deleteWorkoutbyId(authToken,idTraining)
+
+            val call = getFoodItemsService.deleteWorkoutbyId(authtoken,idTraining)
 
 
             call.enqueue(object : Callback<Void> {
