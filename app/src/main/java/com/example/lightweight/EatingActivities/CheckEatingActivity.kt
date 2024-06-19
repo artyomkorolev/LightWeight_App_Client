@@ -50,7 +50,7 @@ class CheckEatingActivity : AppCompatActivity() {
         deleteButton=findViewById(R.id.buttonDelete)
         deleteButton.setOnClickListener {
             val retrofit = Retrofit.Builder()
-                .baseUrl("http://212.113.121.36:8080")
+                .baseUrl("https://light-weight.site:8080")
                 .addConverterFactory(GsonConverterFactory.create()).build()
             val getFoodItemsService = retrofit.create(EatingApi::class.java)
 

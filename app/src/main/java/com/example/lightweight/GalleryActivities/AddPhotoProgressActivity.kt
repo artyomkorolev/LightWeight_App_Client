@@ -157,7 +157,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
 
 
                 val retrofit = Retrofit.Builder()
-                    .baseUrl("http://212.113.121.36:8080") // Replace with your actual base URL
+                    .baseUrl("https://light-weight.site:8080") // Replace with your actual base URL
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 

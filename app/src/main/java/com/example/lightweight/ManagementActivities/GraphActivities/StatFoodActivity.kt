@@ -39,7 +39,7 @@ class StatFoodActivity : AppCompatActivity() {
         authtoken = "Bearer $authtoken"
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(PersonalAccApi::class.java)
         val call = getFoodItemsService.getStatFood(authtoken)
