@@ -23,6 +23,9 @@ import com.example.lightweight.Models.Products
 import com.example.lightweight.R
 import com.example.lightweight.retrofit.EatingApi
 import com.example.lightweight.retrofit.FoodItemApi
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonLK: Button
     private var eatings = ArrayList<GetEating>()
     private lateinit var authtoken: String
+    private var isGuest: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +68,11 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
         buttonFk.setOnClickListener{
             val fkIntent = Intent(this, ActivityPhysical::class.java)
@@ -96,14 +104,23 @@ class MainActivity : AppCompatActivity() {
         rvFoodList.adapter = eatingAdapter
         eatingAdapter.updateCalories()
         addEatingButton.setOnClickListener{
+            if (!eatings.isEmpty() and isGuest ) {
+                // Прием пищи уже существует, предотвращаем открытие AddFoodItemActivity
+                Toast.makeText(this, "Вы уже добавили прием пищи", Toast.LENGTH_SHORT).show()
+            } else {
+                val addIntent = Intent(this, AddEatingActivity::class.java)
+                addIntent.putExtra("selectedDate", selectedDate.timeInMillis)
+                startActivity(addIntent)
+            }
 
 
-           val addIntent = Intent(this, AddEatingActivity::class.java)
-            addIntent.putExtra("selectedDate", selectedDate.timeInMillis)
-           startActivity(addIntent)
         }
 
-        getEatings(eatingAdapter,savedDate,authtoken)
+        if (isGuest) {
+            getGuestEatings(eatingAdapter)
+        } else {
+            getEatings(eatingAdapter, savedDate, authtoken)
+        }
 
         //Data picker
     val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
@@ -128,7 +145,11 @@ class MainActivity : AppCompatActivity() {
                 val dateFormat1 = SimpleDateFormat("yyyy-MM-dd", Locale("ru"))
                 val formatDate  =dateFormat1.format(selectedDate.time)
                  savedDate = formatDate
-                getEatings(eatingAdapter,savedDate,authtoken)
+                if (isGuest) {
+                    getGuestEatings(eatingAdapter)
+                } else {
+                    getEatings(eatingAdapter, savedDate, authtoken)
+                }
 
             },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
         )
@@ -170,4 +191,14 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+    private fun getGuestEatings(eatingAdapter: EatingAdapter) {
+        val sharedPreferences = getSharedPreferences("guestEatings", MODE_PRIVATE)
+        val guestEatingsJson = sharedPreferences.getString("eatings", "[]")
+        val guestEatings: List<GetEating> = Gson().fromJson(guestEatingsJson, object : TypeToken<List<GetEating>>() {}.type)
+        eatings.clear()
+        eatings.addAll(guestEatings)
+        eatingAdapter.notifyDataSetChanged()
+        eatingAdapter.updateCalories()
+    }
+
 }

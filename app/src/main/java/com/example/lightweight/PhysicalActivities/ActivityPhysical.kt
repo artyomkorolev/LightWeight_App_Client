@@ -11,7 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.Adapters.EatingAdapter
 import com.example.lightweight.Adapters.TrainingAdapter
+import com.example.lightweight.EatingActivities.AddEatingActivity
 import com.example.lightweight.EatingActivities.MainActivity
 import com.example.lightweight.GalleryActivities.GalleryActivity
 import com.example.lightweight.Models.Training
@@ -21,11 +23,14 @@ import com.example.lightweight.Models.GetTraining
 import com.example.lightweight.R
 import com.example.lightweight.retrofit.EatingApi
 import com.example.lightweight.retrofit.WorkoutApi
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -40,12 +45,18 @@ class ActivityPhysical : AppCompatActivity() {
     private lateinit var rvTrainingList:RecyclerView
     private var trainings = ArrayList<GetTraining>()
     private lateinit var authtoken:String
+    private var isGuest: Boolean = false
+    private val isoFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_physical)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
 
         val selectedDate = Calendar.getInstance()
@@ -109,7 +120,10 @@ class ActivityPhysical : AppCompatActivity() {
 
                     val formatDate  =dateFormat1.format(selectedDate.time)
                     savedDate = formatDate
-                    getTrainings(trainingAdapter,savedDate,authtoken)
+                    if (isGuest) {
+                        getGuestEatings(trainingAdapter)
+                    }else{
+                        getTrainings(trainingAdapter,savedDate,authtoken)}
                     // Устанавливаем отформатированную дату в TextView
 
                 },getDate.get(Calendar.YEAR),getDate.get(Calendar.MONTH),getDate.get(Calendar.DAY_OF_MONTH)
@@ -118,16 +132,26 @@ class ActivityPhysical : AppCompatActivity() {
             datePicker.show()
         }
         addTrainingButton.setOnClickListener{
-            val addIntent = Intent(this, AddTrainingActivity::class.java)
-            addIntent.putExtra("selectedDate1", selectedDate.timeInMillis)
-            startActivity(addIntent)
-        }
 
-        getTrainings(trainingAdapter,savedDate,authtoken)
+            if (!trainings.isEmpty() and isGuest ) {
+                // Прием пищи уже существует, предотвращаем открытие AddFoodItemActivity
+                Toast.makeText(this, "Вы уже добавили тренировку", Toast.LENGTH_SHORT).show()
+            } else {
+                val addIntent = Intent(this, AddTrainingActivity::class.java)
+                addIntent.putExtra("selectedDate1", selectedDate.timeInMillis)
+                startActivity(addIntent)
+            }
+
+
+        }
+        if (isGuest) {
+            getGuestEatings(trainingAdapter)
+        }else{
+        getTrainings(trainingAdapter,savedDate,authtoken)}
     }
     private fun getTrainings(trainingAdapter: TrainingAdapter,savedDate:String,authToken:String){
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(WorkoutApi::class.java)
 
@@ -152,6 +176,15 @@ class ActivityPhysical : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
+    }
+    private fun getGuestEatings(eatingAdapter: TrainingAdapter) {
+        val sharedPreferences = getSharedPreferences("guestTrainings", MODE_PRIVATE)
+        val guestEatingsJson = sharedPreferences.getString("trainings", "[]")
+        val guestEatings: List<GetTraining> = Gson().fromJson(guestEatingsJson, object : TypeToken<List<GetTraining>>() {}.type)
+        trainings.clear()
+        trainings.addAll(guestEatings)
+        eatingAdapter.notifyDataSetChanged()
 
     }
 }

@@ -96,7 +96,7 @@ class StatFKActivity : AppCompatActivity() {
 
         etSearchExercize.addTextChangedListener(textWatcher)
 
-        val call  = getExercisesService.getAllExercise( authtoken)
+        val call  = getExercisesService.getAllExercise( )
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 

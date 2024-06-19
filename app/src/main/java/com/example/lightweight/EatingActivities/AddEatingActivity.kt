@@ -20,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.FoodItemAdapter
 import com.example.lightweight.Models.Eating
 import com.example.lightweight.Models.FoodItem
+import com.example.lightweight.Models.GetEating
 import com.example.lightweight.R
 import com.example.lightweight.ViewHolders.FoodItemViewHolder
 import com.example.lightweight.retrofit.EatingApi
 import com.example.lightweight.retrofit.FoodItemApi
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,8 +46,10 @@ class AddEatingActivity : AppCompatActivity() {
     private lateinit var saveEatingButton:Button
     private  var searchText: String? = null
     private var products1 = ArrayList<FoodItem>()
+    private var prod = mutableListOf<Pair<FoodItem, Double>>()
     private var products = mutableMapOf<UUID, Double>()
     private lateinit var authtoken: String
+    private var isGuest: Boolean = false
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -53,7 +58,11 @@ class AddEatingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_eating)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://light-weight.site:8080")
@@ -95,7 +104,9 @@ class AddEatingActivity : AppCompatActivity() {
                 Log.d("AddEatingActivity", "Food Item: Key=$key, Value=$value")
             }
 
-
+            if (isGuest){
+                saveGuestEating(Eating("1", formattedDate, products),prod)
+            }else{
             val callEating= addEatingApiService.addEating(authtoken,
                 Eating("1",formattedDate,products)
             )
@@ -121,7 +132,7 @@ class AddEatingActivity : AppCompatActivity() {
             val backIntent=Intent(this, MainActivity::class.java)
             startActivity(backIntent)
 
-        }
+        }}
         backButton.setOnClickListener{
             val backIntent=Intent(this, MainActivity::class.java)
             startActivity(backIntent)
@@ -138,7 +149,7 @@ class AddEatingActivity : AppCompatActivity() {
                 override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
                     val grammValue =holder.getGrammValue()
                     products[UUID.fromString(foodItem.id)]= grammValue.toDouble()
-
+                    prod.add(foodItem to grammValue.toDouble())
 
                     for ((key, value) in products) {
                         Log.d("FoodItemsMap", "Key: $key, Value: $value")
@@ -148,7 +159,14 @@ class AddEatingActivity : AppCompatActivity() {
 
                 override fun onDeleteClick(foodItem: FoodItem) {
                     products.remove(UUID.fromString(foodItem.id))
-
+                    val iterator = prod.iterator()
+                    while (iterator.hasNext()) {
+                        val (item, _) = iterator.next()
+                        if (item.id == foodItem.id) {
+                            iterator.remove()
+                            break
+                        }
+                    }
 
                 }
                 override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
@@ -202,7 +220,7 @@ class AddEatingActivity : AppCompatActivity() {
 
         etSearchFood.addTextChangedListener(textWatcher)
 
-        val call  = getFoodItemsService.getAllProducts( authtoken)
+        val call  = getFoodItemsService.getAllProducts()
         call.enqueue(object : Callback<List<FoodItem>> {
             override fun onResponse(
 
@@ -231,6 +249,21 @@ class AddEatingActivity : AppCompatActivity() {
 
 
 
+    }
+    private fun saveGuestEating(eating: Eating,foodItem: List<Pair<FoodItem, Double>>) {
+
+        val getEating = eating.toGetEating(foodItem)
+
+        // Сохраняем GetEating в SharedPreferences
+        val sharedPreferences = getSharedPreferences("guestEatings", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val existingEatingsJson = sharedPreferences.getString("eatings", "[]")
+        val existingEatings: MutableList<GetEating> = Gson().fromJson(existingEatingsJson, object : TypeToken<MutableList<GetEating>>() {}.type)
+        existingEatings.add(getEating)
+        editor.putString("eatings", Gson().toJson(existingEatings))
+        editor.apply()
+        val backIntent=Intent(this, MainActivity::class.java)
+        startActivity(backIntent)
     }
 
 

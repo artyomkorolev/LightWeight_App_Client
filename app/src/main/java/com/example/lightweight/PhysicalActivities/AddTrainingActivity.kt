@@ -21,8 +21,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.ExercizeAdapter
+import com.example.lightweight.EatingActivities.MainActivity
+import com.example.lightweight.Models.Eating
 import com.example.lightweight.Models.Exercize
 import com.example.lightweight.Models.FoodItem
+import com.example.lightweight.Models.GetEating
+import com.example.lightweight.Models.GetTraining
 import com.example.lightweight.Models.Training
 import com.example.lightweight.R
 import com.example.lightweight.ViewHolders.ExercizeViewHolder
@@ -30,6 +34,8 @@ import com.example.lightweight.retrofit.EatingApi
 import com.example.lightweight.retrofit.ExerciseApi
 import com.example.lightweight.retrofit.FoodItemApi
 import com.example.lightweight.retrofit.WorkoutApi
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -55,12 +61,18 @@ class AddTrainingActivity : AppCompatActivity() {
     private val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
     private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     private lateinit var authtoken:String
+    private var isGuest: Boolean = false
+    private var prod = mutableListOf<Pair<Exercize, Double>>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_training)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
         backButton = findViewById(R.id.backbutton)
         rvExercizeList = findViewById(R.id.rvExercizeList)
@@ -72,7 +84,7 @@ class AddTrainingActivity : AppCompatActivity() {
 
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getExercisesService = retrofit.create(ExerciseApi::class.java)
         val addTrainingApiService = retrofit.create(WorkoutApi::class.java)
@@ -109,10 +121,19 @@ class AddTrainingActivity : AppCompatActivity() {
                 override fun onSaveClick(exercize: Exercize,holder: ExercizeViewHolder) {
                         val countValue = holder.getGrammValue()
                     exercizes[UUID.fromString(exercize.id)] = countValue.toDouble()
+                    prod.add(exercize to countValue.toDouble())
                 }
 
                 override fun onDeleteClick(exercize: Exercize) {
                     exercizes.remove(UUID.fromString(exercize.id))
+                    val iterator = prod.iterator()
+                    while (iterator.hasNext()) {
+                        val (item, _) = iterator.next()
+                        if (item.id == exercize.id) {
+                            iterator.remove()
+                            break
+                        }
+                    }
                 }
 
                 override fun onGrammChange(exercize: Exercize, newCount: String) {
@@ -193,6 +214,11 @@ class AddTrainingActivity : AppCompatActivity() {
             builder.show()
         }
         saveButton.setOnClickListener {
+
+            if (isGuest){
+                saveGuestEating(Training(startTime,endTime,exercizes),prod)
+            }else{
+
             val callTraining = addTrainingApiService.addTraining(authtoken,
                 Training(startTime,endTime,exercizes)
             )
@@ -221,7 +247,7 @@ class AddTrainingActivity : AppCompatActivity() {
             val backIntent=Intent(this, ActivityPhysical::class.java)
             startActivity(backIntent)
 
-        }
+        }}
 
 
         val textWatcher = object : TextWatcher {
@@ -245,7 +271,7 @@ class AddTrainingActivity : AppCompatActivity() {
        etSearchExercize.addTextChangedListener(textWatcher)
 
 
-        val call  = getExercisesService.getAllExercise( authtoken)
+        val call  = getExercisesService.getAllExercise()
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 
@@ -269,4 +295,22 @@ class AddTrainingActivity : AppCompatActivity() {
             }
 
         })
-    }}
+    }
+
+    private fun saveGuestEating(eating: Training, foodItem: List<Pair<Exercize, Double>>) {
+
+        val getEating = eating.toGetTraining(foodItem)
+
+        // Сохраняем GetEating в SharedPreferences
+        val sharedPreferences = getSharedPreferences("guestTrainings", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val existingEatingsJson = sharedPreferences.getString("trainings", "[]")
+        val existingEatings: MutableList<GetTraining> = Gson().fromJson(existingEatingsJson, object : TypeToken<MutableList<GetTraining>>() {}.type)
+        existingEatings.add(getEating)
+        editor.putString("trainings", Gson().toJson(existingEatings))
+        editor.apply()
+        val backIntent=Intent(this, ActivityPhysical::class.java)
+        startActivity(backIntent)
+    }
+
+}
