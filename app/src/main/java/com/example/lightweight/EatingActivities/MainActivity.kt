@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
             .baseUrl("http://212.113.121.36:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getFoodItemsService = retrofit.create(EatingApi::class.java)
-//        val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
+
         val call = getFoodItemsService.getEatingByDate(authToken,savedDate)
         call.enqueue(object : Callback<List<GetEating>> {
             override fun onResponse(
