@@ -1,5 +1,6 @@
 package com.example.lightweight.ViewHolders
 
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,19 +25,27 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
              onSaveClick: (FoodItem) -> Unit,
              onDeleteClick: (FoodItem) -> Unit,
              onGrammChange: (FoodItem, String) -> Unit,
-             hideElements: Boolean = false
+             hideElements: Boolean = false,
+             hideInputField: Boolean =false
              ){
         name.text = item.name
         calories.text = item.calories.toString()
         proteins.text = item.protein.toString()
         fats.text = item.fats.toString()
         carbs.text = item.carbohydrates.toString()
+        saveGramm.setText(item.count)
         if (hideElements) {
             save.visibility = View.GONE
             delete.visibility = View.GONE
             saveGramm.visibility = View.GONE
             gramms.visibility=View.VISIBLE
-        }else {
+        }else if (hideInputField){
+            saveGramm.visibility = View.GONE
+            itemView.layoutParams.height = 60.dp
+            save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
+            delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
+
+        } else {
             save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
             delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
             saveGramm.isEnabled = !item.isSaved
@@ -57,7 +66,9 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
 
         saveGramm.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                onGrammChange(item, saveGramm.text.toString())
+                val newCount = saveGramm.text.toString()
+                item.count = newCount // Сохраняем новое значение в объект
+                onGrammChange(item, newCount)
             }
         }
 
@@ -65,7 +76,8 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     fun getGrammValue(): String {
         return saveGramm.text.toString()
     }
-
+    val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 
 }

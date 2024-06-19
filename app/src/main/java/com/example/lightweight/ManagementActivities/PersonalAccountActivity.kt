@@ -51,7 +51,7 @@ class PersonalAccountActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val userApiService = retrofit.create(PersonalAccApi::class.java)
 
-        val call = userApiService.getUserInfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20iLCJpYXQiOjE3MTgzMDIyODcsImV4cCI6MTcxODkwNzA4N30.iABb33dsTXNHi1fifyk4dplSaXGou2_3FUm7VrwFRFk")
+        val call = userApiService.getUserInfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
         call.enqueue(object :Callback<User>{
             override fun onResponse(
                 call: Call<User>,
@@ -64,7 +64,6 @@ class PersonalAccountActivity : AppCompatActivity() {
                         profileWidth.text = user.weight.toString()+ " кг"
                         tvLogin.text = user.login
                         loginP = user.login
-                        passwordP= user.password
                     } else {
                         Log.e("ResponseError", "User object is null")
                     }
@@ -129,7 +128,7 @@ class PersonalAccountActivity : AppCompatActivity() {
             builder.setPositiveButton("OK") { dialog, _ ->
                 val height = numberPicker.value // Получаем выбранное значение
                 profileHeight.text = "$height см"
-                val updatedUser = User(height = height, weight = profileWidth.text.toString().removeSuffix(" кг").toInt(), login = loginP, password = passwordP)
+                val updatedUser = User(height = height, weight = profileWidth.text.toString().removeSuffix(" кг").toInt(), login = loginP)
                 updateUser(updatedUser)
                 dialog.dismiss()
             }
@@ -156,7 +155,7 @@ class PersonalAccountActivity : AppCompatActivity() {
             builder.setPositiveButton("OK") { dialog, _ ->
                 val weight = numberPicker.value // Получаем выбранное значение
                 profileWidth.text = "$weight кг"
-                val updatedUser = User(height = profileHeight.text.toString().removeSuffix(" см").toInt(), weight = weight, login = loginP, password = passwordP)
+                val updatedUser = User(height = profileHeight.text.toString().removeSuffix(" см").toInt(), weight = weight, login = loginP)
                 updateUser(updatedUser)
                 dialog.dismiss()
             }
@@ -177,11 +176,11 @@ class PersonalAccountActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create()).build()
         val userApiService = retrofit.create(PersonalAccApi::class.java)
 
-        val call = userApiService.postUpdateinfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20iLCJpYXQiOjE3MTgyMjg3ODAsImV4cCI6MTcxODgzMzU4MH0.e6s7R8VuA31w1_SqiXH0bgcFflmBjhHB5l9VxWcJFd0", user)
+        val call = userApiService.postUpdateinfo("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis", user)
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(applicationContext, "Данные успешно обновлены", Toast.LENGTH_SHORT).show()
+
                 } else {
                     Log.e("ResponseError", "Response code: ${response.code()}")
                     Log.e("ResponseError", "Response message: ${response.message()}")

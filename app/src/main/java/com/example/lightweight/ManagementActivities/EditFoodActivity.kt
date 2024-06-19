@@ -43,7 +43,7 @@ class EditFoodActivity : AppCompatActivity() {
         val foodItemApi = retrofit.create(FoodItemApi::class.java)
 
         for (id in idsToDelete) {
-            val call = foodItemApi.deleteOwnProduckt("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA", id)
+            val call = foodItemApi.deleteOwnProduckt("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis", id)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {
@@ -97,29 +97,29 @@ class EditFoodActivity : AppCompatActivity() {
             foodItems,
             object : FoodItemAdapter.FoodItemActionListener{
                 override fun OnClickItem(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт", Toast.LENGTH_SHORT).show()
+
                 }
             },
             object : FoodItemAdapter.OnItemClickListener{
                 override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+
 
                 }
 
                 override fun onDeleteClick(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
-                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+
                 }
 
-            }
+            }, hideInputField = true
         )
 
         rvlistFoodItems.adapter = foodItemAdapter
 
-        val call  = getOwnFoodItemsService.getOwnProducts( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20iLCJpYXQiOjE3MTgzMDIyODcsImV4cCI6MTcxODkwNzA4N30.iABb33dsTXNHi1fifyk4dplSaXGou2_3FUm7VrwFRFk")
+        val call  = getOwnFoodItemsService.getOwnProducts( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis")
         call.enqueue(object : Callback<List<FoodItem>>{
             override fun onResponse(
 
@@ -170,6 +170,6 @@ class EditFoodActivity : AppCompatActivity() {
 
             val backIntent= Intent(this, ManagementActivity::class.java)
             startActivity(backIntent)
-            Toast.makeText(applicationContext,"Вы сохранили список своих продуктов", Toast.LENGTH_SHORT).show()
+
         }
 }}

@@ -31,10 +31,11 @@ class EatingViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
             carbs+=it.product.carbohydrates*it.quantity/100.0
             prot += it.product.protein*it.quantity/100.0
         }
-        calories.text =cal.toString() +" ккал."
-        proteins.text = prot.toString()
-        fats.text = fat.toString()
-        curbs.text = carbs.toString()
+        calories.text =("%.2f".format(cal)) +" ккал."
+        proteins.text = ("%.2f".format(prot))
+        fats.text = ("%.2f".format(fat))
+        curbs.text = ("%.2f".format(carbs))
+
     }
 
 }

@@ -58,9 +58,13 @@ class AddEatingActivity : AppCompatActivity() {
         val addEatingApiService = retrofit.create(EatingApi::class.java)
 
         val selectedDateMillis = intent.getLongExtra("selectedDate", 0)
+
         val selectedDate = Calendar.getInstance()
         selectedDate.timeInMillis = selectedDateMillis
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val formattedDate = dateFormat.format(selectedDate.time)
 
+        Log.d("SELECTEDDATA", formattedDate)
 
         backButton =findViewById(R.id.backbutton)
         editTextSetTime = findViewById(R.id.etTime)
@@ -97,7 +101,7 @@ class AddEatingActivity : AppCompatActivity() {
                     p0: Call<Void>,
                     p1: Response<Void>) {
                     if (p1.isSuccessful) {
-                        Toast.makeText(applicationContext, "Продукт сохранен", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${p1.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -123,7 +127,7 @@ class AddEatingActivity : AppCompatActivity() {
             products1,
             object : FoodItemAdapter.FoodItemActionListener{
                 override fun OnClickItem(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт",Toast.LENGTH_SHORT).show()
+
                 }
             },
             object : FoodItemAdapter.OnItemClickListener{

@@ -145,7 +145,8 @@
         app:layout_constraintTop_toBottomOf="@id/header_title"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -159,7 +160,8 @@
         app:layout_constraintTop_toBottomOf="@id/proteins"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -173,7 +175,8 @@
         app:layout_constraintTop_toBottomOf="@id/fats"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"
@@ -186,7 +189,8 @@
         app:layout_constraintTop_toBottomOf="@id/carbs"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:inputType="number"/>
 
 
     <androidx.constraintlayout.widget.Guideline

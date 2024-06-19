@@ -1,9 +1,13 @@
 package com.example.lightweight.Models
 
+import java.io.Serializable
+
 data class Exercize(
     val id : String,
     val name: String,
     val unit: String,
-    var isSaved: Boolean = false
-) {
+    var count: String,
+    var isSaved: Boolean = false,
+    var hideInput: Boolean= false,
+):Serializable {
 }

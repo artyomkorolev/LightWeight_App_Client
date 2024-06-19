@@ -94,10 +94,10 @@ class GalleryActivity : AppCompatActivity() {
     }
     private fun deletePhoto(photo: Photo) {
         val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Delete Photo")
-        alertDialog.setMessage("Are you sure you want to delete this photo?")
+        alertDialog.setTitle("Удаление фото")
+        alertDialog.setMessage("Вы действительно хотите удалить фото?")
 
-        alertDialog.setPositiveButton("Yes") { _, _ ->
+        alertDialog.setPositiveButton("Да") { _, _ ->
             // Delete the photo here
             val authToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis"
             val retrofit = Retrofit.Builder()
@@ -127,7 +127,7 @@ class GalleryActivity : AppCompatActivity() {
             })
         }
 
-        alertDialog.setNegativeButton("No") { _, _ ->
+        alertDialog.setNegativeButton("Нет") { _, _ ->
             // Do nothing
         }
 
