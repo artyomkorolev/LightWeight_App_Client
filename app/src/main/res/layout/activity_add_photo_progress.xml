@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EatingActivities.AddEatingActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
     <Button
         android:id="@+id/backbutton"
         android:layout_width="wrap_content"
@@ -46,7 +47,8 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/setMass"
@@ -58,7 +60,9 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/nameFood"
         tools:ignore="TouchTargetSizeCheck"
-        android:gravity="end"/>
+        android:gravity="end"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"/>
 
 
 
@@ -72,6 +76,7 @@
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
 
     <androidx.constraintlayout.widget.Barrier
@@ -93,7 +98,9 @@
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         tools:ignore="TouchTargetSizeCheck"
-        android:gravity="end"/>
+        android:gravity="end"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
     <TextView
         android:id="@+id/textphoto"
         android:layout_width="wrap_content"
@@ -103,6 +110,7 @@
         android:layout_marginTop="42dp"
         android:text="Фото"
         android:textSize="16dp"
+        android:textColor="@color/black"
         />
     <ImageView
         android:id="@+id/addphoto"

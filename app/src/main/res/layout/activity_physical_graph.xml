@@ -48,7 +48,9 @@
         app:layout_constraintTop_toBottomOf="@id/grayline"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
 
 
 
@@ -61,7 +63,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="55dp"
-        android:layout_marginBottom="188dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/graph_border"
 
         />

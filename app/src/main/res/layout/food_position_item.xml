@@ -2,117 +2,135 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="85dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/shape_position_item_food"
     android:orientation="horizontal"
-    android:gravity="center_vertical">
+
+    >
     <TextView
         android:layout_marginStart="8dp"
         android:id="@+id/nameItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Огурец"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/textkbju"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=" | кбжу"
+        android:text="КБЖУ"
         android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fooditemcal"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameItem"
         />
     <TextView
         android:id="@+id/fooditemcal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="77"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/slesh1"
+        app:layout_constraintStart_toEndOf="@id/textkbju"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:layout_marginStart="30dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/slesh1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="/"
+        app:layout_constraintStart_toEndOf="@id/fooditemcal"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fooditemproteins"
         />
     <TextView
     android:id="@+id/fooditemproteins"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="17"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/slesh2"
+        app:layout_constraintStart_toEndOf="@id/slesh1"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
     <TextView
     android:id="@+id/slesh2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="/"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fooditemfats"
+        app:layout_constraintStart_toEndOf="@id/fooditemproteins"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
     <TextView
     android:id="@+id/fooditemfats"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="2"
+        app:layout_constraintStart_toEndOf="@id/slesh2"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/slesh3"
     />
     <TextView
     android:id="@+id/slesh3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="/"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fooditemcarbs"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@id/fooditemfats"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
     />
     <TextView
     android:id="@+id/fooditemcarbs"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="0,09"
-    android:layout_marginEnd="20dp"
-    app:layout_constraintEnd_toStartOf="@id/saveGramm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    android:layout_marginEnd="100dp"
+        app:layout_constraintStart_toEndOf="@id/slesh3"
+        app:layout_constraintBaseline_toBaselineOf="@id/textkbju"
+        android:textColor="@color/black"
     />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/saveGramm"
-        android:layout_width="70dp"
-        android:layout_height="20dp"
-
-        android:layout_marginEnd="50dp"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:textColorHint="@color/gray"
+        android:hint="Введите количество грамм"
         android:background="@drawable/input_edit_text_field"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
         app:layout_constraintEnd_toEndOf="parent"
-
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/black"
+        android:inputType="number"
+        android:singleLine="true"
+
         >
 
     </com.google.android.material.textfield.TextInputEditText>
+    <TextView
+        android:id="@+id/gramms"
+        android:text="100 г"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+
+        />
 
     <ImageView
         android:id="@+id/save"
@@ -123,7 +141,7 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
 
 
         />
@@ -137,7 +155,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
 
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

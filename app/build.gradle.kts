@@ -11,8 +11,8 @@ android {
         applicationId = "com.example.lightweight"
         minSdk = 29
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,10 +57,11 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.10.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
     implementation("androidx.activity:activity-ktx:1.2.3")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 }

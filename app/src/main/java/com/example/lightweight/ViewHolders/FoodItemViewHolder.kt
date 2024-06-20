@@ -1,5 +1,7 @@
 package com.example.lightweight.ViewHolders
 
+import android.app.AlertDialog
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,32 +19,47 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     private val save: ImageView = itemView.findViewById(R.id.save)
     private val delete: ImageView = itemView.findViewById(R.id.delete)
     private val saveGramm: TextInputEditText = itemView.findViewById(R.id.saveGramm)
+    private val gramms:TextView = itemView.findViewById(R.id.gramms)
 
 
     fun bind(item: FoodItem,
              onSaveClick: (FoodItem) -> Unit,
              onDeleteClick: (FoodItem) -> Unit,
              onGrammChange: (FoodItem, String) -> Unit,
-             hideElements: Boolean = false
+             hideElements: Boolean = false,
+             hideInputField: Boolean =false
              ){
         name.text = item.name
         calories.text = item.calories.toString()
         proteins.text = item.protein.toString()
         fats.text = item.fats.toString()
         carbs.text = item.carbohydrates.toString()
+        saveGramm.setText(item.count)
         if (hideElements) {
             save.visibility = View.GONE
             delete.visibility = View.GONE
             saveGramm.visibility = View.GONE
-        }else {
+            gramms.visibility=View.VISIBLE
+        }else if (hideInputField){
+            saveGramm.visibility = View.GONE
+            itemView.layoutParams.height = 60.dp
             save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
             delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
+
+        } else {
+            save.visibility = if (item.isSaved) View.GONE else View.VISIBLE
+            delete.visibility = if (item.isSaved) View.VISIBLE else View.GONE
+            saveGramm.isEnabled = !item.isSaved
         }
         save.setOnClickListener {
             onSaveClick(item)
+            if (saveGramm.text.isNullOrEmpty() and !hideInputField){
+
+            }else{
+
             save.visibility = View.GONE
             item.isSaved = true
-            delete.visibility = View.VISIBLE
+            delete.visibility = View.VISIBLE}
         }
 
         delete.setOnClickListener {
@@ -54,10 +71,18 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
 
         saveGramm.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                onGrammChange(item, saveGramm.text.toString())
+                val newCount = saveGramm.text.toString()
+                item.count = newCount // Сохраняем новое значение в объект
+                onGrammChange(item, newCount)
             }
         }
 
     }
+    fun getGrammValue(): String {
+        return saveGramm.text.toString()
+    }
+    val Int.dp: Int
+        get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+
 
 }

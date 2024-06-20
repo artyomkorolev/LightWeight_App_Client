@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AuthReg.LoginActivity"
+    android:background="#2026BF">
+
+    <ImageView
+        android:id="@+id/tomato"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/regdraw"
+        android:paddingTop="10dp"
+
+        />
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tomato"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Добро пожаловать!"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:paddingBottom="20dp"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/welcome"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- All the child views of the ScrollView go here -->
+
+            <TextView
+                android:id="@+id/textauth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Регистрация"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="#2026BF"
+                android:paddingTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <View
+                android:id="@+id/lineGreen"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textauth"
+                android:background="#2026BF"
+                android:layout_marginHorizontal="150dp"
+                android:layout_marginTop="5dp"
+                />
+            <TextView
+                android:id="@+id/textLog"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Придумайте логин"
+                android:textColor="#2026BF"
+                android:textSize="25dp"
+                android:paddingStart="51dp"
+                android:paddingTop="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lineGreen"
+                />
+
+            <EditText
+                android:textSize="23dp"
+                android:paddingStart="12dp"
+                android:hint="Введите логин"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/black"
+                android:id="@+id/login"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/textfield_reg"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textLog"
+                tools:ignore="SpeakableTextPresentCheck" />
+            <TextView
+                android:id="@+id/textPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Придумайте пароль"
+                android:textColor="#2026BF"
+                android:textSize="25dp"
+                android:paddingStart="51dp"
+                android:paddingTop="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login"
+                />
+
+            <EditText
+                android:textSize="23dp"
+                android:paddingStart="12dp"
+                android:hint="Введите пароль"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/black"
+                android:id="@+id/password"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginHorizontal="30dp"
+                android:background="@drawable/textfield_reg"
+                android:singleLine="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textPass"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <TextView
+                android:id="@+id/apply"
+                android:layout_width="0dp"
+                android:layout_height="54dp"
+                app:layout_constraintTop_toBottomOf="@id/password"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Зарегистрироваться"
+                android:textStyle="bold"
+                android:textSize="25dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/buttonregister"
+                android:layout_marginTop="60dp"
+                android:layout_marginHorizontal="64dp"/>
+            <TextView
+                android:id="@+id/registration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/apply"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="или войдите здесь"
+                android:textColor="#2026BF"
+                android:textSize="17dp"
+                android:layout_marginTop="10dp"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

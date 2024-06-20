@@ -24,11 +24,15 @@ class EditAddExercizeActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var name:EditText
     private lateinit var unit:EditText
+    private lateinit var authtoken:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_add_exercize)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val addOwnExerciseService = retrofit.create(ExerciseApi::class.java)
 
@@ -45,17 +49,19 @@ class EditAddExercizeActivity : AppCompatActivity() {
             val exercizeItem = Exercize(
                 id = UUID.randomUUID().toString(),
                 name = exercizeName,
-                unit = exercizeUnit
+                unit = exercizeUnit,
+                count = ""
+
             )
 
-            val call  = addOwnExerciseService.addOwnExercise( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA",exercizeItem)
+            val call  = addOwnExerciseService.addOwnExercise( authtoken,exercizeItem)
             call.enqueue(object : Callback<Exercize> {
                 override fun onResponse(
                     call: Call<Exercize>,
                     response: Response<Exercize>
                 ) {
                     if (response.isSuccessful) {
-                        Toast.makeText(applicationContext, "Продукт сохранен", Toast.LENGTH_SHORT).show()
+
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }

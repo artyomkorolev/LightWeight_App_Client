@@ -19,4 +19,7 @@ interface ExerciseApi {
 
     @DELETE("/exercise/{id}")
     fun deleteOwnExercise(@Header("Authorization") authToken: String,@Path("id") exerciseId: String) : Call<Void>
+
+    @GET("/exercise/all")
+    fun getAllExercise(@Header("Authorization") authToken: String):Call<List<Exercize>>
 }

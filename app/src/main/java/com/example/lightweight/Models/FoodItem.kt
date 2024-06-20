@@ -9,7 +9,10 @@ data class FoodItem(
      val protein:Double,
      val fats:Double,
      val carbohydrates:Double,
-     var isSaved: Boolean = false
+     var isSaved: Boolean = false,
+     var count : String,
+     var hideInput: Boolean= false,
+     val available: Boolean = true
 
 ):Serializable {
 }

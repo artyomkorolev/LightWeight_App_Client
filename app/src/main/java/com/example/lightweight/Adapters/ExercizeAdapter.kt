@@ -1,14 +1,19 @@
 package com.example.lightweight.Adapters
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Models.Exercize
 import com.example.lightweight.R
 import com.example.lightweight.ViewHolders.ExercizeViewHolder
 
 class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercizeActionListener: ExercizeActionListener,
-                      private val onItemClickListener: OnItemClickListener, private val hideElements: Boolean = false
+                      private val onItemClickListener: OnItemClickListener,
+                      private val hideElements: Boolean = false,
+                        private val hideInputField: Boolean = false
 ):RecyclerView.Adapter<ExercizeViewHolder>() {
     private var originalItems: List<Exercize> = exercizes
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercizeViewHolder {
@@ -25,8 +30,12 @@ class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercize
         val exercizeItem = exercizes[position]
         holder.bind(
             exercizeItem,
-            { onItemClickListener.onSaveClick(exercizeItem)
-                exercizeItem.isSaved = true
+            { onItemClickListener.onSaveClick(exercizeItem,holder)
+                if(holder.getGrammValue().isNullOrEmpty()){}else{
+                    hideKeyboard(holder.itemView.context, holder.itemView)
+                    exercizeItem.isSaved = true
+                }
+
                 sortItems()
                 notifyDataSetChanged()
             },
@@ -35,7 +44,9 @@ class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercize
                 sortItems()
                 notifyDataSetChanged()
             },
-            { item, newCount -> onItemClickListener.onGrammChange(item, newCount) }, hideElements
+            { item, newCount -> onItemClickListener.onGrammChange(item, newCount) },
+            hideElements,
+            hideInputField
         )
         holder.itemView.setOnClickListener{
             exercizeActionListener.OnClickItem(exercizes[position])
@@ -57,8 +68,12 @@ class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercize
         fun OnClickItem(exercize: Exercize)
     }
     interface OnItemClickListener {
-        fun onSaveClick(exercize: Exercize)
+        fun onSaveClick(exercize: Exercize, holder: ExercizeViewHolder)
         fun onDeleteClick(exercize: Exercize)
         fun onGrammChange(exercize: Exercize, newCount: String)
+    }
+    private fun hideKeyboard(context: Context, view: View) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

@@ -15,6 +15,8 @@ import com.example.lightweight.Adapters.ExercizeAdapter
 import com.example.lightweight.Models.Exercize
 import com.example.lightweight.Models.FoodItem
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.ExercizeViewHolder
+import com.example.lightweight.ViewHolders.ExersisesViewHolder
 import com.example.lightweight.retrofit.ExerciseApi
 import com.example.lightweight.retrofit.FoodItemApi
 import retrofit2.Call
@@ -32,18 +34,19 @@ class EditExercizeActivity : AppCompatActivity() {
     private lateinit var addExercizeButton: ImageView
     private lateinit var etSearchExercize: EditText
     private val exercises = ArrayList<Exercize>()
+    private lateinit var authtoken:String
     private fun deleteSelectedItems() {
         val selectedItems = exercises.filter { it.isSaved }
         val idsToDelete = selectedItems.map { it.id }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val exerciseApi = retrofit.create(ExerciseApi::class.java)
 
         for (id in idsToDelete) {
-            val call = exerciseApi.deleteOwnExercise("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA", id)
+            val call = exerciseApi.deleteOwnExercise("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20xIiwiaWF0IjoxNzE4NjI4NTY4LCJleHAiOjE3MTkyMzMzNjh9.m4PNvxZSyLoPvZ4Aj5B4W_CPDN1lvH2SDdqQ0TsqUis", id)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {
@@ -66,6 +69,9 @@ class EditExercizeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_exercize)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
 
         backButton = findViewById(R.id.backbutton)
         rvExercizeList = findViewById(R.id.rvExercizeList)
@@ -85,7 +91,7 @@ class EditExercizeActivity : AppCompatActivity() {
         }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnExercisesService = retrofit.create(ExerciseApi::class.java)
 
@@ -97,26 +103,26 @@ class EditExercizeActivity : AppCompatActivity() {
             exercises,
             object : ExercizeAdapter.ExercizeActionListener{
                 override fun OnClickItem(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Вы нажали на упражнение", Toast.LENGTH_SHORT).show()
+
                 }
             }, object : ExercizeAdapter.OnItemClickListener{
-                override fun onSaveClick(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                override fun onSaveClick(exercize: Exercize,holder: ExercizeViewHolder) {
+
                 }
 
                 override fun onDeleteClick(exercize: Exercize) {
-                    Toast.makeText(applicationContext,"Удалить",Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onGrammChange(exercize: Exercize, newCount: String) {
-                    Toast.makeText(applicationContext,"Изменить",Toast.LENGTH_SHORT).show()
+
                 }
 
-            }
+            }, hideInputField = true
         )
         rvExercizeList.adapter=exercizeAdapter
 
-        val call  =getOwnExercisesService.getOwnExercise ( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA")
+        val call  =getOwnExercisesService.getOwnExercise ( authtoken)
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 

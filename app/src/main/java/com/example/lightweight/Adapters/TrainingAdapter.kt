@@ -3,11 +3,12 @@ package com.example.lightweight.Adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lightweight.Models.GetTraining
 import com.example.lightweight.Models.Training
 import com.example.lightweight.R
 import com.example.lightweight.ViewHolders.TrainingViewHolder
 
-class TrainingAdapter(private val trainigns: List<Training>, private val trainingActionListener: TrainingActionListener,
+class TrainingAdapter(private val trainigns: List<GetTraining>, private val trainingActionListener: TrainingActionListener,
 
                       ):RecyclerView.Adapter<TrainingViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainingViewHolder {
@@ -26,7 +27,7 @@ class TrainingAdapter(private val trainigns: List<Training>, private val trainin
         }
     }
     interface TrainingActionListener{
-        fun OnClickItem(training: Training)
+        fun OnClickItem(training: GetTraining)
     }
 
 }

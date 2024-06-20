@@ -1,15 +1,21 @@
 package com.example.lightweight.Adapters
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.ViewHolders.FoodItemViewHolder
 import com.example.lightweight.Models.FoodItem
 import com.example.lightweight.R
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 
 class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodItemActionListener: FoodItemActionListener,
                       private val onItemClickListener: OnItemClickListener,
-                      private val hideElements: Boolean = false):RecyclerView.Adapter<FoodItemViewHolder>() {
+                      private val hideElements: Boolean = false,
+                      private val hideInputField: Boolean = false
+                        ):RecyclerView.Adapter<FoodItemViewHolder>() {
     private var originalItems: List<FoodItem> = fooditems
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodItemViewHolder {
@@ -27,8 +33,13 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
         val foodItem = fooditems[position]
         holder.bind(
             foodItem,
-            { onItemClickListener.onSaveClick(foodItem)
-                foodItem.isSaved = true
+            { onItemClickListener.onSaveClick(foodItem,holder)
+                if (holder.getGrammValue().isNullOrEmpty()){}else{
+                    hideKeyboard(holder.itemView.context,holder.itemView)
+                    foodItem.isSaved = true
+                }
+
+
             sortItems()
             notifyDataSetChanged()
             },
@@ -38,8 +49,10 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
             notifyDataSetChanged()
             },
             { item, newGramm -> onItemClickListener.onGrammChange(item, newGramm) },
-            hideElements
+            hideElements,
+            hideInputField
         )
+
         holder.itemView.setOnClickListener{
             foodItemActionListener.OnClickItem(fooditems[position])
         }
@@ -66,9 +79,13 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
     interface FoodItemActionListener{
         fun OnClickItem(foodItem: FoodItem)    }
     interface OnItemClickListener {
-        fun onSaveClick(foodItem: FoodItem)
+        fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder)
         fun onDeleteClick(foodItem: FoodItem)
         fun onGrammChange(foodItem: FoodItem, newGramm: String)
+    }
+    private fun hideKeyboard(context: Context, view: View) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 

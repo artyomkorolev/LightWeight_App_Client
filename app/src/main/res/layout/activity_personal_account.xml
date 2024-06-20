@@ -47,18 +47,35 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
+    <TextView
+        android:id="@+id/editpass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сменить пароль"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/nameFood"
+        android:layout_marginTop="42dp"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"/>
+
 
     <TextView
         android:id="@+id/tvLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:text="Почта пользователя"
+
+        android:text="Логин"
         app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
-        app:layout_constraintStart_toEndOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
+
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        />
 
 
 
@@ -69,20 +86,24 @@
         android:layout_height="wrap_content"
         android:text="Статистика тренировок"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
-        app:layout_constraintTop_toBottomOf="@id/nameFood"
+        app:layout_constraintTop_toBottomOf="@id/editpass"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
 
     <TextView
         android:id="@+id/statFood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Статистика Питания"
+        android:text="Статистика питания"
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/statFK"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/management"
@@ -93,6 +114,8 @@
         app:layout_constraintTop_toBottomOf="@id/statFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/profileHeight"
@@ -103,13 +126,16 @@
         app:layout_constraintTop_toBottomOf="@id/management"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <TextView
         android:id="@+id/profileHeightEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Укажите рост"
-
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         app:layout_constraintStart_toStartOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/management"
         app:layout_constraintEnd_toStartOf="@id/roghtGuideline"
@@ -126,13 +152,44 @@
         app:layout_constraintTop_toBottomOf="@id/profileHeight"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
+    <TextView
+        android:id="@+id/authActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Войти"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/profileWidth"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:textColor="@color/green"
+        android:textColorHint="@color/gray"
+
+        />
+    <TextView
+        android:id="@+id/exitAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Выйти"
+        app:layout_constraintStart_toStartOf="@id/leftGuideline"
+        app:layout_constraintTop_toBottomOf="@id/profileWidth"
+        android:textSize="16dp"
+        android:layout_marginTop="42dp"
+        android:textColor="@color/red62"
+        android:textColorHint="@color/gray"
+        android:visibility="gone"
+        />
+
+
     <TextView
         android:id="@+id/profileWidthEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Укажите вес"
-
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         app:layout_constraintStart_toStartOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/profileHeight"
         app:layout_constraintEnd_toStartOf="@id/roghtGuideline"

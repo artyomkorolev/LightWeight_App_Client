@@ -18,6 +18,8 @@
         android:gravity="center"
         android:textSize="22dp"
         android:layout_marginTop="14dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <View
         android:layout_marginTop="14dp"
@@ -58,8 +60,9 @@
         app:layout_constraintTop_toBottomOf="@id/addphoto"
         app:layout_constraintStart_toEndOf="@id/leftGuideline"
         app:layout_constraintEnd_toStartOf="@id/roghtGuideline"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toTopOf="@id/line2"
-        android:layout_marginBottom="63dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         tools:listitem="@layout/gallery_item"
 

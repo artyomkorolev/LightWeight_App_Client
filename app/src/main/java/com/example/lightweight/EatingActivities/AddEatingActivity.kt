@@ -1,14 +1,18 @@
 package com.example.lightweight.EatingActivities
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import android.icu.util.TimeZone
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,9 +20,23 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.FoodItemAdapter
+import com.example.lightweight.Models.Eating
 import com.example.lightweight.Models.FoodItem
+import com.example.lightweight.Models.GetEating
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.FoodItemViewHolder
+import com.example.lightweight.retrofit.EatingApi
+import com.example.lightweight.retrofit.FoodItemApi
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.ArrayList
 import java.util.Locale
+import java.util.UUID
 
 class AddEatingActivity : AppCompatActivity() {
 
@@ -29,14 +47,48 @@ class AddEatingActivity : AppCompatActivity() {
     private lateinit var etSearchFood:EditText
     private lateinit var saveEatingButton:Button
     private  var searchText: String? = null
+    private var products1 = ArrayList<FoodItem>()
+    private var prod = mutableListOf<Pair<FoodItem, Double>>()
+    private var products = mutableMapOf<UUID, Double>()
+    private lateinit var authtoken: String
+    private var isGuest: Boolean = false
+
+    companion object {
+        const val REQUEST_CODE_ADD_FOOD_ITEM = 1
+    }
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_eating)
+        addFoodItemButton = findViewById(R.id.addFoodItem)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        if (authtoken.isEmpty()) {
+            isGuest = true
+            addFoodItemButton.visibility= View.GONE
+        } else {
+            authtoken = "Bearer $authtoken"
+            addFoodItemButton.visibility= View.VISIBLE
+        }
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://light-weight.site:8080")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val getFoodItemsService = retrofit.create(FoodItemApi::class.java)
+        val addEatingApiService = retrofit.create(EatingApi::class.java)
+
+        val selectedDateMillis = intent.getLongExtra("selectedDate", 0)
+
+        val selectedDate = Calendar.getInstance()
+        selectedDate.timeInMillis = selectedDateMillis
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val formattedDate = dateFormat.format(selectedDate.time)
+
+        Log.d("SELECTEDDATA", formattedDate)
 
         backButton =findViewById(R.id.backbutton)
         editTextSetTime = findViewById(R.id.etTime)
-        addFoodItemButton = findViewById(R.id.addFoodItem)
+
         rvlistFoodItems = findViewById(R.id.rvFoodItemList)
 
         saveEatingButton = findViewById(R.id.saveButton)
@@ -44,44 +96,96 @@ class AddEatingActivity : AppCompatActivity() {
 
         addFoodItemButton.setOnClickListener{
             val addIntent = Intent(this, AddFoodItemActivity::class.java)
-            startActivity(addIntent)
+            startActivityForResult(addIntent, REQUEST_CODE_ADD_FOOD_ITEM)
         }
 
         saveEatingButton.setOnClickListener {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            dateFormat.timeZone = TimeZone.getTimeZone("UTC") // Установка временной зоны UTC для корректного представления времени
+            val formattedDate = dateFormat.format(selectedDate.time) // selectedDate - ваш объект Calendar или Date
+
+            Log.d("AddEatingActivity", "Formatted Date: $formattedDate")
+
+            // Выводим foodItemsMap в лог
+            products.forEach { (key, value) ->
+                Log.d("AddEatingActivity", "Food Item: Key=$key, Value=$value")
+            }
+
+            if (isGuest){
+                saveGuestEating(Eating("1", formattedDate, products),prod)
+            }else{
+            val callEating= addEatingApiService.addEating(authtoken,
+                Eating("1",formattedDate,products)
+            )
+
+            callEating.enqueue(object : Callback<Void>{
+                override fun onResponse(
+                    p0: Call<Void>,
+                    p1: Response<Void>) {
+                    if (p1.isSuccessful) {
+
+                    } else {
+                        Toast.makeText(applicationContext, "Ошибка: ${p1.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(p0: Call<Void>, p1: Throwable) {
+                    Log.e("NetworkError", "Failed to execute request", p1)
+                    Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
             val backIntent=Intent(this, MainActivity::class.java)
             startActivity(backIntent)
-            Toast.makeText(applicationContext,"Вы сохранили прием пищи",Toast.LENGTH_SHORT).show()
-        }
+
+        }}
         backButton.setOnClickListener{
             val backIntent=Intent(this, MainActivity::class.java)
             startActivity(backIntent)
 
         }
         val foodItemAdapter = FoodItemAdapter(
-            listOf(
-                FoodItem("1","Огурец",200, 40.0, 12.0, 41.0),
-                FoodItem("1","Помидор",200, 40.0, 12.0, 41.0),
-                FoodItem("1","Кукуруза",200, 40.0, 12.0, 41.0),
-                FoodItem("1","Хлеб",200, 40.0, 12.0, 41.0),
-                FoodItem("1","Мясо Свинина",200, 40.0, 12.0, 41.0),
-                FoodItem("1","Мясо курицы",200, 40.0, 12.0, 41.0)
-
-            ),
+            products1,
             object : FoodItemAdapter.FoodItemActionListener{
                 override fun OnClickItem(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт",Toast.LENGTH_SHORT).show()
+
                 }
             },
             object : FoodItemAdapter.OnItemClickListener{
-                override fun onSaveClick(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
+                    val grammValue =holder.getGrammValue()
+                    if (grammValue.isNullOrEmpty()){
+                        val alertDialog = AlertDialog.Builder(this@AddEatingActivity)
+                        alertDialog.setTitle("Ошибка")
+                        alertDialog.setMessage("Перед добавлением введите количество грамм")
+                        alertDialog.setPositiveButton("ОК") { _, _ ->
+                        }
+                        alertDialog.show()
+                    }else{
+                    products[UUID.fromString(foodItem.id)]= grammValue.toDouble()
+                    prod.add(foodItem to grammValue.toDouble())
+
+                    for ((key, value) in products) {
+                        Log.d("FoodItemsMap", "Key: $key, Value: $value")
+                    }}
+
                 }
 
                 override fun onDeleteClick(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+                    products.remove(UUID.fromString(foodItem.id))
+                    val iterator = prod.iterator()
+                    while (iterator.hasNext()) {
+                        val (item, _) = iterator.next()
+                        if (item.id == foodItem.id) {
+                            iterator.remove()
+                            break
+                        }
+                    }
+
                 }
                 override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
-                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+
                 }
 
             }
@@ -96,7 +200,7 @@ class AddEatingActivity : AppCompatActivity() {
             val timePicker = TimePickerDialog(
                 this, // Убедитесь, что используете правильный контекст
                 { _, hourOfDay, minute ->
-                    val selectedDate = Calendar.getInstance()
+
                     selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     selectedDate.set(Calendar.MINUTE, minute)
                     val formatDate = SimpleDateFormat("HH:mm", Locale("ru"))
@@ -131,5 +235,63 @@ class AddEatingActivity : AppCompatActivity() {
 
         etSearchFood.addTextChangedListener(textWatcher)
 
+        loadFoodItems(getFoodItemsService, foodItemAdapter)
+
+
+
+
+
     }
+    private fun loadFoodItems(getFoodItemsService: FoodItemApi, foodItemAdapter: FoodItemAdapter) {
+        val call = getFoodItemsService.getAllProducts(authtoken)
+        call.enqueue(object : Callback<List<FoodItem>> {
+            override fun onResponse(
+                call: Call<List<FoodItem>>,
+                response: Response<List<FoodItem>>
+            ) {
+                val point = 0
+                if (response.code() == 200) {
+                    products1.clear()
+                    if (response.body()?.isNotEmpty() == true) {
+                        products1.addAll(response.body()!!)
+                        foodItemAdapter.notifyDataSetChanged()
+                    }
+                }
+            }
+
+            override fun onFailure(p0: Call<List<FoodItem>>, p1: Throwable) {
+                Log.e("NetworkError", "Failed to execute request", p1)
+                Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    private fun saveGuestEating(eating: Eating,foodItem: List<Pair<FoodItem, Double>>) {
+
+        val getEating = eating.toGetEating(foodItem)
+
+        // Сохраняем GetEating в SharedPreferences
+        val sharedPreferences = getSharedPreferences("guestEatings", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val existingEatingsJson = sharedPreferences.getString("eatings", "[]")
+        val existingEatings: MutableList<GetEating> = Gson().fromJson(existingEatingsJson, object : TypeToken<MutableList<GetEating>>() {}.type)
+        existingEatings.add(getEating)
+        editor.putString("eatings", Gson().toJson(existingEatings))
+        editor.apply()
+        val backIntent=Intent(this, MainActivity::class.java)
+        startActivity(backIntent)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ADD_FOOD_ITEM && resultCode == RESULT_OK) {
+            // Продукт успешно добавлен, обновляем список продуктов
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://light-weight.site:8080")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val getFoodItemsService = retrofit.create(FoodItemApi::class.java)
+            val foodItemAdapter = rvlistFoodItems.adapter as FoodItemAdapter
+            loadFoodItems(getFoodItemsService, foodItemAdapter)
+        }
+    }
+
+
 }

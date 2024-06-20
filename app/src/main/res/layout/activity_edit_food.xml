@@ -49,6 +49,8 @@
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         />
     <ImageView
         android:id="@+id/addFoodItem"

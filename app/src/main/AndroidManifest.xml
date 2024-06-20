@@ -8,6 +8,7 @@
         android:maxSdkVersion="32" />
 
     <application
+        android:name=".AuthReg.MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,9 +20,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".AuthReg.RegistrationActivity"
+            android:exported="false" />
+        <activity
             android:name=".AuthReg.LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".ManagementActivities.GraphActivities.PhysicalGraphActivity"
             android:exported="false" />
@@ -63,7 +66,8 @@
             android:exported="false" />
         <activity
             android:name=".PhysicalActivities.AddTrainingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".PhysicalActivities.ActivityPhysical"
             android:exported="false" />

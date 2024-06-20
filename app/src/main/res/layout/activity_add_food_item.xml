@@ -46,9 +46,12 @@
         app:layout_constraintStart_toStartOf="@id/leftGuideline"
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
+        android:id="@+id/etnamefood"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
@@ -56,7 +59,9 @@
         app:layout_constraintBaseline_toBaselineOf="@id/nameFood"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/nameFood"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"/>
 
 
 
@@ -69,6 +74,7 @@
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/proteins"
@@ -79,6 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/header_title"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/fats"
@@ -89,6 +96,7 @@
         app:layout_constraintTop_toBottomOf="@id/proteins"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/carbs"
@@ -99,6 +107,7 @@
         app:layout_constraintTop_toBottomOf="@id/fats"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <TextView
         android:id="@+id/kals"
@@ -109,6 +118,7 @@
         app:layout_constraintTop_toBottomOf="@id/carbs"
         android:textSize="16dp"
         android:layout_marginTop="42dp"
+        android:textColor="@color/black"
         />
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/textBarrier"
@@ -128,7 +138,11 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/header_title"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColorHint="@color/gray"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -140,7 +154,11 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/proteins"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColorHint="@color/gray"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -152,7 +170,11 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColorHint="@color/gray"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"
@@ -163,7 +185,11 @@
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
         app:layout_constraintStart_toEndOf="@id/textBarrier"
         app:layout_constraintTop_toBottomOf="@id/fats"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:textColorHint="@color/gray"
+        android:inputType="number"
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -171,7 +197,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="56dp"/>
+        app:layout_constraintGuide_end="56dp"
+        />
     <View
         android:id="@+id/grayline2"
         android:layout_width="match_parent"

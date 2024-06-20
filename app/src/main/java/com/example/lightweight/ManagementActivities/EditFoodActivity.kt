@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.FoodItemAdapter
 import com.example.lightweight.Models.FoodItem
 import com.example.lightweight.R
+import com.example.lightweight.ViewHolders.FoodItemViewHolder
 import com.example.lightweight.retrofit.FoodItemApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,6 +30,7 @@ class EditFoodActivity : AppCompatActivity() {
     private lateinit var etSearchFood: EditText
     private lateinit var saveEatingButton: Button
     private val foodItems = ArrayList<FoodItem>()
+    private lateinit var authtoken:String
 
 
     private fun deleteSelectedItems() {
@@ -36,13 +38,13 @@ class EditFoodActivity : AppCompatActivity() {
         val idsToDelete = selectedItems.map { it.id }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val foodItemApi = retrofit.create(FoodItemApi::class.java)
 
         for (id in idsToDelete) {
-            val call = foodItemApi.deleteOwnProduckt("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaXNoYSIsImlhdCI6MTcxODIwMzc4MSwiZXhwIjoxNzE4ODA4NTgxfQ.OHQ-d7EklIKy-Tnk9-8QG3VOHbv8bciVwEp5Z252leA", id)
+            val call = foodItemApi.deleteOwnProduckt(authtoken, id)
             call.enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (!response.isSuccessful) {
@@ -66,7 +68,9 @@ class EditFoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_food)
-
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+        authtoken = "Bearer $authtoken"
         backButton =findViewById(R.id.backbutton)
 
         addFoodItemButton = findViewById(R.id.addFoodItem)
@@ -87,7 +91,7 @@ class EditFoodActivity : AppCompatActivity() {
 
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://212.113.121.36:8080")
+            .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnFoodItemsService = retrofit.create(FoodItemApi::class.java)
 
@@ -96,29 +100,29 @@ class EditFoodActivity : AppCompatActivity() {
             foodItems,
             object : FoodItemAdapter.FoodItemActionListener{
                 override fun OnClickItem(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Вы нажали на продукт", Toast.LENGTH_SHORT).show()
+
                 }
             },
             object : FoodItemAdapter.OnItemClickListener{
-                override fun onSaveClick(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"Сохранить",Toast.LENGTH_SHORT).show()
+                override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
+
 
                 }
 
                 override fun onDeleteClick(foodItem: FoodItem) {
-                    Toast.makeText(applicationContext,"удалить",Toast.LENGTH_SHORT).show()
+
                 }
 
                 override fun onGrammChange(foodItem: FoodItem, newGramm: String) {
-                    Toast.makeText(applicationContext,"текст",Toast.LENGTH_SHORT).show()
+
                 }
 
-            }
+            }, hideInputField = true
         )
 
         rvlistFoodItems.adapter = foodItemAdapter
 
-        val call  = getOwnFoodItemsService.getOwnProducts( "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBcnR5b20iLCJpYXQiOjE3MTgzMDIyODcsImV4cCI6MTcxODkwNzA4N30.iABb33dsTXNHi1fifyk4dplSaXGou2_3FUm7VrwFRFk")
+        val call  = getOwnFoodItemsService.getOwnProducts( authtoken)
         call.enqueue(object : Callback<List<FoodItem>>{
             override fun onResponse(
 
@@ -131,6 +135,7 @@ class EditFoodActivity : AppCompatActivity() {
                     if (response.body()?.isNotEmpty() == true){
                         foodItems.addAll(response.body()!!)
                         foodItemAdapter.notifyDataSetChanged()
+
                     }
                 }
             }
@@ -169,6 +174,6 @@ class EditFoodActivity : AppCompatActivity() {
 
             val backIntent= Intent(this, ManagementActivity::class.java)
             startActivity(backIntent)
-            Toast.makeText(applicationContext,"Вы сохранили список своих продуктов", Toast.LENGTH_SHORT).show()
+
         }
 }}

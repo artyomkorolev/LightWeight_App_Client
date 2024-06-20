@@ -6,14 +6,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.ViewHolders.EatingViewHolder
 import com.example.lightweight.Models.Eating
+import com.example.lightweight.Models.GetEating
 import com.example.lightweight.R
 
-class EatingAdapter(private val eatings: List<Eating>, private  val eatingActionListener: EatingActionListener, private val totalCalTextView: TextView): RecyclerView.Adapter<EatingViewHolder>() {
+class EatingAdapter(private val eatings: List<GetEating>, private  val eatingActionListener: EatingActionListener, private val totalCalTextView: TextView): RecyclerView.Adapter<EatingViewHolder>() {
 
     private var totalCalories:Int = 0
 
     private fun updateTotalCalories(){
-        totalCalories = eatings.sumBy { it.calories.toInt() }
+      totalCalories = eatings.sumBy { it.products.sumBy { (it.product.calories*it.quantity/100.0).toInt() } }
     }
 
     fun updateCalories() {
@@ -43,6 +44,6 @@ class EatingAdapter(private val eatings: List<Eating>, private  val eatingAction
         }
     }
     interface EatingActionListener{
-        fun OnClickItem(eating: Eating)
+        fun OnClickItem(eating: GetEating)
     }
 }
