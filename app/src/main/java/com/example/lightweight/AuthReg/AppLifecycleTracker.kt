@@ -39,5 +39,7 @@ class AppLifecycleTracker : Application.ActivityLifecycleCallbacks {
         sharedPreferences.edit().clear().apply()
         val sharedPreferences1 = context.getSharedPreferences("guestTrainings", Context.MODE_PRIVATE)
         sharedPreferences1.edit().clear().apply()
+        val sharedPreferences2 = context.getSharedPreferences("guestPhoto",Context.MODE_PRIVATE)
+        sharedPreferences2.edit().clear().apply()
     }
 }
