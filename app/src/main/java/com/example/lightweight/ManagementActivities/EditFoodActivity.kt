@@ -135,6 +135,7 @@ class EditFoodActivity : AppCompatActivity() {
                     if (response.body()?.isNotEmpty() == true){
                         foodItems.addAll(response.body()!!)
                         foodItemAdapter.notifyDataSetChanged()
+
                     }
                 }
             }

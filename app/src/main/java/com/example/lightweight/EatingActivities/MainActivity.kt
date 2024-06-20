@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     private var isGuest: Boolean = false
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_LightWeight)
         super.onCreate(savedInstanceState)
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         buttonFk=findViewById(R.id.buttonFK)
         buttonGallery = findViewById(R.id.buttonGallery)
         buttonLK = findViewById(R.id.buttonLK)
+
         val selectedDate = Calendar.getInstance()
         var savedDate = SimpleDateFormat("yyyy-MM-dd", Locale("ru")).format(selectedDate.time)
 
@@ -70,8 +72,13 @@ class MainActivity : AppCompatActivity() {
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
         if (authtoken.isEmpty()) {
             isGuest = true
+            tvDate.text = "Гость"
+            tvDate.isEnabled =false
         } else {
             authtoken = "Bearer $authtoken"
+            tvDate.isEnabled = true
+            val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
+            tvDate.text = dateFormat.format(Calendar.getInstance().time)
         }
 
         buttonFk.setOnClickListener{
@@ -95,6 +102,7 @@ class MainActivity : AppCompatActivity() {
                     val checkIntent = Intent(this@MainActivity, CheckEatingActivity::class.java)
                     checkIntent.putExtra("products", ArrayList(eating.products) )
                     checkIntent.putExtra("idEating",eating.id)
+                    checkIntent.putExtra("timeEating",eating.dateTime)
                     startActivity(checkIntent)
                 }
             },
@@ -123,9 +131,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Data picker
-    val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
 
-    tvDate.text = dateFormat.format(Calendar.getInstance().time)
     tvDate.setOnClickListener {
         val getDate =Calendar.getInstance()
         val datePicker = DatePickerDialog(

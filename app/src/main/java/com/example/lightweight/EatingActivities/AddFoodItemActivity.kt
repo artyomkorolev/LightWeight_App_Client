@@ -1,5 +1,6 @@
 package com.example.lightweight.EatingActivities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,7 +35,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         backButton = findViewById(R.id.backbutton)
         saveButton = findViewById(R.id.saveButton)
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://light-weight.site:8080")
+            .baseUrl("https://www.light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnFoodItemsService = retrofit.create(FoodItemApi::class.java)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
@@ -73,7 +74,8 @@ class AddFoodItemActivity : AppCompatActivity() {
                     response: Response<FoodItem>
                 ) {
                     if (response.isSuccessful) {
-
+                        setResult(Activity.RESULT_OK) // Сообщаем, что продукт был успешно добавлен
+                        finish()
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -87,13 +89,11 @@ class AddFoodItemActivity : AppCompatActivity() {
                 }
 
             })
-            val backIntent= Intent(this, AddEatingActivity::class.java)
-            startActivity(backIntent)
+
 
         }
         backButton.setOnClickListener {
-            val backIntent= Intent(this, AddEatingActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
     }
 }

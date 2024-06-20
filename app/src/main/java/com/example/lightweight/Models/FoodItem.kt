@@ -12,6 +12,7 @@ data class FoodItem(
      var isSaved: Boolean = false,
      var count : String,
      var hideInput: Boolean= false,
+     val available: Boolean = true
 
 ):Serializable {
 }

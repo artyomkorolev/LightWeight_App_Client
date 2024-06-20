@@ -148,7 +148,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
 
 
         saveButton.setOnClickListener {
-            if (picturePath != null) {
+            if ((picturePath != null) and !setMass.text.isNullOrEmpty() ) {
                 val file = File(picturePath)
                 val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), file)
                 val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
@@ -192,7 +192,12 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                     }
                 })
             }} else {
-                Toast.makeText(this@AddPhotoProgressActivity, "Please select an image first", Toast.LENGTH_SHORT).show()
+                if (setMass.text.isNullOrEmpty()){
+                    Toast.makeText(this@AddPhotoProgressActivity, "Вы не указали свою массу", Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this@AddPhotoProgressActivity, "Вы не добавили фотографию", Toast.LENGTH_SHORT).show()
+                }
+
             }
 
 

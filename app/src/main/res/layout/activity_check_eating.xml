@@ -49,6 +49,7 @@
         android:textSize="16dp"
         android:textColor="@color/black"/>
     <TextView
+        android:id="@+id/timeEating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"

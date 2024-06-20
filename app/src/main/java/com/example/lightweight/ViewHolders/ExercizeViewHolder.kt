@@ -45,9 +45,12 @@ class ExercizeViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         }
         savefit.setOnClickListener {
             onSaveClick(item)
+            if (editCount.text.isNullOrEmpty() and !hideInputField){
+
+            }else{
             savefit.visibility = View.GONE
             item.isSaved = true
-            deletefit.visibility = View.VISIBLE
+            deletefit.visibility = View.VISIBLE}
         }
 
         deletefit.setOnClickListener {

@@ -12,6 +12,7 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PersonalAccApi {
     @GET("/user/info")
@@ -30,5 +31,8 @@ interface PersonalAccApi {
 
     @GET("/user/stat/exercise/{id}")
     fun getStatExerciseById(@Header("Authorization") authToken: String,@Path("id") exerciseId: String):Call<ArrayList<StatisticFood>>
+
+    @PUT("/user/updatePassword")
+    fun postUpdatePassword(@Header("Authorization") authToken: String,@Query("password") password: String): Call<Void>
 
 }

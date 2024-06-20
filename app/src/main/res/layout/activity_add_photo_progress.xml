@@ -61,7 +61,8 @@
         app:layout_constraintStart_toEndOf="@id/nameFood"
         tools:ignore="TouchTargetSizeCheck"
         android:gravity="end"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:textColor="@color/black"/>
 
 
 

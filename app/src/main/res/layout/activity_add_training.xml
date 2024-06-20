@@ -73,10 +73,11 @@
         android:textSize="16dp"/>
 
     <TextView
+        android:gravity="end"
         android:id="@+id/etDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="45"
+        android:hint="укажите"
         android:textSize="16dp"
         app:layout_constraintBaseline_toBaselineOf="@id/textDuration"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"

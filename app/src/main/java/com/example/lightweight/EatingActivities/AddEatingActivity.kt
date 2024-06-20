@@ -1,6 +1,7 @@
 package com.example.lightweight.EatingActivities
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -11,6 +12,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -51,17 +53,22 @@ class AddEatingActivity : AppCompatActivity() {
     private lateinit var authtoken: String
     private var isGuest: Boolean = false
 
-
+    companion object {
+        const val REQUEST_CODE_ADD_FOOD_ITEM = 1
+    }
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_eating)
+        addFoodItemButton = findViewById(R.id.addFoodItem)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
         if (authtoken.isEmpty()) {
             isGuest = true
+            addFoodItemButton.visibility= View.GONE
         } else {
             authtoken = "Bearer $authtoken"
+            addFoodItemButton.visibility= View.VISIBLE
         }
 
         val retrofit = Retrofit.Builder()
@@ -81,7 +88,7 @@ class AddEatingActivity : AppCompatActivity() {
 
         backButton =findViewById(R.id.backbutton)
         editTextSetTime = findViewById(R.id.etTime)
-        addFoodItemButton = findViewById(R.id.addFoodItem)
+
         rvlistFoodItems = findViewById(R.id.rvFoodItemList)
 
         saveEatingButton = findViewById(R.id.saveButton)
@@ -89,7 +96,7 @@ class AddEatingActivity : AppCompatActivity() {
 
         addFoodItemButton.setOnClickListener{
             val addIntent = Intent(this, AddFoodItemActivity::class.java)
-            startActivity(addIntent)
+            startActivityForResult(addIntent, REQUEST_CODE_ADD_FOOD_ITEM)
         }
 
         saveEatingButton.setOnClickListener {
@@ -148,12 +155,20 @@ class AddEatingActivity : AppCompatActivity() {
             object : FoodItemAdapter.OnItemClickListener{
                 override fun onSaveClick(foodItem: FoodItem,holder: FoodItemViewHolder) {
                     val grammValue =holder.getGrammValue()
+                    if (grammValue.isNullOrEmpty()){
+                        val alertDialog = AlertDialog.Builder(this@AddEatingActivity)
+                        alertDialog.setTitle("Ошибка")
+                        alertDialog.setMessage("Перед добавлением введите количество грамм")
+                        alertDialog.setPositiveButton("ОК") { _, _ ->
+                        }
+                        alertDialog.show()
+                    }else{
                     products[UUID.fromString(foodItem.id)]= grammValue.toDouble()
                     prod.add(foodItem to grammValue.toDouble())
 
                     for ((key, value) in products) {
                         Log.d("FoodItemsMap", "Key: $key, Value: $value")
-                    }
+                    }}
 
                 }
 
@@ -220,17 +235,24 @@ class AddEatingActivity : AppCompatActivity() {
 
         etSearchFood.addTextChangedListener(textWatcher)
 
-        val call  = getFoodItemsService.getAllProducts()
+        loadFoodItems(getFoodItemsService, foodItemAdapter)
+
+
+
+
+
+    }
+    private fun loadFoodItems(getFoodItemsService: FoodItemApi, foodItemAdapter: FoodItemAdapter) {
+        val call = getFoodItemsService.getAllProducts(authtoken)
         call.enqueue(object : Callback<List<FoodItem>> {
             override fun onResponse(
-
                 call: Call<List<FoodItem>>,
                 response: Response<List<FoodItem>>
             ) {
                 val point = 0
-                if(response.code() ==200){
+                if (response.code() == 200) {
                     products1.clear()
-                    if (response.body()?.isNotEmpty() == true){
+                    if (response.body()?.isNotEmpty() == true) {
                         products1.addAll(response.body()!!)
                         foodItemAdapter.notifyDataSetChanged()
                     }
@@ -240,15 +262,8 @@ class AddEatingActivity : AppCompatActivity() {
             override fun onFailure(p0: Call<List<FoodItem>>, p1: Throwable) {
                 Log.e("NetworkError", "Failed to execute request", p1)
                 Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
-
             }
-
         })
-
-
-
-
-
     }
     private fun saveGuestEating(eating: Eating,foodItem: List<Pair<FoodItem, Double>>) {
 
@@ -264,6 +279,18 @@ class AddEatingActivity : AppCompatActivity() {
         editor.apply()
         val backIntent=Intent(this, MainActivity::class.java)
         startActivity(backIntent)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ADD_FOOD_ITEM && resultCode == RESULT_OK) {
+            // Продукт успешно добавлен, обновляем список продуктов
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://light-weight.site:8080")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val getFoodItemsService = retrofit.create(FoodItemApi::class.java)
+            val foodItemAdapter = rvlistFoodItems.adapter as FoodItemAdapter
+            loadFoodItems(getFoodItemsService, foodItemAdapter)
+        }
     }
 
 

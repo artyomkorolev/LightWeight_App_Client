@@ -45,6 +45,9 @@ android:id="@+id/editCount"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        android:singleLine="true"
         >
 
     </com.google.android.material.textfield.TextInputEditText>

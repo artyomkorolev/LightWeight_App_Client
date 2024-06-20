@@ -1,5 +1,6 @@
 package com.example.lightweight.PhysicalActivities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,6 +25,7 @@ class AddExerciseActivity : AppCompatActivity() {
     private lateinit var name: EditText
     private lateinit var unit: EditText
     private lateinit var authtoken:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_add_exercize)
@@ -60,7 +62,8 @@ class AddExerciseActivity : AppCompatActivity() {
                     response: Response<Exercize>
                 ) {
                     if (response.isSuccessful) {
-
+                        setResult(RESULT_OK)  // Возвращаем результат ОК
+                        finish()
                     } else {
                         Toast.makeText(applicationContext, "Ошибка: ${response.code()}", Toast.LENGTH_SHORT).show()
                     }
@@ -74,15 +77,15 @@ class AddExerciseActivity : AppCompatActivity() {
                 }
 
             })
-            val backIntent= Intent(this, AddTrainingActivity::class.java)
-            startActivity(backIntent)
+
 
         }
         backButton.setOnClickListener {
-            val backIntent= Intent(this, AddTrainingActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
 
 
+
     }
+
 }

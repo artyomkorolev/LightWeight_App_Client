@@ -34,8 +34,11 @@ class FoodItemAdapter(private var fooditems: List<FoodItem>, private val foodIte
         holder.bind(
             foodItem,
             { onItemClickListener.onSaveClick(foodItem,holder)
-                hideKeyboard(holder.itemView.context,holder.itemView)
-                foodItem.isSaved = true
+                if (holder.getGrammValue().isNullOrEmpty()){}else{
+                    hideKeyboard(holder.itemView.context,holder.itemView)
+                    foodItem.isSaved = true
+                }
+
 
             sortItems()
             notifyDataSetChanged()

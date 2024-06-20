@@ -61,7 +61,8 @@
         app:layout_constraintStart_toEndOf="@id/nameFood"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:singleLine="true"/>
 
 
 
@@ -146,7 +147,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
         android:textColorHint="@color/gray"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -161,7 +163,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
         android:textColorHint="@color/gray"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -176,7 +179,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
         android:textColorHint="@color/gray"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"

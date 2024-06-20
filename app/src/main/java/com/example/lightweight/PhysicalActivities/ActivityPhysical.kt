@@ -30,6 +30,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.Duration
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
@@ -50,24 +52,31 @@ class ActivityPhysical : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_physical)
-        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
-        authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        if (authtoken.isEmpty()) {
-            isGuest = true
-        } else {
-            authtoken = "Bearer $authtoken"
-        }
-
-
-        val selectedDate = Calendar.getInstance()
-        var savedDate = SimpleDateFormat("yyyy-MM-dd", Locale("ru")).format(selectedDate.time)
-
         rvTrainingList = findViewById(R.id.rvPhysicalList)
         tvdate = findViewById(R.id.tvDate)
         addTrainingButton = findViewById(R.id.addTraining)
         buttonFood=findViewById(R.id.buttonFood)
         buttonGallery = findViewById(R.id.buttonGallery)
         buttonLK = findViewById(R.id.buttonLK)
+        val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
+        authtoken = sharedPreferences.getString("authToken", "") ?: ""
+
+        if (authtoken.isEmpty()) {
+            isGuest = true
+            tvdate.text = "Гость"
+            tvdate.isEnabled =false
+        } else {
+            authtoken = "Bearer $authtoken"
+            tvdate.isEnabled = true
+            val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
+            tvdate.text = dateFormat.format(Calendar.getInstance().time)
+        }
+
+
+        val selectedDate = Calendar.getInstance()
+        var savedDate = SimpleDateFormat("yyyy-MM-dd", Locale("ru")).format(selectedDate.time)
+
+
 
         buttonFood.setOnClickListener{
             val fkIntent = Intent(this, MainActivity::class.java)
@@ -89,7 +98,8 @@ class ActivityPhysical : AppCompatActivity() {
                 override fun OnClickItem(training: GetTraining) {
                     val checkIntent = Intent(this@ActivityPhysical, CheckTrainingActivity::class.java)
                     checkIntent.putExtra("exesises",ArrayList(training.exercises))
-
+                    checkIntent.putExtra("timeTraining",training.startTime)
+                    checkIntent.putExtra("durationTraining",durationTraining(training))
                     checkIntent.putExtra("idTraining",training.id)
                     startActivity(checkIntent)
                 }
@@ -98,9 +108,7 @@ class ActivityPhysical : AppCompatActivity() {
         )
         rvTrainingList.adapter = trainingAdapter
 
-        val dateFormat = SimpleDateFormat("EEEE, d MMM", Locale("ru"),)
 
-        tvdate.text = dateFormat.format(Calendar.getInstance().time)
         tvdate.setOnClickListener {
             val getDate = Calendar.getInstance()
             val datePicker = DatePickerDialog(
@@ -186,5 +194,14 @@ class ActivityPhysical : AppCompatActivity() {
         trainings.addAll(guestEatings)
         eatingAdapter.notifyDataSetChanged()
 
+    }
+
+    private fun durationTraining( item:GetTraining):String{
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        val starttime = LocalDateTime.parse(item.startTime, formatter)
+        val endtime = LocalDateTime.parse(item.endTime,formatter)
+        val durationS = Duration.between(starttime, endtime)
+        val minutes = durationS.toMinutes().toString()
+        return minutes
     }
 }

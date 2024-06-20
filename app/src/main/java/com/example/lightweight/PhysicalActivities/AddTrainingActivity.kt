@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -21,6 +22,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.ExercizeAdapter
+import com.example.lightweight.Adapters.FoodItemAdapter
+import com.example.lightweight.Adapters.TrainingAdapter
+import com.example.lightweight.EatingActivities.AddEatingActivity
 import com.example.lightweight.EatingActivities.MainActivity
 import com.example.lightweight.Models.Eating
 import com.example.lightweight.Models.Exercize
@@ -63,15 +67,21 @@ class AddTrainingActivity : AppCompatActivity() {
     private lateinit var authtoken:String
     private var isGuest: Boolean = false
     private var prod = mutableListOf<Pair<Exercize, Double>>()
+    companion object {
+        const val REQUEST_CODE_ADD_FOOD = 1
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_training)
+        addExercizeButton = findViewById(R.id.addExercize)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
         if (authtoken.isEmpty()) {
             isGuest = true
+            addExercizeButton.visibility =View.GONE
         } else {
             authtoken = "Bearer $authtoken"
+            addExercizeButton.visibility =View.VISIBLE
         }
 
         backButton = findViewById(R.id.backbutton)
@@ -79,7 +89,7 @@ class AddTrainingActivity : AppCompatActivity() {
         etTime = findViewById(R.id.etTime)
         etDuration= findViewById(R.id.etDuration)
         saveButton = findViewById(R.id.saveButton)
-        addExercizeButton = findViewById(R.id.addExercize)
+
         etSearchExercize = findViewById(R.id.imputEditText)
 
 
@@ -101,7 +111,7 @@ class AddTrainingActivity : AppCompatActivity() {
 
         addExercizeButton.setOnClickListener {
             val exercizeIntent = Intent(this, AddExerciseActivity::class.java)
-            startActivity(exercizeIntent)
+            startActivityForResult(exercizeIntent, REQUEST_CODE_ADD_FOOD)
         }
 
 
@@ -119,10 +129,18 @@ class AddTrainingActivity : AppCompatActivity() {
                 }
             }, object : ExercizeAdapter.OnItemClickListener{
                 override fun onSaveClick(exercize: Exercize,holder: ExercizeViewHolder) {
-                        val countValue = holder.getGrammValue()
+                    val countValue = holder.getGrammValue()
+                    if(countValue.isNullOrEmpty()){
+                        val alertDialog = AlertDialog.Builder(this@AddTrainingActivity)
+                        alertDialog.setTitle("Ошибка")
+                        alertDialog.setMessage("Перед добавлением введите количество ${exercize.unit}")
+                        alertDialog.setPositiveButton("ОК") { _, _ ->
+                        }
+                        alertDialog.show()
+                    }else{
                     exercizes[UUID.fromString(exercize.id)] = countValue.toDouble()
                     prod.add(exercize to countValue.toDouble())
-                }
+                }}
 
                 override fun onDeleteClick(exercize: Exercize) {
                     exercizes.remove(UUID.fromString(exercize.id))
@@ -214,7 +232,9 @@ class AddTrainingActivity : AppCompatActivity() {
             builder.show()
         }
         saveButton.setOnClickListener {
-
+            if (endTime.isNullOrEmpty()){
+                Toast.makeText(applicationContext, "Вы не указали продолжительность тренировки", Toast.LENGTH_SHORT).show()
+            }else{
             if (isGuest){
                 saveGuestEating(Training(startTime,endTime,exercizes),prod)
             }else{
@@ -238,7 +258,7 @@ class AddTrainingActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
                 }
 
-            })
+            })}
 
 
 
@@ -270,20 +290,21 @@ class AddTrainingActivity : AppCompatActivity() {
 
        etSearchExercize.addTextChangedListener(textWatcher)
 
+        loadFoodItems(getExercisesService, exercizeAdapter)
 
-        val call  = getExercisesService.getAllExercise()
+    }
+    private fun loadFoodItems(getFoodItemsService: ExerciseApi, foodItemAdapter: ExercizeAdapter) {
+        val call = getFoodItemsService.getAllExercise(authtoken)
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
-
                 call: Call<List<Exercize>>,
                 response: Response<List<Exercize>>
             ) {
-                val point = 0
-                if(response.code() ==200){
+                if(response.code() == 200){
                     exercises.clear()
                     if (response.body()?.isNotEmpty() == true){
                         exercises.addAll(response.body()!!)
-                        exercizeAdapter.notifyDataSetChanged()
+                        foodItemAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -291,9 +312,7 @@ class AddTrainingActivity : AppCompatActivity() {
             override fun onFailure(p0: Call<List<Exercize>>, p1: Throwable) {
                 Log.e("NetworkError", "Failed to execute request", p1)
                 Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
-
             }
-
         })
     }
 
@@ -311,6 +330,18 @@ class AddTrainingActivity : AppCompatActivity() {
         editor.apply()
         val backIntent=Intent(this, ActivityPhysical::class.java)
         startActivity(backIntent)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ADD_FOOD && resultCode == RESULT_OK) {
+            // Упражнение успешно добавлено, обновляем список упражнений
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://light-weight.site:8080")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val getExercisesService = retrofit.create(ExerciseApi::class.java)
+            val trainingAdapter = rvExercizeList.adapter as ExercizeAdapter
+            loadFoodItems(getExercisesService, trainingAdapter)
+        }
     }
 
 }
