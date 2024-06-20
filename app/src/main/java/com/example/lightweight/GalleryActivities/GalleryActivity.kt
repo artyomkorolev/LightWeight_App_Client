@@ -170,7 +170,9 @@ class GalleryActivity : AppCompatActivity() {
                 ) {
                     if (response.isSuccessful) {
                         photos.remove(photo)
+                        photoAdapter.setPhotos(photos)
                         photoAdapter.notifyDataSetChanged()
+
                     } else {
                         Log.e("Error", "Failed to delete photo")
                     }
@@ -249,6 +251,7 @@ private fun loadPhotos() {
                                                     id = id
                                                 )
                                                 photos.add(photo)
+                                                photoAdapter.setPhotos(photos)
                                                 photoAdapter.notifyDataSetChanged()
                                             }
                                         }
@@ -305,6 +308,7 @@ private fun loadPhotos() {
                 id = "guest_photo"
             )
             photos.add(photo)
+            photoAdapter.setPhotos(photos)
             photoAdapter.notifyDataSetChanged()
         }
     }

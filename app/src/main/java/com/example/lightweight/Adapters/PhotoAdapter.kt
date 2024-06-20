@@ -9,8 +9,12 @@ import com.example.lightweight.ViewHolders.PhotoViewHolder
 import com.example.lightweight.R
 import com.example.lightweight.ViewHolders.FoodItemViewHolder
 
-class PhotoAdapter(private val photos:List<Photo>,
+class PhotoAdapter(private var photos:List<Photo>,
                    private val onItemClickListener: PhotoAdapter.OnItemClickListener):RecyclerView.Adapter<PhotoViewHolder>() {
+    fun setPhotos(newPhotos: List<Photo>) {
+        photos = newPhotos.sortedByDescending { it.dateTime }
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.gallery_item,parent,false)
         return PhotoViewHolder(view)
@@ -33,6 +37,7 @@ class PhotoAdapter(private val photos:List<Photo>,
         )
 
     }
+
 
     interface OnItemClickListener {
         fun onDeleteClick(photo: Photo)
