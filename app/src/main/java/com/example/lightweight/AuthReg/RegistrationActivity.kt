@@ -1,5 +1,6 @@
 package com.example.lightweight.AuthReg
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -45,8 +46,7 @@ class RegistrationActivity : AppCompatActivity() {
             val password = fieldPassword.text.toString()
 
             if (login.isEmpty() || password.isEmpty()) {
-                // Handle the case where the user did not enter both a login and a password
-                Toast.makeText(this, "Please enter both a login and a password", Toast.LENGTH_SHORT).show()
+                emptyFields()
             } else {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://light-weight.site:8080")
@@ -67,7 +67,7 @@ class RegistrationActivity : AppCompatActivity() {
                                 Toast.makeText(applicationContext, "Authentication failed: response body is null", Toast.LENGTH_SHORT).show()
                             }
                         } else {
-                            Toast.makeText(applicationContext, "Authentication failed: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                            noLoginOrPAss()
                         }
                     }
 
@@ -80,5 +80,33 @@ class RegistrationActivity : AppCompatActivity() {
             }
         }
 
+    }
+    private fun emptyFields() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Неккоректные данные")
+        alertDialog.setMessage("Вы не ввели логин или пароль")
+
+        alertDialog.setPositiveButton("ОК") { _, _ ->
+
+
+
+        }
+
+
+        alertDialog.show()
+    }
+    private fun noLoginOrPAss() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Неккоректные данные")
+        alertDialog.setMessage("Пользователь с таким логином уже существует")
+
+        alertDialog.setPositiveButton("ОК") { _, _ ->
+
+
+
+        }
+
+
+        alertDialog.show()
     }
 }

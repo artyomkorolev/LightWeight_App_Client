@@ -1,5 +1,6 @@
 package com.example.lightweight.AuthReg
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.lightweight.EatingActivities.MainActivity
+import com.example.lightweight.Models.Photo
 import com.example.lightweight.R
+import com.example.lightweight.retrofit.GalleryApi
 import com.example.lightweight.retrofit.PersonalAccApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -52,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (login.isEmpty() || password.isEmpty()) {
                 // Handle the case where the user did not enter both a login and a password
-                Toast.makeText(this, "Please enter both a login and a password", Toast.LENGTH_SHORT).show()
+                emptyFields()
             } else {
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://light-weight.site:8080")
@@ -79,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.makeText(applicationContext, "Authentication failed: response body is null", Toast.LENGTH_SHORT).show()
                             }
                         } else {
-                            Toast.makeText(applicationContext, "Authentication failed: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                            noLoginOrPAss()
                         }
                     }
 
@@ -89,10 +92,40 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                 })
+
+
             }
         }
 
 
 
+    }
+    private fun emptyFields() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Неккоректные данные")
+        alertDialog.setMessage("Вы не ввели логин или пароль")
+
+        alertDialog.setPositiveButton("ОК") { _, _ ->
+
+
+
+        }
+
+
+        alertDialog.show()
+    }
+    private fun noLoginOrPAss() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Неккоректные данные")
+        alertDialog.setMessage("Неправильный логин или пароль")
+
+        alertDialog.setPositiveButton("ОК") { _, _ ->
+
+
+
+        }
+
+
+        alertDialog.show()
     }
 }

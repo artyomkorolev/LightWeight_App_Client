@@ -271,7 +271,7 @@ class AddTrainingActivity : AppCompatActivity() {
        etSearchExercize.addTextChangedListener(textWatcher)
 
 
-        val call  = getExercisesService.getAllExercise()
+        val call  = getExercisesService.getAllExercise(authtoken)
         call.enqueue(object : Callback<List<Exercize>> {
             override fun onResponse(
 

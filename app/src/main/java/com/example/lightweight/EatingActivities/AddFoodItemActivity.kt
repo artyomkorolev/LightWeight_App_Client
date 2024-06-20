@@ -34,7 +34,7 @@ class AddFoodItemActivity : AppCompatActivity() {
         backButton = findViewById(R.id.backbutton)
         saveButton = findViewById(R.id.saveButton)
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://light-weight.site:8080")
+            .baseUrl("https://www.light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
         val getOwnFoodItemsService = retrofit.create(FoodItemApi::class.java)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)

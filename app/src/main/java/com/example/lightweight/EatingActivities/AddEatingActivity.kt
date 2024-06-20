@@ -220,7 +220,7 @@ class AddEatingActivity : AppCompatActivity() {
 
         etSearchFood.addTextChangedListener(textWatcher)
 
-        val call  = getFoodItemsService.getAllProducts()
+        val call  = getFoodItemsService.getAllProducts(authtoken)
         call.enqueue(object : Callback<List<FoodItem>> {
             override fun onResponse(
 

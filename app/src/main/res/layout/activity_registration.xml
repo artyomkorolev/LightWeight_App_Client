@@ -86,6 +86,11 @@
                 />
 
             <EditText
+                android:textSize="23dp"
+                android:paddingStart="12dp"
+                android:hint="Введите Логин"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/black"
                 android:id="@+id/login"
                 android:layout_width="0dp"
                 android:layout_height="57dp"
@@ -111,6 +116,11 @@
                 />
 
             <EditText
+                android:textSize="23dp"
+                android:paddingStart="12dp"
+                android:hint="Введите Пароль"
+                android:textColorHint="@color/gray"
+                android:textColor="@color/black"
                 android:id="@+id/password"
                 android:layout_width="0dp"
                 android:layout_height="57dp"
