@@ -72,8 +72,7 @@ class RegistrationActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(p0: Call<AuthResponse>, p1: Throwable) {
-                        Log.e("NetworkError", "Failed to execute request", p1)
-                        Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Отсутствует подключение к интернету", Toast.LENGTH_SHORT).show()
                     }
 
                 })
