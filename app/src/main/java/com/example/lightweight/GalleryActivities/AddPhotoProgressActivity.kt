@@ -40,7 +40,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
     private lateinit var setDate:TextView
     var picturePath: String? = null
     private lateinit var authtoken:String
-
+    private var isGuest: Boolean = false
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -64,7 +64,11 @@ class AddPhotoProgressActivity : AppCompatActivity() {
         image = findViewById(R.id.addedImage)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
         image.visibility = View.GONE
 
@@ -155,7 +159,11 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                 val weight = weightString.replace("кг", "").trim().toInt()
 
 
-
+                if(isGuest){
+                    saveGuestPhoto(picturePath!!, selectedDate1, weight)
+                    val backIntent = Intent(this@AddPhotoProgressActivity, GalleryActivity::class.java)
+                    startActivity(backIntent)
+                }else{
                 val retrofit = Retrofit.Builder()
                     .baseUrl("https://light-weight.site:8080") // Replace with your actual base URL
                     .addConverterFactory(GsonConverterFactory.create())
@@ -183,7 +191,7 @@ class AddPhotoProgressActivity : AppCompatActivity() {
                         Toast.makeText(this@AddPhotoProgressActivity, "Failed to upload photo", Toast.LENGTH_SHORT).show()
                     }
                 })
-            } else {
+            }} else {
                 Toast.makeText(this@AddPhotoProgressActivity, "Please select an image first", Toast.LENGTH_SHORT).show()
             }
 
@@ -193,6 +201,13 @@ class AddPhotoProgressActivity : AppCompatActivity() {
     }
 
 
-
+    private fun saveGuestPhoto(picturePath: String, date: String, weight: Int) {
+        val sharedPreferences = getSharedPreferences("guestPhoto", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("picturePath", picturePath)
+        editor.putString("date", date)
+        editor.putInt("weight", weight)
+        editor.apply()
+    }
 
 }

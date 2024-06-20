@@ -36,6 +36,7 @@ import java.util.Locale
 
 
 class GalleryActivity : AppCompatActivity() {
+    private var isGuest: Boolean = false
     private lateinit var profileName:TextView
     private lateinit var addPhoto: ImageView
     private lateinit var rvPhotos:RecyclerView
@@ -66,7 +67,11 @@ class GalleryActivity : AppCompatActivity() {
         rvPhotos = findViewById(R.id.rvPhotos)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+        } else {
+            authtoken = "Bearer $authtoken"
+        }
 
         buttonFk.setOnClickListener{
             val fkIntent = Intent(this, ActivityPhysical::class.java)
@@ -88,13 +93,20 @@ class GalleryActivity : AppCompatActivity() {
         rvPhotos.adapter=photoAdapter
 
         addPhoto.setOnClickListener {
-            val fkIntent = Intent(this, AddPhotoProgressActivity::class.java)
-            startActivity(fkIntent)
-        }
-        loadPhotos()
+            if (isGuest and photos.isNotEmpty()){
+                Toast.makeText(this, "Гость может добавть только одно фото", Toast.LENGTH_SHORT).show()
+            }else{val fkIntent = Intent(this, AddPhotoProgressActivity::class.java)
+                startActivity(fkIntent)}
 
+        }
+        if (isGuest){
+            loadGuestPhoto()
+        }else {
+            loadPhotos()
+        }
 
     }
+
     private fun deletePhoto(photo: Photo) {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Удаление фото")
@@ -238,5 +250,23 @@ private fun loadPhotos() {
         thread.start()
     }
 }
+    private fun loadGuestPhoto() {
+        val sharedPreferences = getSharedPreferences("guestPhoto", MODE_PRIVATE)
+        val picturePath = sharedPreferences.getString("picturePath", null)
+        val date = sharedPreferences.getString("date", null)
+        val weight = sharedPreferences.getInt("weight", -1)
+
+        if (picturePath != null && date != null && weight != -1) {
+            val bitmap = BitmapFactory.decodeFile(picturePath)
+            val photo = Photo(
+                weight = "$weight кг",
+                dateTime = date,
+                image = bitmap,
+                id = "guest_photo"
+            )
+            photos.add(photo)
+            photoAdapter.notifyDataSetChanged()
+        }
+    }
 
 }
