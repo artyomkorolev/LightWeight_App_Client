@@ -32,16 +32,17 @@ class CheckEatingActivity : AppCompatActivity() {
     private lateinit var etSearchFood: EditText
     private var searchText: String? = null
     private lateinit var authtoken:String
-
+    private lateinit var timeEat:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_eating)
         rvlistFoodItems = findViewById(R.id.rvFoodItemList)
         backbutton=findViewById(R.id.backbutton)
-
+        timeEat =findViewById(R.id.timeEating)
         val products = intent.getSerializableExtra("products") as ArrayList<Products>
         val idEating = intent.getSerializableExtra("idEating").toString()
-
+        val timeEating = intent.getSerializableExtra("timeEating").toString()
+        timeEat.text = timeEating.substring(11, 16)
         backbutton.setOnClickListener {
             val backIntent = Intent(this, MainActivity::class.java)
             startActivity(backIntent)

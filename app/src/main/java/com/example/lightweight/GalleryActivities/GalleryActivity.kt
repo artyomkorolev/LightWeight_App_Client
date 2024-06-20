@@ -21,9 +21,11 @@ import com.example.lightweight.Adapters.PhotoAdapter
 import com.example.lightweight.EatingActivities.MainActivity
 import com.example.lightweight.Models.Photo
 import com.example.lightweight.ManagementActivities.PersonalAccountActivity
+import com.example.lightweight.Models.User
 import com.example.lightweight.PhysicalActivities.ActivityPhysical
 import com.example.lightweight.R
 import com.example.lightweight.retrofit.GalleryApi
+import com.example.lightweight.retrofit.PersonalAccApi
 import okhttp3.ResponseBody
 import org.json.JSONArray
 import retrofit2.Call
@@ -36,6 +38,7 @@ import java.util.Locale
 
 
 class GalleryActivity : AppCompatActivity() {
+
     private var isGuest: Boolean = false
     private lateinit var profileName:TextView
     private lateinit var addPhoto: ImageView
@@ -49,7 +52,11 @@ class GalleryActivity : AppCompatActivity() {
         photos,
         object : PhotoAdapter.OnItemClickListener{
             override fun onDeleteClick(photo: Photo) {
-               deletePhoto(photo)
+                if (isGuest) {
+                    Toast.makeText(this@GalleryActivity, "Гости не могут удалять фотографии", Toast.LENGTH_SHORT).show()
+                } else {
+                    deletePhoto(photo)
+                }
 
             }
         }
@@ -65,12 +72,45 @@ class GalleryActivity : AppCompatActivity() {
         buttonLK = findViewById(R.id.buttonLK)
         addPhoto = findViewById(R.id.addphoto)
         rvPhotos = findViewById(R.id.rvPhotos)
+        profileName = findViewById(R.id.profileName)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
         if (authtoken.isEmpty()) {
             isGuest = true
+            profileName.text = "Гость"
         } else {
             authtoken = "Bearer $authtoken"
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://light-weight.site:8080")
+                .addConverterFactory(GsonConverterFactory.create()).build()
+            val userApiService = retrofit.create(PersonalAccApi::class.java)
+
+            val call = userApiService.getUserInfo(authtoken)
+            call.enqueue(object :Callback<User>{
+                override fun onResponse(
+                    call: Call<User>,
+                    response: Response<User>) {
+                    val point =0
+                    if(response.isSuccessful){
+                        val user = response.body()
+                        if (user != null) {
+
+                            profileName.text = user.login
+                        } else {
+                            Log.e("ResponseError", "User object is null")
+                        }
+                    } else {
+                        Log.e("ResponseError", "Response code: ${response.code()}")
+                        Log.e("ResponseError", "Response message: ${response.message()}")
+                        Log.e("ResponseError", "Response error body: ${response.errorBody()?.string()}")
+                    }
+                }
+                override fun onFailure(p0: Call<User>, p1: Throwable) {
+                    Log.e("NetworkError", "Failed to execute request", p1)
+                    Toast.makeText(applicationContext, "Network Error: ${p1.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            })
         }
 
         buttonFk.setOnClickListener{
@@ -94,7 +134,7 @@ class GalleryActivity : AppCompatActivity() {
 
         addPhoto.setOnClickListener {
             if (isGuest and photos.isNotEmpty()){
-                Toast.makeText(this, "Гость может добавть только одно фото", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Гость может добавить только одно фото", Toast.LENGTH_SHORT).show()
             }else{val fkIntent = Intent(this, AddPhotoProgressActivity::class.java)
                 startActivity(fkIntent)}
 

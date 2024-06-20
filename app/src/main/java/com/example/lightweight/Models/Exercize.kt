@@ -9,5 +9,6 @@ data class Exercize(
     var count: String,
     var isSaved: Boolean = false,
     var hideInput: Boolean= false,
+    val available: Boolean = true
 ):Serializable {
 }

@@ -47,7 +47,8 @@
         app:layout_constraintTop_toBottomOf="@id/grayline"
         android:layout_marginTop="54dp"
         android:textSize="16dp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etnamefood"
@@ -140,7 +141,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColorHint="@color/gray"
         android:inputType="number"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etFats"
@@ -155,7 +157,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColorHint="@color/gray"
         android:inputType="number"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
     <EditText
         android:id="@+id/etCarbs"
@@ -170,7 +173,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColorHint="@color/gray"
         android:inputType="number"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:singleLine="true"/>
     <EditText
         android:id="@+id/etCals"
         android:layout_width="0dp"
@@ -184,7 +188,8 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColorHint="@color/gray"
         android:inputType="number"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:singleLine="true"/>
 
 
     <androidx.constraintlayout.widget.Guideline

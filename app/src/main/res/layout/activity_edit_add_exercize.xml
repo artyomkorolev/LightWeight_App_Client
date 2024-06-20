@@ -61,6 +61,7 @@
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
         android:textColorHint="@color/gray"
+        android:singleLine="true"
         />
 
 
@@ -98,7 +99,8 @@
         app:layout_constraintTop_toBottomOf="@id/nameFood"
         tools:ignore="TouchTargetSizeCheck"
         android:textColor="@color/black"
-        android:textColorHint="@color/gray"/>
+        android:textColorHint="@color/gray"
+        android:singleLine="true"/>
 
 
 

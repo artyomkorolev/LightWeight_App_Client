@@ -49,6 +49,7 @@
         android:textSize="16dp"
         android:textColor="@color/black"/>
     <TextView
+        android:id="@+id/timeTraining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"
@@ -67,6 +68,7 @@
         android:layout_marginTop="42dp"
         android:textSize="16dp"/>
     <TextView
+        android:id="@+id/durationTraining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/roghtGuideline"

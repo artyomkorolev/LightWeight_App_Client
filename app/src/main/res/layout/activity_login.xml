@@ -119,7 +119,7 @@
             <EditText
                 android:textSize="23dp"
                 android:paddingStart="12dp"
-                android:hint="Введите Пароль"
+                android:hint="Введите пароль"
                 android:textColorHint="@color/gray"
                 android:textColor="@color/black"
                 android:id="@+id/password"

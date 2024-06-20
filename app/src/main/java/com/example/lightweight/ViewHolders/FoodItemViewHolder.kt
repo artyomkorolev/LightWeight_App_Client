@@ -1,5 +1,6 @@
 package com.example.lightweight.ViewHolders
 
+import android.app.AlertDialog
 import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
@@ -52,9 +53,13 @@ class FoodItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
         }
         save.setOnClickListener {
             onSaveClick(item)
+            if (saveGramm.text.isNullOrEmpty() and !hideInputField){
+
+            }else{
+
             save.visibility = View.GONE
             item.isSaved = true
-            delete.visibility = View.VISIBLE
+            delete.visibility = View.VISIBLE}
         }
 
         delete.setOnClickListener {

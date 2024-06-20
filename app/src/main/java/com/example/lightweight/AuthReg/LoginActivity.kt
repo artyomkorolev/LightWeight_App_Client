@@ -104,14 +104,8 @@ class LoginActivity : AppCompatActivity() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Неккоректные данные")
         alertDialog.setMessage("Вы не ввели логин или пароль")
-
         alertDialog.setPositiveButton("ОК") { _, _ ->
-
-
-
         }
-
-
         alertDialog.show()
     }
     private fun noLoginOrPAss() {

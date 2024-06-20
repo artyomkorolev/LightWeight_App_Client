@@ -3,8 +3,12 @@ package com.example.lightweight.PhysicalActivities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lightweight.Adapters.ExercizeAdapter
@@ -27,13 +31,18 @@ class CheckTrainingActivity : AppCompatActivity() {
     private lateinit var deleteButton:Button
     private lateinit var rvExercizeList:RecyclerView
     private lateinit var authtoken:String
+    private lateinit var etSearchFood: EditText
+    private lateinit var tvtimeTraining:TextView
+    private lateinit var tvdurationTraining:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check_training)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
         authtoken = "Bearer $authtoken"
-
+        tvdurationTraining =findViewById(R.id.durationTraining)
+        tvtimeTraining = findViewById(R.id.timeTraining)
         backbutton=findViewById(R.id.backbutton)
         backbutton.setOnClickListener {
             val backIntent = Intent(this, ActivityPhysical::class.java)
@@ -41,6 +50,10 @@ class CheckTrainingActivity : AppCompatActivity() {
         }
         val exesises = intent.getSerializableExtra("exesises") as ArrayList<Exersise>
         val idTraining = intent.getSerializableExtra("idTraining").toString()
+        val timeTraining =intent.getSerializableExtra("timeTraining").toString()
+        val durationTraining =intent.getSerializableExtra("durationTraining").toString()
+        tvtimeTraining.text = timeTraining.substring(11, 16)
+        tvdurationTraining.text = durationTraining
 
         deleteButton=findViewById(R.id.buttonDelete)
         deleteButton.setOnClickListener {
@@ -95,5 +108,26 @@ class CheckTrainingActivity : AppCompatActivity() {
             },hideElements = true
         )
         rvExercizeList.adapter=exercizeAdapter
+
+        etSearchFood = findViewById(R.id.imputEditText)
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                p0?.let {
+                        searchText ->
+                    exercizeAdapter.filterItems(searchText.toString())
+                }
+            }
+
+        }
+
+        etSearchFood.addTextChangedListener(textWatcher)
     }
 }

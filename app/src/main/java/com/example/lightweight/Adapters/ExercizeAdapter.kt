@@ -31,8 +31,11 @@ class ExercizeAdapter(private var exercizes:List<Exercize>, private val exercize
         holder.bind(
             exercizeItem,
             { onItemClickListener.onSaveClick(exercizeItem,holder)
-                hideKeyboard(holder.itemView.context, holder.itemView)
-                exercizeItem.isSaved = true
+                if(holder.getGrammValue().isNullOrEmpty()){}else{
+                    hideKeyboard(holder.itemView.context, holder.itemView)
+                    exercizeItem.isSaved = true
+                }
+
                 sortItems()
                 notifyDataSetChanged()
             },

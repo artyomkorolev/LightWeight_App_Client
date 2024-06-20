@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
@@ -40,13 +41,21 @@ class PersonalAccountActivity : AppCompatActivity() {
     private lateinit var buttonAuth:TextView
     private lateinit var authtoken:String
     private lateinit var buttonExit:TextView
+    private var isGuest: Boolean = false
+    private lateinit var profileName:TextView
+    private lateinit var nameFood:TextView
+    private lateinit var textHei:TextView
+    private lateinit var textWid:TextView
+    private lateinit var editPass:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_account)
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         authtoken = sharedPreferences.getString("authToken", "") ?: ""
-
+        management = findViewById(R.id.management)
+        statFK = findViewById(R.id.statFK)
+        statFood = findViewById(R.id.statFood)
         profileHeight = findViewById(R.id.profileHeightEdit)
         profileWidth  = findViewById(R.id.profileWidthEdit)
         buttonFk=findViewById(R.id.buttonFK)
@@ -55,12 +64,43 @@ class PersonalAccountActivity : AppCompatActivity() {
         tvLogin = findViewById(R.id.tvLogin)
         buttonAuth =findViewById(R.id.authActivity)
         buttonExit=findViewById(R.id.exitAuth)
+        profileName =findViewById(R.id.profileName)
+        textHei = findViewById(R.id.profileHeight)
+        textWid =findViewById(R.id.profileWidth)
+        nameFood = findViewById(R.id.nameFood)
+        editPass =findViewById(R.id.editpass)
 
         if (!authtoken.isNullOrEmpty()){
             buttonAuth.visibility = View.GONE
             buttonExit.visibility = View.VISIBLE
         }
-        authtoken = "Bearer $authtoken"
+        if (authtoken.isEmpty()) {
+            isGuest = true
+            management.visibility=View.GONE
+            statFK.visibility=View.GONE
+            statFood.visibility=View.GONE
+            profileHeight.visibility=View.GONE
+            profileWidth.visibility=View.GONE
+            tvLogin.visibility=View.GONE
+            profileName.text ="Гость"
+            textHei.visibility = View.GONE
+            textWid.visibility =View.GONE
+            nameFood.visibility = View.GONE
+            editPass.visibility=View.GONE
+
+        } else {
+            authtoken = "Bearer $authtoken"
+            management.visibility=View.VISIBLE
+            statFK.visibility=View.VISIBLE
+            statFood.visibility=View.VISIBLE
+            profileHeight.visibility=View.VISIBLE
+            profileWidth.visibility=View.VISIBLE
+            tvLogin.visibility=View.VISIBLE
+            textHei.visibility = View.VISIBLE
+            textWid.visibility =View.VISIBLE
+            nameFood.visibility = View.VISIBLE
+            editPass.visibility=View.VISIBLE
+        }
 
         buttonExit.setOnClickListener {
             clearAuthToken()
@@ -87,6 +127,7 @@ class PersonalAccountActivity : AppCompatActivity() {
                         profileWidth.text = user.weight.toString()+ " кг"
                         tvLogin.text = user.login
                         loginP = user.login
+                        profileName.text = user.login
                     } else {
                         Log.e("ResponseError", "User object is null")
                     }
@@ -119,9 +160,7 @@ class PersonalAccountActivity : AppCompatActivity() {
             startActivity(galIntent)
         }
 
-        management = findViewById(R.id.management)
-        statFK = findViewById(R.id.statFK)
-        statFood = findViewById(R.id.statFood)
+
 
         management.setOnClickListener {
             val managementIntent = Intent(this, ManagementActivity::class.java)
@@ -138,7 +177,67 @@ class PersonalAccountActivity : AppCompatActivity() {
 
         }
 
+        editPass.setOnClickListener {
+            val editText = EditText(this).apply {
+                hint = "Введите новый пароль"
+            }
 
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Изменение пароля")
+            builder.setMessage("Авторизоваться придется заново:")
+
+            builder.setPositiveButton("OK") { dialog, _ ->
+                val newPass = editText.text.toString()
+                updatePassword(newPass)
+                val managementIntent = Intent(this, LoginActivity::class.java)
+                startActivity(managementIntent)
+                dialog.dismiss()
+
+            }
+
+            builder.setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.setView(editText)
+            builder.show()
+        }
+
+        tvLogin.setOnClickListener {
+            val editText = EditText(this).apply {
+                hint = "Введите новый логин"
+            }
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Изменение логина")
+            builder.setMessage("Авторизоваться придется заново:")
+
+            builder.setPositiveButton("OK") { dialog, _ ->
+                val newLogin = editText.text.toString()
+                val updatedUser = User(
+                    height = profileHeight.text.toString().removeSuffix(" см").toInt(),
+                    weight = profileWidth.text.toString().removeSuffix(" кг").toInt(),
+                    login = newLogin
+                )
+                updateUser(updatedUser) { success ->
+                    if (success) {
+                        tvLogin.text = newLogin
+                        clearAuthToken()
+                        val managementIntent = Intent(this, LoginActivity::class.java)
+                        startActivity(managementIntent)
+                        dialog.dismiss()
+                    }
+                }
+
+            }
+
+            builder.setNegativeButton("Отмена") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            builder.setView(editText)
+            builder.show()
+        }
 
 
         profileHeight.setOnClickListener {
@@ -154,9 +253,17 @@ class PersonalAccountActivity : AppCompatActivity() {
 
             builder.setPositiveButton("OK") { dialog, _ ->
                 val height = numberPicker.value // Получаем выбранное значение
-                profileHeight.text = "$height см"
+
                 val updatedUser = User(height = height, weight = profileWidth.text.toString().removeSuffix(" кг").toInt(), login = loginP)
-                updateUser(updatedUser)
+                updateUser(updatedUser) { success ->
+                    if (success) {
+                        profileHeight.text = "$height см"
+                    }
+                }
+
+                clearAuthToken()
+                val managementIntent = Intent(this, LoginActivity::class.java)
+                startActivity(managementIntent)
                 dialog.dismiss()
             }
 
@@ -181,9 +288,13 @@ class PersonalAccountActivity : AppCompatActivity() {
 
             builder.setPositiveButton("OK") { dialog, _ ->
                 val weight = numberPicker.value // Получаем выбранное значение
-                profileWidth.text = "$weight кг"
+
                 val updatedUser = User(height = profileHeight.text.toString().removeSuffix(" см").toInt(), weight = weight, login = loginP)
-                updateUser(updatedUser)
+                updateUser(updatedUser) { success ->
+                    if (success) {
+                        profileWidth.text = "$weight кг"
+                    }
+                }
                 dialog.dismiss()
             }
 
@@ -197,7 +308,7 @@ class PersonalAccountActivity : AppCompatActivity() {
 
 
     }
-    private fun updateUser(user: User) {
+    private fun updateUser(user: User, callback: (Boolean) -> Unit) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://light-weight.site:8080")
             .addConverterFactory(GsonConverterFactory.create()).build()
@@ -208,19 +319,26 @@ class PersonalAccountActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
 
+                    callback(true)
                 } else {
-                    Log.e("ResponseError", "Response code: ${response.code()}")
-                    Log.e("ResponseError", "Response message: ${response.message()}")
-                    Log.e("ResponseError", "Response error body: ${response.errorBody()?.string()}")
+                    val errorMessage = response.errorBody()?.string()
+                    if (errorMessage != null && errorMessage.contains("login already taken", ignoreCase = true)) {
+                        Toast.makeText(applicationContext, "Ошибка: Логин уже занят. Пожалуйста, выберите другой логин.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(applicationContext, "Ошибка: Логин уже занят. Пожалуйста, выберите другой логин.", Toast.LENGTH_LONG).show()
+                    }
+                    callback(false)
                 }
             }
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 Log.e("NetworkError", "Failed to execute request", t)
-                Toast.makeText(applicationContext, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Ошибка сети: ${t.message}", Toast.LENGTH_SHORT).show()
+                callback(false)
             }
         })
     }
+
     private fun clearAuthToken() {
         val sharedPreferences = getSharedPreferences("auth", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -229,5 +347,26 @@ class PersonalAccountActivity : AppCompatActivity() {
         buttonAuth.visibility = View.VISIBLE
         buttonExit.visibility = View.GONE
 
+    }
+    private fun updatePassword(password:String){
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://light-weight.site:8080")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val userApiService = retrofit.create(PersonalAccApi::class.java)
+
+        val call = userApiService.postUpdatePassword(authtoken, password)
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.e("NetworkError", "Failed to execute request", t)
+                Toast.makeText(applicationContext, "Ошибка сети: ${t.message}", Toast.LENGTH_SHORT).show()
+
+            }
+        })
     }
 }
